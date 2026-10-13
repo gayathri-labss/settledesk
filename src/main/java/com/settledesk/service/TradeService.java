@@ -24,4 +24,8 @@ public class TradeService {
                 .seller(request.getSeller())
                 .build());
     }
+
+    public Trade getTradeByTradeId(Long tradeId){
+        return tradeRepository.findById(tradeId).orElseThrow(() -> new RuntimeException("Trade not found" + tradeId))
+        ;}
 }
