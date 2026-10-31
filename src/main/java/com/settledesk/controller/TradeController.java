@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Set;
 import com.settledesk.dto.UpdateTradeRequest;
 import org.springframework.web.bind.annotation.PutMapping;
+import com.settledesk.dto.UpdateTradeStatusRequest;
+import org.springframework.web.bind.annotation.PatchMapping;
 
 @RestController
 @RequestMapping("/api/v1/trades")
@@ -51,6 +53,17 @@ public class TradeController {
             @Valid @RequestBody UpdateTradeRequest request) {
 
         Trade updatedTrade = tradeService.updateTrade(tradeId, request);
+
+        return ResponseEntity.ok(updatedTrade);
+    }
+
+    @PatchMapping("/{tradeId}/status")
+    public ResponseEntity<Trade> updateTradeStatus(
+            @PathVariable Long tradeId,
+            @Valid @RequestBody UpdateTradeStatusRequest request) {
+
+        Trade updatedTrade =
+                tradeService.updateTradeStatus(tradeId, request);
 
         return ResponseEntity.ok(updatedTrade);
     }
