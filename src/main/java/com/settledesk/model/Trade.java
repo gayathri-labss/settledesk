@@ -9,6 +9,8 @@ import lombok.NoArgsConstructor;
 import lombok.AllArgsConstructor;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
+import jakarta.persistence.Enumerated;
+import jakarta.persistence.EnumType;
 
 @Entity
 @Getter
@@ -17,6 +19,10 @@ import jakarta.persistence.GenerationType;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Trade {
+
+    @Enumerated(EnumType.STRING)
+    @Builder.Default
+    private TradeStatus status = TradeStatus.NEW;
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
