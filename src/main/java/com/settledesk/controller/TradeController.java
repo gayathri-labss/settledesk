@@ -19,6 +19,8 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.data.domain.Sort;
 import org.springframework.web.bind.annotation.RequestParam;
 import java.util.Set;
+import com.settledesk.dto.UpdateTradeRequest;
+import org.springframework.web.bind.annotation.PutMapping;
 
 @RestController
 @RequestMapping("/api/v1/trades")
@@ -41,6 +43,16 @@ public class TradeController {
     public ResponseEntity<Trade> getTradeById(@PathVariable Long tradeId){
         Trade trade = tradeService.getTradeByTradeId(tradeId);
         return ResponseEntity.ok(trade);
+    }
+
+    @PutMapping("/{tradeId}")
+    public ResponseEntity<Trade> updateTrade(
+            @PathVariable Long tradeId,
+            @Valid @RequestBody UpdateTradeRequest request) {
+
+        Trade updatedTrade = tradeService.updateTrade(tradeId, request);
+
+        return ResponseEntity.ok(updatedTrade);
     }
 
     @GetMapping
