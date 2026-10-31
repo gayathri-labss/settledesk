@@ -200,6 +200,14 @@ public class TradeService {
 
         existingTrade.setStatus(TradeStatus.CANCELLED);
 
-        return tradeRepository.save(existingTrade);
+        Trade cancelledTrade = tradeRepository.save(existingTrade);
+
+        tradeLifecycleService.recordStatusChange(
+                cancelledTrade,
+                currentStatus,
+                TradeStatus.CANCELLED
+        );
+
+        return cancelledTrade;
     }
 }
