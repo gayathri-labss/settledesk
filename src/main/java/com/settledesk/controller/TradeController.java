@@ -27,6 +27,8 @@ import java.util.List;
 import jakarta.validation.constraints.NotEmpty;
 import com.settledesk.service.TradeLifecycleService;
 import com.settledesk.model.TradeLifecycleEvent;
+import com.settledesk.model.TradeAuditEvent;
+import com.settledesk.service.TradeAuditService;
 
 @RestController
 @RequestMapping("/api/v1/trades")
@@ -34,14 +36,16 @@ public class TradeController {
 
     private final TradeService tradeService;
     private final TradeLifecycleService tradeLifecycleService;
+    private final TradeAuditService tradeAuditService;
 
     @Autowired
     public TradeController(
             TradeService tradeService,
-            TradeLifecycleService tradeLifecycleService) {
+            TradeLifecycleService tradeLifecycleService, TradeAuditService tradeAuditService) {
 
         this.tradeService = tradeService;
         this.tradeLifecycleService = tradeLifecycleService;
+        this.tradeAuditService = tradeAuditService;
     }
 
     @PostMapping
@@ -105,6 +109,16 @@ public class TradeController {
                 tradeLifecycleService.getTradeLifecycle(tradeId);
 
         return ResponseEntity.ok(lifecycleEvents);
+    }
+
+    @GetMapping("/{tradeId}/audit")
+    public ResponseEntity<List<TradeAuditEvent>> getTradeAuditHistory(
+            @PathVariable Long tradeId) {
+
+        List<TradeAuditEvent> auditEvents =
+                tradeAuditService.getTradeAuditHistory(tradeId);
+
+        return ResponseEntity.ok(auditEvents);
     }
 
     @GetMapping
