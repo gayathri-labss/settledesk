@@ -81,6 +81,15 @@ public class TradeController {
         return ResponseEntity.status(HttpStatus.CREATED).body(trades);
     }
 
+    @PostMapping("/{tradeId}/cancel")
+    public ResponseEntity<Trade> cancelTrade(
+            @PathVariable Long tradeId) {
+
+        Trade cancelledTrade = tradeService.cancelTrade(tradeId);
+
+        return ResponseEntity.ok(cancelledTrade);
+    }
+
     @GetMapping
     public ResponseEntity<Page<Trade>> searchTrades(
             @RequestParam(required = false) String instrument,

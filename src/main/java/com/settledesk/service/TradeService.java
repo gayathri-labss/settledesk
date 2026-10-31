@@ -149,4 +149,26 @@ public class TradeService {
 
         return tradeRepository.save(existingTrade);
     }
+
+    @Transactional
+    public Trade cancelTrade(Long tradeId) {
+
+        Trade existingTrade = getTradeByTradeId(tradeId);
+
+        TradeStatus currentStatus = existingTrade.getStatus();
+
+        if (!isValidStatusTransition(
+                currentStatus, TradeStatus.CANCELLED)) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Trade cannot be cancelled from status: "
+                            + currentStatus
+            );
+        }
+
+        existingTrade.setStatus(TradeStatus.CANCELLED);
+
+        return tradeRepository.save(existingTrade);
+    }
 }
