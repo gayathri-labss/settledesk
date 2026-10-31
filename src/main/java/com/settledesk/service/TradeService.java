@@ -15,16 +15,24 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 import com.settledesk.dto.UpdateTradeStatusRequest;
 import java.util.List;
+import com.settledesk.model.TradeAuditAction;
+import com.settledesk.service.TradeAuditService;
 
 @Service
 public class TradeService {
 
     private final TradeRepository tradeRepository;
     private final TradeLifecycleService tradeLifecycleService;
+    private final TradeAuditService tradeAuditService;
 
-    public TradeService(TradeRepository tradeRepository, TradeLifecycleService tradeLifecycleService) {
+    public TradeService(
+            TradeRepository tradeRepository,
+            TradeLifecycleService tradeLifecycleService,
+            TradeAuditService tradeAuditService) {
+
         this.tradeRepository = tradeRepository;
         this.tradeLifecycleService = tradeLifecycleService;
+        this.tradeAuditService = tradeAuditService;
     }
 
     @Transactional
@@ -45,6 +53,12 @@ public class TradeService {
                 savedTrade,
                 null,
                 TradeStatus.NEW
+        );
+
+        tradeAuditService.recordAudit(
+                savedTrade,
+                TradeAuditAction.CREATE,
+                "Trade created"
         );
 
         return savedTrade;
@@ -80,6 +94,12 @@ public class TradeService {
                     null,
                     TradeStatus.NEW
             );
+
+            tradeAuditService.recordAudit(
+                    trade,
+                    TradeAuditAction.CREATE,
+                    "Trade created through bulk creation"
+            );
         }
 
         return savedTrades;
@@ -90,13 +110,33 @@ public class TradeService {
 
         Trade existingTrade = getTradeByTradeId(tradeId);
 
+        String details = "Trade updated: "
+                + "instrument [" + existingTrade.getInstrument()
+                + " -> " + request.getInstrument() + "], "
+                + "quantity [" + existingTrade.getQuantity()
+                + " -> " + request.getQuantity() + "], "
+                + "price [" + existingTrade.getPrice()
+                + " -> " + request.getPrice() + "], "
+                + "buyer [" + existingTrade.getBuyer()
+                + " -> " + request.getBuyer() + "], "
+                + "seller [" + existingTrade.getSeller()
+                + " -> " + request.getSeller() + "]";
+
         existingTrade.setInstrument(request.getInstrument());
         existingTrade.setQuantity(request.getQuantity());
         existingTrade.setPrice(request.getPrice());
         existingTrade.setBuyer(request.getBuyer());
         existingTrade.setSeller(request.getSeller());
 
-        return tradeRepository.save(existingTrade);
+        Trade updatedTrade = tradeRepository.save(existingTrade);
+
+        tradeAuditService.recordAudit(
+                updatedTrade,
+                TradeAuditAction.UPDATE,
+                details
+        );
+
+        return updatedTrade;
     }
 
     public Page<Trade> searchTrades(
@@ -178,6 +218,13 @@ public class TradeService {
                 newStatus
         );
 
+        tradeAuditService.recordAudit(
+                updatedTrade,
+                TradeAuditAction.STATUS_CHANGE,
+                "Trade status changed from " + currentStatus
+                        + " to " + newStatus
+        );
+
         return updatedTrade;
     }
 
@@ -206,6 +253,12 @@ public class TradeService {
                 cancelledTrade,
                 currentStatus,
                 TradeStatus.CANCELLED
+        );
+
+        tradeAuditService.recordAudit(
+                cancelledTrade,
+                TradeAuditAction.CANCEL,
+                "Trade cancelled from status: " + currentStatus
         );
 
         return cancelledTrade;
