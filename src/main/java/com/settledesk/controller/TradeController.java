@@ -23,6 +23,8 @@ import com.settledesk.dto.UpdateTradeRequest;
 import org.springframework.web.bind.annotation.PutMapping;
 import com.settledesk.dto.UpdateTradeStatusRequest;
 import org.springframework.web.bind.annotation.PatchMapping;
+import java.util.List;
+import jakarta.validation.constraints.NotEmpty;
 
 @RestController
 @RequestMapping("/api/v1/trades")
@@ -66,6 +68,26 @@ public class TradeController {
                 tradeService.updateTradeStatus(tradeId, request);
 
         return ResponseEntity.ok(updatedTrade);
+    }
+
+    @PostMapping("/bulk")
+    public ResponseEntity<List<Trade>> createTrades(
+            @RequestBody
+            @NotEmpty(message = "At least one trade is required")
+            List<@Valid CreateTradeRequest> requests) {
+
+        List<Trade> trades = tradeService.createTrades(requests);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(trades);
+    }
+
+    @PostMapping("/{tradeId}/cancel")
+    public ResponseEntity<Trade> cancelTrade(
+            @PathVariable Long tradeId) {
+
+        Trade cancelledTrade = tradeService.cancelTrade(tradeId);
+
+        return ResponseEntity.ok(cancelledTrade);
     }
 
     @GetMapping

@@ -14,6 +14,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 import com.settledesk.dto.UpdateTradeStatusRequest;
+import java.util.List;
 
 @Service
 public class TradeService {
@@ -42,6 +43,23 @@ public class TradeService {
                         HttpStatus.NOT_FOUND,
                         "Trade not found with id: " + tradeId
                 ));
+    }
+
+    @Transactional
+    public List<Trade> createTrades(List<CreateTradeRequest> requests) {
+
+        List<Trade> trades = requests.stream()
+                .map(request -> Trade.builder()
+                        .instrument(request.getInstrument())
+                        .quantity(request.getQuantity())
+                        .price(request.getPrice())
+                        .buyer(request.getBuyer())
+                        .seller(request.getSeller())
+                        .status(TradeStatus.NEW)
+                        .build())
+                .toList();
+
+        return tradeRepository.saveAll(trades);
     }
 
     @Transactional
@@ -128,6 +146,28 @@ public class TradeService {
         }
 
         existingTrade.setStatus(newStatus);
+
+        return tradeRepository.save(existingTrade);
+    }
+
+    @Transactional
+    public Trade cancelTrade(Long tradeId) {
+
+        Trade existingTrade = getTradeByTradeId(tradeId);
+
+        TradeStatus currentStatus = existingTrade.getStatus();
+
+        if (!isValidStatusTransition(
+                currentStatus, TradeStatus.CANCELLED)) {
+
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Trade cannot be cancelled from status: "
+                            + currentStatus
+            );
+        }
+
+        existingTrade.setStatus(TradeStatus.CANCELLED);
 
         return tradeRepository.save(existingTrade);
     }
