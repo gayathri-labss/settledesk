@@ -49,14 +49,23 @@ public class TradeController {
             @RequestParam(required = false) String buyer,
             @RequestParam(defaultValue = "0") int page,
             @RequestParam(defaultValue = "10") int size,
-            @RequestParam(defaultValue = "id") String sortBy,
+            @RequestParam(defaultValue = "tradeId") String sortBy,
             @RequestParam(defaultValue = "asc") String direction) {
 
         Set<String> allowedSortFields = Set.of(
-                "id", "instrument", "buyer", "seller", "price", "quantity"
+                "tradeId", "instrument", "buyer", "seller", "price", "quantity"
         );
 
         if (!allowedSortFields.contains(sortBy)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!direction.equalsIgnoreCase("asc")
+                && !direction.equalsIgnoreCase("desc")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (page < 0 || size < 1 || size > 100) {
             return ResponseEntity.badRequest().build();
         }
 
