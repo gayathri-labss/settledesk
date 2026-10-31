@@ -20,21 +20,34 @@ import java.util.List;
 public class TradeService {
 
     private final TradeRepository tradeRepository;
+    private final TradeLifecycleService tradeLifecycleService;
 
-    public TradeService(TradeRepository tradeRepository) {
+    public TradeService(TradeRepository tradeRepository, TradeLifecycleService tradeLifecycleService) {
         this.tradeRepository = tradeRepository;
+        this.tradeLifecycleService = tradeLifecycleService;
     }
 
+    @Transactional
     public Trade createTrade(CreateTradeRequest request) {
 
-        return tradeRepository.save(Trade.builder()
+        Trade trade = Trade.builder()
                 .instrument(request.getInstrument())
                 .quantity(request.getQuantity())
                 .price(request.getPrice())
                 .buyer(request.getBuyer())
                 .seller(request.getSeller())
                 .status(TradeStatus.NEW)
-                .build());
+                .build();
+
+        Trade savedTrade = tradeRepository.save(trade);
+
+        tradeLifecycleService.recordStatusChange(
+                savedTrade,
+                null,
+                TradeStatus.NEW
+        );
+
+        return savedTrade;
     }
 
     public Trade getTradeByTradeId(Long tradeId) {
@@ -59,7 +72,17 @@ public class TradeService {
                         .build())
                 .toList();
 
-        return tradeRepository.saveAll(trades);
+        List<Trade> savedTrades = tradeRepository.saveAll(trades);
+
+        for (Trade trade : savedTrades) {
+            tradeLifecycleService.recordStatusChange(
+                    trade,
+                    null,
+                    TradeStatus.NEW
+            );
+        }
+
+        return savedTrades;
     }
 
     @Transactional
@@ -147,7 +170,15 @@ public class TradeService {
 
         existingTrade.setStatus(newStatus);
 
-        return tradeRepository.save(existingTrade);
+        Trade updatedTrade = tradeRepository.save(existingTrade);
+
+        tradeLifecycleService.recordStatusChange(
+                updatedTrade,
+                currentStatus,
+                newStatus
+        );
+
+        return updatedTrade;
     }
 
     @Transactional
