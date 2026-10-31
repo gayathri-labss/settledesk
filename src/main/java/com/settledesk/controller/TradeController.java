@@ -13,6 +13,12 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.domain.Sort;
+import org.springframework.web.bind.annotation.RequestParam;
+import java.util.Set;
 
 @RestController
 @RequestMapping("/api/v1/trades")
@@ -35,5 +41,43 @@ public class TradeController {
     public ResponseEntity<Trade> getTradeById(@PathVariable Long tradeId){
         Trade trade = tradeService.getTradeByTradeId(tradeId);
         return ResponseEntity.ok(trade);
+    }
+
+    @GetMapping
+    public ResponseEntity<Page<Trade>> searchTrades(
+            @RequestParam(required = false) String instrument,
+            @RequestParam(required = false) String buyer,
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size,
+            @RequestParam(defaultValue = "tradeId") String sortBy,
+            @RequestParam(defaultValue = "asc") String direction) {
+
+        Set<String> allowedSortFields = Set.of(
+                "tradeId", "instrument", "buyer", "seller", "price", "quantity"
+        );
+
+        if (!allowedSortFields.contains(sortBy)) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (!direction.equalsIgnoreCase("asc")
+                && !direction.equalsIgnoreCase("desc")) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        if (page < 0 || size < 1 || size > 100) {
+            return ResponseEntity.badRequest().build();
+        }
+
+        Sort sort = direction.equalsIgnoreCase("desc")
+                ? Sort.by(sortBy).descending()
+                : Sort.by(sortBy).ascending();
+
+        Pageable pageable = PageRequest.of(page, size, sort);
+
+        Page<Trade> trades =
+                tradeService.searchTrades(instrument, buyer, pageable);
+
+        return ResponseEntity.ok(trades);
     }
 }
