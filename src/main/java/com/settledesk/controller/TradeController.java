@@ -25,16 +25,23 @@ import com.settledesk.dto.UpdateTradeStatusRequest;
 import org.springframework.web.bind.annotation.PatchMapping;
 import java.util.List;
 import jakarta.validation.constraints.NotEmpty;
+import com.settledesk.service.TradeLifecycleService;
+import com.settledesk.model.TradeLifecycleEvent;
 
 @RestController
 @RequestMapping("/api/v1/trades")
 public class TradeController {
 
     private final TradeService tradeService;
+    private final TradeLifecycleService tradeLifecycleService;
 
     @Autowired
-    public TradeController (TradeService tradeService){
+    public TradeController(
+            TradeService tradeService,
+            TradeLifecycleService tradeLifecycleService) {
+
         this.tradeService = tradeService;
+        this.tradeLifecycleService = tradeLifecycleService;
     }
 
     @PostMapping
@@ -88,6 +95,16 @@ public class TradeController {
         Trade cancelledTrade = tradeService.cancelTrade(tradeId);
 
         return ResponseEntity.ok(cancelledTrade);
+    }
+
+    @GetMapping("/{tradeId}/lifecycle")
+    public ResponseEntity<List<TradeLifecycleEvent>> getTradeLifecycle(
+            @PathVariable Long tradeId) {
+
+        List<TradeLifecycleEvent> lifecycleEvents =
+                tradeLifecycleService.getTradeLifecycle(tradeId);
+
+        return ResponseEntity.ok(lifecycleEvents);
     }
 
     @GetMapping
