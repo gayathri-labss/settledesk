@@ -25,13 +25,16 @@ public class SettlementService {
 
     private final SettlementRepository settlementRepository;
     private final TradeService tradeService;
+    private final SettlementLifecycleService settlementLifecycleService;
 
     public SettlementService(
             SettlementRepository settlementRepository,
-            TradeService tradeService) {
+            TradeService tradeService,
+            SettlementLifecycleService settlementLifecycleService) {
 
         this.settlementRepository = settlementRepository;
         this.tradeService = tradeService;
+        this.settlementLifecycleService = settlementLifecycleService;
     }
 
     @Transactional
@@ -70,8 +73,16 @@ public class SettlementService {
                         .createdAt(LocalDateTime.now())
                         .build();
 
-        return settlementRepository.save(instruction);
-    }
+        SettlementInstruction savedInstruction =
+                settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                null,
+                SettlementStatus.CREATED
+        );
+
+        return savedInstruction;    }
 
     @Transactional(readOnly = true)
     public List<SettlementInstruction> getAllSettlements() {
