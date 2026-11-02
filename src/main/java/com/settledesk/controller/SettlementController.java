@@ -3,6 +3,7 @@ package com.settledesk.controller;
 import com.settledesk.dto.ConfirmSettlementRequest;
 import com.settledesk.dto.CreateSettlementRequest;
 import com.settledesk.model.SettlementInstruction;
+import com.settledesk.model.SettlementLifecycleEvent;
 import com.settledesk.service.SettlementService;
 
 import jakarta.validation.Valid;
@@ -82,5 +83,15 @@ public class SettlementController {
                 settlementService.retrySettlement(settlementId);
 
         return ResponseEntity.ok(instruction);
+    }
+
+    @GetMapping("/{settlementId}/status-history")
+    public ResponseEntity<List<SettlementLifecycleEvent>> getSettlementStatusHistory(
+            @PathVariable Long settlementId) {
+
+        List<SettlementLifecycleEvent> history =
+                settlementService.getSettlementStatusHistory(settlementId);
+
+        return ResponseEntity.ok(history);
     }
 }
