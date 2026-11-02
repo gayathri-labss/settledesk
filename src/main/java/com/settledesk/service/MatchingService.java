@@ -232,4 +232,17 @@ public class MatchingService {
                         "Matching run not found with ID: " + runId
                 ));
     }
+
+    @Transactional(readOnly = true)
+    public List<MatchingResult> getMatchingResultsByRunId(Long runId) {
+
+        matchingRunRepository.findById(runId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Matching run not found with ID: " + runId
+                ));
+
+        return matchingResultRepository
+                .findByMatchingRun_RunIdOrderByEvaluatedAtAsc(runId);
+    }
 }
