@@ -13,6 +13,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -66,5 +67,10 @@ public class SettlementService {
                         .build();
 
         return settlementRepository.save(instruction);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SettlementInstruction> getAllSettlements() {
+        return settlementRepository.findAll();
     }
 }
