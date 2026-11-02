@@ -68,4 +68,13 @@ public class MatchingController {
 
         return ResponseEntity.ok(exceptions);
     }
+
+    @PostMapping("/runs/{runId}/retry")
+    public ResponseEntity<MatchingRun> retryMatchingRun(
+            @PathVariable Long runId) {
+
+        MatchingRun retryRun = matchingService.retryMatchingRun(runId);
+
+        return ResponseEntity.status(HttpStatus.CREATED).body(retryRun);
+    }
 }

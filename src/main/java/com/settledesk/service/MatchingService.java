@@ -252,4 +252,32 @@ public class MatchingService {
         return matchingResultRepository
                 .findByOutcomeOrderByEvaluatedAtAsc(MatchingOutcome.UNMATCHED);
     }
+
+    @Transactional
+    public MatchingRun retryMatchingRun(Long runId) {
+
+        getMatchingRunById(runId);
+
+        List<MatchingResult> previousResults =
+                matchingResultRepository
+                        .findByMatchingRun_RunIdOrderByEvaluatedAtAsc(runId);
+
+        List<Long> eligibleTradeIds = previousResults.stream()
+                .filter(result -> result.getOutcome() == MatchingOutcome.UNMATCHED)
+                .filter(result -> result.getTrade().getStatus() == TradeStatus.NEW)
+                .map(result -> result.getTrade().getTradeId())
+                .toList();
+
+        if (eligibleTradeIds.isEmpty()) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "No eligible unmatched trades found for retry in run: " + runId
+            );
+        }
+
+        MatchingRunRequest retryRequest = new MatchingRunRequest();
+        retryRequest.setTradeIds(eligibleTradeIds);
+
+        return startMatchingRun(retryRequest);
+    }
 }
