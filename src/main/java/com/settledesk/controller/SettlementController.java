@@ -51,4 +51,14 @@ public class SettlementController {
 
         return ResponseEntity.ok(settlement);
     }
+
+    @PostMapping("/{settlementId}/submit")
+    public ResponseEntity<SettlementInstruction> submitSettlement(
+            @PathVariable Long settlementId) {
+
+        SettlementInstruction instruction =
+                settlementService.submitSettlement(settlementId);
+
+        return ResponseEntity.ok(instruction);
+    }
 }
