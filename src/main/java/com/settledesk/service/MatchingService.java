@@ -220,4 +220,8 @@ public class MatchingService {
                 && confirmationValue != null
                 && internalValue.compareTo(confirmationValue) == 0;
     }
+
+    public List<MatchingRun> getAllMatchingRuns() {
+        return matchingRunRepository.findAll();
+    }
 }
