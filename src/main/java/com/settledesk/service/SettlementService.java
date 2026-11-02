@@ -2,10 +2,7 @@ package com.settledesk.service;
 
 import com.settledesk.dto.CreateSettlementRequest;
 import com.settledesk.dto.UpdateTradeStatusRequest;
-import com.settledesk.model.SettlementInstruction;
-import com.settledesk.model.SettlementStatus;
-import com.settledesk.model.Trade;
-import com.settledesk.model.TradeStatus;
+import com.settledesk.model.*;
 import com.settledesk.repository.SettlementRepository;
 
 import org.springframework.stereotype.Service;
@@ -18,7 +15,6 @@ import java.util.List;
 import java.util.UUID;
 
 import com.settledesk.dto.ConfirmSettlementRequest;
-import com.settledesk.model.SettlementOutcome;
 
 @Service
 public class SettlementService {
@@ -236,5 +232,14 @@ public class SettlementService {
         );
 
         return savedInstruction;
+    }
+
+    @Transactional(readOnly = true)
+    public List<SettlementLifecycleEvent> getSettlementStatusHistory(
+            Long settlementId) {
+
+        getSettlementById(settlementId);
+
+        return settlementLifecycleService.getStatusHistory(settlementId);
     }
 }
