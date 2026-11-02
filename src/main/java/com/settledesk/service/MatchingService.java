@@ -245,4 +245,11 @@ public class MatchingService {
         return matchingResultRepository
                 .findByMatchingRun_RunIdOrderByEvaluatedAtAsc(runId);
     }
+
+    @Transactional(readOnly = true)
+    public List<MatchingResult> getMatchingExceptions() {
+
+        return matchingResultRepository
+                .findByOutcomeOrderByEvaluatedAtAsc(MatchingOutcome.UNMATCHED);
+    }
 }
