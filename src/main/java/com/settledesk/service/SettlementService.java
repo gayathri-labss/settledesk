@@ -73,4 +73,14 @@ public class SettlementService {
     public List<SettlementInstruction> getAllSettlements() {
         return settlementRepository.findAll();
     }
+
+    @Transactional(readOnly = true)
+    public SettlementInstruction getSettlementById(Long settlementId) {
+
+        return settlementRepository.findById(settlementId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Settlement not found with ID: " + settlementId
+                ));
+    }
 }
