@@ -174,4 +174,22 @@ public class SettlementService {
 
         return settlementRepository.save(instruction);
     }
+
+    @Transactional
+    public SettlementInstruction retrySettlement(Long settlementId) {
+
+        SettlementInstruction instruction =
+                getSettlementById(settlementId);
+
+        if (instruction.getStatus() != SettlementStatus.FAILED) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Only FAILED settlements can be retried"
+            );
+        }
+
+        instruction.setStatus(SettlementStatus.RETRY_PENDING);
+
+        return settlementRepository.save(instruction);
+    }
 }
