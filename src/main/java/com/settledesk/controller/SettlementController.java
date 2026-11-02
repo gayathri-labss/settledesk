@@ -1,0 +1,33 @@
+package com.settledesk.controller;
+
+import com.settledesk.dto.CreateSettlementRequest;
+import com.settledesk.model.SettlementInstruction;
+import com.settledesk.service.SettlementService;
+
+import jakarta.validation.Valid;
+
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.*;
+
+@RestController
+@RequestMapping("/api/v1/settlements")
+public class SettlementController {
+
+    private final SettlementService settlementService;
+
+    public SettlementController(SettlementService settlementService) {
+        this.settlementService = settlementService;
+    }
+
+    @PostMapping
+    public ResponseEntity<SettlementInstruction> createSettlement(
+            @Valid @RequestBody CreateSettlementRequest request) {
+
+        SettlementInstruction instruction =
+                settlementService.createSettlementInstruction(request);
+
+        return ResponseEntity.status(HttpStatus.CREATED)
+                .body(instruction);
+    }
+}
