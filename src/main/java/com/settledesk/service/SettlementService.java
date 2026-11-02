@@ -94,24 +94,27 @@ public class SettlementService {
         SettlementInstruction instruction =
                 getSettlementById(settlementId);
 
-        if (instruction.getStatus() != SettlementStatus.CREATED) {
+        if (instruction.getStatus() != SettlementStatus.CREATED
+                && instruction.getStatus() != SettlementStatus.RETRY_PENDING) {
+
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
-                    "Only CREATED settlements can be submitted"
+                    "Only CREATED or RETRY_PENDING settlements can be submitted"
             );
         }
 
-        Trade trade = instruction.getTrade();
+        if (instruction.getStatus() == SettlementStatus.CREATED) {
 
-        UpdateTradeStatusRequest statusRequest =
-                new UpdateTradeStatusRequest();
+            UpdateTradeStatusRequest statusRequest =
+                    new UpdateTradeStatusRequest();
 
-        statusRequest.setStatus(TradeStatus.SETTLEMENT_PENDING);
+            statusRequest.setStatus(TradeStatus.SETTLEMENT_PENDING);
 
-        tradeService.updateTradeStatus(
-                trade.getTradeId(),
-                statusRequest
-        );
+            tradeService.updateTradeStatus(
+                    instruction.getTrade().getTradeId(),
+                    statusRequest
+            );
+        }
 
         instruction.setStatus(SettlementStatus.SUBMITTED);
         instruction.setSubmittedAt(LocalDateTime.now());
