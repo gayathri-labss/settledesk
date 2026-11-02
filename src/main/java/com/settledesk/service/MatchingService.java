@@ -224,4 +224,12 @@ public class MatchingService {
     public List<MatchingRun> getAllMatchingRuns() {
         return matchingRunRepository.findAll();
     }
+
+    public MatchingRun getMatchingRunById(Long runId) {
+        return matchingRunRepository.findById(runId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Matching run not found with ID: " + runId
+                ));
+    }
 }
