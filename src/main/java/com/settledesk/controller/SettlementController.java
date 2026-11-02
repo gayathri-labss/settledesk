@@ -1,5 +1,6 @@
 package com.settledesk.controller;
 
+import com.settledesk.dto.ConfirmSettlementRequest;
 import com.settledesk.dto.CreateSettlementRequest;
 import com.settledesk.model.SettlementInstruction;
 import com.settledesk.service.SettlementService;
@@ -58,6 +59,17 @@ public class SettlementController {
 
         SettlementInstruction instruction =
                 settlementService.submitSettlement(settlementId);
+
+        return ResponseEntity.ok(instruction);
+    }
+
+    @PostMapping("/{settlementId}/confirm")
+    public ResponseEntity<SettlementInstruction> confirmSettlement(
+            @PathVariable Long settlementId,
+            @Valid @RequestBody ConfirmSettlementRequest request) {
+
+        SettlementInstruction instruction =
+                settlementService.confirmSettlement(settlementId, request);
 
         return ResponseEntity.ok(instruction);
     }
