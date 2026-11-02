@@ -39,4 +39,13 @@ public class MatchingController {
         List<MatchingRun> matchingRuns = matchingService.getAllMatchingRuns();
         return ResponseEntity.ok(matchingRuns);
     }
+
+    @GetMapping("/runs/{runId}")
+    public ResponseEntity<MatchingRun> getMatchingRunById(
+            @PathVariable Long runId) {
+
+        MatchingRun matchingRun = matchingService.getMatchingRunById(runId);
+
+        return ResponseEntity.ok(matchingRun);
+    }
 }
