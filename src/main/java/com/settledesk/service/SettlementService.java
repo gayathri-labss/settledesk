@@ -1,6 +1,7 @@
 package com.settledesk.service;
 
 import com.settledesk.dto.CreateSettlementRequest;
+import com.settledesk.dto.UpdateTradeStatusRequest;
 import com.settledesk.model.SettlementInstruction;
 import com.settledesk.model.SettlementStatus;
 import com.settledesk.model.Trade;
@@ -82,5 +83,36 @@ public class SettlementService {
                         HttpStatus.NOT_FOUND,
                         "Settlement not found with ID: " + settlementId
                 ));
+    }
+
+    @Transactional
+    public SettlementInstruction submitSettlement(Long settlementId) {
+
+        SettlementInstruction instruction =
+                getSettlementById(settlementId);
+
+        if (instruction.getStatus() != SettlementStatus.CREATED) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Only CREATED settlements can be submitted"
+            );
+        }
+
+        Trade trade = instruction.getTrade();
+
+        UpdateTradeStatusRequest statusRequest =
+                new UpdateTradeStatusRequest();
+
+        statusRequest.setStatus(TradeStatus.SETTLEMENT_PENDING);
+
+        tradeService.updateTradeStatus(
+                trade.getTradeId(),
+                statusRequest
+        );
+
+        instruction.setStatus(SettlementStatus.SUBMITTED);
+        instruction.setSubmittedAt(LocalDateTime.now());
+
+        return settlementRepository.save(instruction);
     }
 }
