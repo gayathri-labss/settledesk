@@ -41,4 +41,14 @@ public class SettlementController {
 
         return ResponseEntity.ok(settlements);
     }
+
+    @GetMapping("/{settlementId}")
+    public ResponseEntity<SettlementInstruction> getSettlementById(
+            @PathVariable Long settlementId) {
+
+        SettlementInstruction settlement =
+                settlementService.getSettlementById(settlementId);
+
+        return ResponseEntity.ok(settlement);
+    }
 }
