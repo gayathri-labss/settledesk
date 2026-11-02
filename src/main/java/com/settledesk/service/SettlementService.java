@@ -17,6 +17,9 @@ import java.time.LocalDateTime;
 import java.util.List;
 import java.util.UUID;
 
+import com.settledesk.dto.ConfirmSettlementRequest;
+import com.settledesk.model.SettlementOutcome;
+
 @Service
 public class SettlementService {
 
@@ -112,6 +115,62 @@ public class SettlementService {
 
         instruction.setStatus(SettlementStatus.SUBMITTED);
         instruction.setSubmittedAt(LocalDateTime.now());
+
+        return settlementRepository.save(instruction);
+    }
+
+    @Transactional
+    public SettlementInstruction confirmSettlement(
+            Long settlementId,
+            ConfirmSettlementRequest request) {
+
+        SettlementInstruction instruction =
+                getSettlementById(settlementId);
+
+        if (instruction.getStatus() != SettlementStatus.SUBMITTED) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Only SUBMITTED settlements can be confirmed"
+            );
+        }
+
+        SettlementOutcome outcome = request.getOutcome();
+
+        if (outcome == SettlementOutcome.SETTLED) {
+
+            instruction.setStatus(SettlementStatus.SETTLED);
+            instruction.setFailureReason(null);
+
+            UpdateTradeStatusRequest statusRequest =
+                    new UpdateTradeStatusRequest();
+
+            statusRequest.setStatus(TradeStatus.SETTLED);
+
+            tradeService.updateTradeStatus(
+                    instruction.getTrade().getTradeId(),
+                    statusRequest
+            );
+
+        } else {
+
+            if (request.getFailureReason() == null
+                    || request.getFailureReason().isBlank()) {
+                throw new ResponseStatusException(
+                        HttpStatus.BAD_REQUEST,
+                        "Failure reason is required for unsuccessful settlement"
+                );
+            }
+
+            instruction.setStatus(
+                    outcome == SettlementOutcome.FAILED
+                            ? SettlementStatus.FAILED
+                            : SettlementStatus.REJECTED
+            );
+
+            instruction.setFailureReason(request.getFailureReason());
+        }
+
+        instruction.setConfirmedAt(LocalDateTime.now());
 
         return settlementRepository.save(instruction);
     }
