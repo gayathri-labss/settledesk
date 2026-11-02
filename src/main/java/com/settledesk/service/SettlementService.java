@@ -276,4 +276,10 @@ public class SettlementService {
 
         return settlementLifecycleService.getStatusHistory(settlementId);
     }
+
+    @Transactional(readOnly = true)
+    public List<SettlementAuditEvent> getSettlementAuditHistory(Long settlementId) {
+        getSettlementById(settlementId);
+        return settlementAuditService.getSettlementAuditHistory(settlementId);
+    }
 }
