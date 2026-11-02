@@ -73,4 +73,14 @@ public class SettlementController {
 
         return ResponseEntity.ok(instruction);
     }
+
+    @PostMapping("/{settlementId}/retry")
+    public ResponseEntity<SettlementInstruction> retrySettlement(
+            @PathVariable Long settlementId) {
+
+        SettlementInstruction instruction =
+                settlementService.retrySettlement(settlementId);
+
+        return ResponseEntity.ok(instruction);
+    }
 }
