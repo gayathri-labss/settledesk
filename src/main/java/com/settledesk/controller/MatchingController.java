@@ -1,6 +1,7 @@
 package com.settledesk.controller;
 
 import com.settledesk.dto.MatchingRunRequest;
+import com.settledesk.model.MatchingResult;
 import com.settledesk.model.MatchingRun;
 import com.settledesk.service.MatchingService;
 
@@ -47,5 +48,15 @@ public class MatchingController {
         MatchingRun matchingRun = matchingService.getMatchingRunById(runId);
 
         return ResponseEntity.ok(matchingRun);
+    }
+
+    @GetMapping("/runs/{runId}/results")
+    public ResponseEntity<List<MatchingResult>> getMatchingResultsByRunId(
+            @PathVariable Long runId) {
+
+        List<MatchingResult> results =
+                matchingService.getMatchingResultsByRunId(runId);
+
+        return ResponseEntity.ok(results);
     }
 }
