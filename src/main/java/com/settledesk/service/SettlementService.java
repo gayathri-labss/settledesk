@@ -215,6 +215,8 @@ public class SettlementService {
         SettlementInstruction instruction =
                 getSettlementById(settlementId);
 
+        SettlementStatus previousStatus = instruction.getStatus();
+
         if (instruction.getStatus() != SettlementStatus.FAILED) {
             throw new ResponseStatusException(
                     HttpStatus.CONFLICT,
@@ -224,6 +226,15 @@ public class SettlementService {
 
         instruction.setStatus(SettlementStatus.RETRY_PENDING);
 
-        return settlementRepository.save(instruction);
+        SettlementInstruction savedInstruction =
+                settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                previousStatus,
+                SettlementStatus.RETRY_PENDING
+        );
+
+        return savedInstruction;
     }
 }
