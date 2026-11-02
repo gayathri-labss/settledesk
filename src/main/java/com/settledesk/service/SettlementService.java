@@ -105,6 +105,8 @@ public class SettlementService {
         SettlementInstruction instruction =
                 getSettlementById(settlementId);
 
+        SettlementStatus previousStatus = instruction.getStatus();
+
         if (instruction.getStatus() != SettlementStatus.CREATED
                 && instruction.getStatus() != SettlementStatus.RETRY_PENDING) {
 
@@ -130,7 +132,15 @@ public class SettlementService {
         instruction.setStatus(SettlementStatus.SUBMITTED);
         instruction.setSubmittedAt(LocalDateTime.now());
 
-        return settlementRepository.save(instruction);
+        SettlementInstruction savedInstruction = settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                previousStatus,
+                SettlementStatus.SUBMITTED
+        );
+
+        return savedInstruction;
     }
 
     @Transactional
@@ -140,6 +150,8 @@ public class SettlementService {
 
         SettlementInstruction instruction =
                 getSettlementById(settlementId);
+
+        SettlementStatus previousStatus = instruction.getStatus();
 
         if (instruction.getStatus() != SettlementStatus.SUBMITTED) {
             throw new ResponseStatusException(
@@ -186,8 +198,16 @@ public class SettlementService {
 
         instruction.setConfirmedAt(LocalDateTime.now());
 
-        return settlementRepository.save(instruction);
-    }
+        SettlementInstruction savedInstruction =
+                settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                previousStatus,
+                instruction.getStatus()
+        );
+
+        return savedInstruction;    }
 
     @Transactional
     public SettlementInstruction retrySettlement(Long settlementId) {
