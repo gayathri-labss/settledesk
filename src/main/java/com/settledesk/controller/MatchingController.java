@@ -59,4 +59,13 @@ public class MatchingController {
 
         return ResponseEntity.ok(results);
     }
+
+    @GetMapping("/exceptions")
+    public ResponseEntity<List<MatchingResult>> getMatchingExceptions() {
+
+        List<MatchingResult> exceptions =
+                matchingService.getMatchingExceptions();
+
+        return ResponseEntity.ok(exceptions);
+    }
 }
