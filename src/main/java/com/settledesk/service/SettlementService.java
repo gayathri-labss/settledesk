@@ -22,15 +22,18 @@ public class SettlementService {
     private final SettlementRepository settlementRepository;
     private final TradeService tradeService;
     private final SettlementLifecycleService settlementLifecycleService;
+    private final SettlementAuditService settlementAuditService;
 
     public SettlementService(
             SettlementRepository settlementRepository,
             TradeService tradeService,
-            SettlementLifecycleService settlementLifecycleService) {
+            SettlementLifecycleService settlementLifecycleService,
+            SettlementAuditService settlementAuditService) {
 
         this.settlementRepository = settlementRepository;
         this.tradeService = tradeService;
         this.settlementLifecycleService = settlementLifecycleService;
+        this.settlementAuditService = settlementAuditService;
     }
 
     @Transactional
@@ -76,6 +79,12 @@ public class SettlementService {
                 savedInstruction,
                 null,
                 SettlementStatus.CREATED
+        );
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.CREATE,
+                "Settlement instruction created"
         );
 
         return savedInstruction;    }
@@ -134,6 +143,12 @@ public class SettlementService {
                 savedInstruction,
                 previousStatus,
                 SettlementStatus.SUBMITTED
+        );
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.SUBMIT,
+                "Settlement instruction submitted from " + previousStatus
         );
 
         return savedInstruction;
@@ -203,6 +218,19 @@ public class SettlementService {
                 instruction.getStatus()
         );
 
+        String details = "Settlement outcome recorded: " + request.getOutcome();
+
+        if (request.getFailureReason() != null
+                && !request.getFailureReason().isBlank()) {
+            details += ". Reason: " + request.getFailureReason();
+        }
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.CONFIRM,
+                details
+        );
+
         return savedInstruction;    }
 
     @Transactional
@@ -229,6 +257,12 @@ public class SettlementService {
                 savedInstruction,
                 previousStatus,
                 SettlementStatus.RETRY_PENDING
+        );
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.RETRY,
+                "Settlement retry requested"
         );
 
         return savedInstruction;
