@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 public class SettlementLifecycleService {
@@ -35,5 +36,12 @@ public class SettlementLifecycleService {
                         .build();
 
         lifecycleRepository.save(event);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SettlementLifecycleEvent> getStatusHistory(Long settlementId) {
+
+        return lifecycleRepository
+                .findBySettlement_SettlementIdOrderByChangedAtAsc(settlementId);
     }
 }
