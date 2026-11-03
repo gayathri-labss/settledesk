@@ -32,4 +32,11 @@ public class ExternalSettlementRecordController {
     public ResponseEntity<List<ExternalSettlementRecord>> getAllExternalRecords() {
         return ResponseEntity.ok(service.getAllExternalRecords());
     }
+
+    @GetMapping("/external-records/{id}")
+    public ResponseEntity<ExternalSettlementRecord> getExternalRecordById(
+            @PathVariable Long id) {
+
+        return ResponseEntity.ok(service.getExternalRecordById(id));
+    }
 }
