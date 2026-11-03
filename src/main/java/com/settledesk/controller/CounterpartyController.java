@@ -86,4 +86,13 @@ public class CounterpartyController {
 
         return ResponseEntity.ok(counterparties);
     }
+
+    @GetMapping("/{counterpartyId}")
+    public ResponseEntity<CounterpartyResponse> getCounterpartyById(
+            @PathVariable Long counterpartyId) {
+
+        return ResponseEntity.ok(
+                counterpartyService.getCounterpartyById(counterpartyId)
+        );
+    }
 }
