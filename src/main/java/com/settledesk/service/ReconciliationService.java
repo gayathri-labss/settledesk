@@ -3,6 +3,7 @@ package com.settledesk.service;
 import com.settledesk.dto.ExternalSettlementInput;
 import com.settledesk.dto.StartReconciliationRequest;
 import com.settledesk.model.*;
+import com.settledesk.repository.ReconciliationBreakRepository;
 import com.settledesk.repository.ReconciliationResultRepository;
 import com.settledesk.repository.ReconciliationRunRepository;
 import com.settledesk.repository.SettlementRepository;
@@ -24,6 +25,7 @@ public class ReconciliationService {
     private final SettlementRepository settlementRepository;
     private final ReconciliationRunRepository runRepository;
     private final ReconciliationResultRepository resultRepository;
+    private final ReconciliationBreakRepository breakRepository;
 
     @Transactional
     public ReconciliationRun startReconciliation(
@@ -136,7 +138,29 @@ public class ReconciliationService {
             }
         }
 
-        resultRepository.saveAll(results);
+        List<ReconciliationResult> savedResults =
+                resultRepository.saveAll(results);
+
+        List<ReconciliationBreak> breaks = results.stream()
+                .filter(r -> r.getStatus() != ReconciliationResultStatus.MATCHED)
+                .map(r -> ReconciliationBreak.builder()
+                        .result(r)
+                        .category(switch (r.getStatus()) {
+                            case MISMATCHED -> BreakCategory.MISMATCH;
+                            case MISSING_EXTERNAL -> BreakCategory.MISSING_EXTERNAL;
+                            case MISSING_INTERNAL -> BreakCategory.MISSING_INTERNAL;
+                            default -> throw new IllegalStateException(
+                                    "Unexpected reconciliation status");
+                        })
+                        .status(BreakStatus.OPEN)
+                        .priority(BreakPriority.MEDIUM)
+                        .description(r.getMismatchDetails())
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build())
+                .toList();
+
+        breakRepository.saveAll(breaks);
 
         run.setMatchedCount(count(results, ReconciliationResultStatus.MATCHED));
         run.setMismatchedCount(count(results, ReconciliationResultStatus.MISMATCHED));
@@ -205,5 +229,29 @@ public class ReconciliationService {
         }
 
         return resultRepository.findByRun_RunId(runId);
+    }
+
+    private ReconciliationBreak createBreak(ReconciliationResult result) {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        BreakCategory category = switch (result.getStatus()) {
+            case MISMATCHED -> BreakCategory.MISMATCH;
+            case MISSING_EXTERNAL -> BreakCategory.MISSING_EXTERNAL;
+            case MISSING_INTERNAL -> BreakCategory.MISSING_INTERNAL;
+            case MATCHED -> throw new IllegalArgumentException(
+                    "Cannot create a break for a matched result"
+            );
+        };
+
+        return ReconciliationBreak.builder()
+                .result(result)
+                .category(category)
+                .status(BreakStatus.OPEN)
+                .priority(BreakPriority.MEDIUM)
+                .description(result.getMismatchDetails())
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
     }
 }
