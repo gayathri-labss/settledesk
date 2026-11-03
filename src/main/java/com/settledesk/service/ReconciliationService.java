@@ -193,4 +193,17 @@ public class ReconciliationService {
                         "Reconciliation run not found: " + runId
                 ));
     }
+
+    @Transactional(readOnly = true)
+    public List<ReconciliationResult> getReconciliationResults(Long runId) {
+
+        if (!runRepository.existsById(runId)) {
+            throw new ResponseStatusException(
+                    HttpStatus.NOT_FOUND,
+                    "Reconciliation run not found: " + runId
+            );
+        }
+
+        return resultRepository.findByRun_RunId(runId);
+    }
 }

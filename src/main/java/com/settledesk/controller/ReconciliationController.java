@@ -1,6 +1,7 @@
 package com.settledesk.controller;
 
 import com.settledesk.dto.StartReconciliationRequest;
+import com.settledesk.model.ReconciliationResult;
 import com.settledesk.model.ReconciliationRun;
 import com.settledesk.service.ReconciliationService;
 import jakarta.validation.Valid;
@@ -39,6 +40,15 @@ public class ReconciliationController {
 
         return ResponseEntity.ok(
                 reconciliationService.getReconciliationRun(runId)
+        );
+    }
+
+    @GetMapping("/runs/{runId}/results")
+    public ResponseEntity<List<ReconciliationResult>> getReconciliationResults(
+            @PathVariable Long runId) {
+
+        return ResponseEntity.ok(
+                reconciliationService.getReconciliationResults(runId)
         );
     }
 }
