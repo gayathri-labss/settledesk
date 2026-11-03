@@ -5,8 +5,10 @@ import com.settledesk.model.*;
 import com.settledesk.repository.ReconciliationBreakRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 @RequiredArgsConstructor
@@ -55,5 +57,18 @@ public class BreakService {
                 .updatedAt(b.getUpdatedAt())
                 .resolvedAt(b.getResolvedAt())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public BreakResponse getBreakById(Long breakId) {
+
+        ReconciliationBreak reconciliationBreak =
+                breakRepository.findById(breakId)
+                        .orElseThrow(() -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Break not found with ID: " + breakId
+                        ));
+
+        return toResponse(reconciliationBreak);
     }
 }
