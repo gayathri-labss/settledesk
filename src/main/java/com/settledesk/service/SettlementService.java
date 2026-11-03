@@ -2,10 +2,7 @@ package com.settledesk.service;
 
 import com.settledesk.dto.CreateSettlementRequest;
 import com.settledesk.dto.UpdateTradeStatusRequest;
-import com.settledesk.model.SettlementInstruction;
-import com.settledesk.model.SettlementStatus;
-import com.settledesk.model.Trade;
-import com.settledesk.model.TradeStatus;
+import com.settledesk.model.*;
 import com.settledesk.repository.SettlementRepository;
 
 import org.springframework.stereotype.Service;
@@ -18,20 +15,25 @@ import java.util.List;
 import java.util.UUID;
 
 import com.settledesk.dto.ConfirmSettlementRequest;
-import com.settledesk.model.SettlementOutcome;
 
 @Service
 public class SettlementService {
 
     private final SettlementRepository settlementRepository;
     private final TradeService tradeService;
+    private final SettlementLifecycleService settlementLifecycleService;
+    private final SettlementAuditService settlementAuditService;
 
     public SettlementService(
             SettlementRepository settlementRepository,
-            TradeService tradeService) {
+            TradeService tradeService,
+            SettlementLifecycleService settlementLifecycleService,
+            SettlementAuditService settlementAuditService) {
 
         this.settlementRepository = settlementRepository;
         this.tradeService = tradeService;
+        this.settlementLifecycleService = settlementLifecycleService;
+        this.settlementAuditService = settlementAuditService;
     }
 
     @Transactional
@@ -70,8 +72,22 @@ public class SettlementService {
                         .createdAt(LocalDateTime.now())
                         .build();
 
-        return settlementRepository.save(instruction);
-    }
+        SettlementInstruction savedInstruction =
+                settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                null,
+                SettlementStatus.CREATED
+        );
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.CREATE,
+                "Settlement instruction created"
+        );
+
+        return savedInstruction;    }
 
     @Transactional(readOnly = true)
     public List<SettlementInstruction> getAllSettlements() {
@@ -93,6 +109,8 @@ public class SettlementService {
 
         SettlementInstruction instruction =
                 getSettlementById(settlementId);
+
+        SettlementStatus previousStatus = instruction.getStatus();
 
         if (instruction.getStatus() != SettlementStatus.CREATED
                 && instruction.getStatus() != SettlementStatus.RETRY_PENDING) {
@@ -119,7 +137,21 @@ public class SettlementService {
         instruction.setStatus(SettlementStatus.SUBMITTED);
         instruction.setSubmittedAt(LocalDateTime.now());
 
-        return settlementRepository.save(instruction);
+        SettlementInstruction savedInstruction = settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                previousStatus,
+                SettlementStatus.SUBMITTED
+        );
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.SUBMIT,
+                "Settlement instruction submitted from " + previousStatus
+        );
+
+        return savedInstruction;
     }
 
     @Transactional
@@ -129,6 +161,8 @@ public class SettlementService {
 
         SettlementInstruction instruction =
                 getSettlementById(settlementId);
+
+        SettlementStatus previousStatus = instruction.getStatus();
 
         if (instruction.getStatus() != SettlementStatus.SUBMITTED) {
             throw new ResponseStatusException(
@@ -175,14 +209,37 @@ public class SettlementService {
 
         instruction.setConfirmedAt(LocalDateTime.now());
 
-        return settlementRepository.save(instruction);
-    }
+        SettlementInstruction savedInstruction =
+                settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                previousStatus,
+                instruction.getStatus()
+        );
+
+        String details = "Settlement outcome recorded: " + request.getOutcome();
+
+        if (request.getFailureReason() != null
+                && !request.getFailureReason().isBlank()) {
+            details += ". Reason: " + request.getFailureReason();
+        }
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.CONFIRM,
+                details
+        );
+
+        return savedInstruction;    }
 
     @Transactional
     public SettlementInstruction retrySettlement(Long settlementId) {
 
         SettlementInstruction instruction =
                 getSettlementById(settlementId);
+
+        SettlementStatus previousStatus = instruction.getStatus();
 
         if (instruction.getStatus() != SettlementStatus.FAILED) {
             throw new ResponseStatusException(
@@ -193,6 +250,36 @@ public class SettlementService {
 
         instruction.setStatus(SettlementStatus.RETRY_PENDING);
 
-        return settlementRepository.save(instruction);
+        SettlementInstruction savedInstruction =
+                settlementRepository.save(instruction);
+
+        settlementLifecycleService.recordStatusChange(
+                savedInstruction,
+                previousStatus,
+                SettlementStatus.RETRY_PENDING
+        );
+
+        settlementAuditService.recordAudit(
+                savedInstruction,
+                SettlementAuditAction.RETRY,
+                "Settlement retry requested"
+        );
+
+        return savedInstruction;
+    }
+
+    @Transactional(readOnly = true)
+    public List<SettlementLifecycleEvent> getSettlementStatusHistory(
+            Long settlementId) {
+
+        getSettlementById(settlementId);
+
+        return settlementLifecycleService.getStatusHistory(settlementId);
+    }
+
+    @Transactional(readOnly = true)
+    public List<SettlementAuditEvent> getSettlementAuditHistory(Long settlementId) {
+        getSettlementById(settlementId);
+        return settlementAuditService.getSettlementAuditHistory(settlementId);
     }
 }
