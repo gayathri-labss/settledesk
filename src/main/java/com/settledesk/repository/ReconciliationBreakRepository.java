@@ -5,7 +5,7 @@ import org.springframework.data.domain.*;
 import org.springframework.data.jpa.repository.*;
 import org.springframework.data.repository.query.Param;
 
-public interface BreakRepository extends JpaRepository<ReconciliationBreak, Long> {
+public interface ReconciliationBreakRepository extends JpaRepository<ReconciliationBreak, Long> {
 
     @Query("""
         SELECT b FROM ReconciliationBreak b

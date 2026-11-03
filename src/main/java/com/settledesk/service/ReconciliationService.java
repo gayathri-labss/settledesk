@@ -3,7 +3,7 @@ package com.settledesk.service;
 import com.settledesk.dto.ExternalSettlementInput;
 import com.settledesk.dto.StartReconciliationRequest;
 import com.settledesk.model.*;
-import com.settledesk.repository.BreakRepository;
+import com.settledesk.repository.ReconciliationBreakRepository;
 import com.settledesk.repository.ReconciliationResultRepository;
 import com.settledesk.repository.ReconciliationRunRepository;
 import com.settledesk.repository.SettlementRepository;
@@ -25,7 +25,7 @@ public class ReconciliationService {
     private final SettlementRepository settlementRepository;
     private final ReconciliationRunRepository runRepository;
     private final ReconciliationResultRepository resultRepository;
-    private final BreakRepository breakRepository;
+    private final ReconciliationBreakRepository breakRepository;
 
     @Transactional
     public ReconciliationRun startReconciliation(
@@ -138,7 +138,16 @@ public class ReconciliationService {
             }
         }
 
-        results = resultRepository.saveAll(results);
+        List<ReconciliationResult> savedResults =
+                resultRepository.saveAll(results);
+
+        List<ReconciliationBreak> breaks = savedResults.stream()
+                .filter(result -> result.getStatus()
+                        != ReconciliationResultStatus.MATCHED)
+                .map(this::createBreak)
+                .toList();
+
+        breakRepository.saveAll(breaks);
 
         List<ReconciliationBreak> breaks = results.stream()
                 .filter(r -> r.getStatus() != ReconciliationResultStatus.MATCHED)
@@ -228,5 +237,20 @@ public class ReconciliationService {
         }
 
         return resultRepository.findByRun_RunId(runId);
+    }
+
+    private ReconciliationBreak createBreak(ReconciliationResult result) {
+
+        LocalDateTime now = LocalDateTime.now();
+
+        return ReconciliationBreak.builder()
+                .result(result)
+                .category(BreakCategory.valueOf(result.getStatus().name()))
+                .status(BreakStatus.OPEN)
+                .priority(BreakPriority.MEDIUM)
+                .description(result.getMismatchDetails())
+                .createdAt(now)
+                .updatedAt(now)
+                .build();
     }
 }

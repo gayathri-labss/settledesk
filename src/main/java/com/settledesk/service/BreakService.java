@@ -2,7 +2,7 @@ package com.settledesk.service;
 
 import com.settledesk.dto.BreakResponse;
 import com.settledesk.model.*;
-import com.settledesk.repository.BreakRepository;
+import com.settledesk.repository.ReconciliationBreakRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.*;
 import org.springframework.stereotype.Service;
@@ -12,7 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class BreakService {
 
-    private final BreakRepository breakRepository;
+    private final ReconciliationBreakRepository breakRepository;
 
     @Transactional(readOnly = true)
     public Page<BreakResponse> searchBreaks(
