@@ -86,4 +86,14 @@ public class InstrumentController {
 
         return ResponseEntity.ok(instruments);
     }
+
+    @GetMapping("/{instrumentId}")
+    public ResponseEntity<InstrumentResponse> getInstrumentById(
+            @PathVariable Long instrumentId) {
+
+        InstrumentResponse instrument =
+                instrumentService.getInstrumentById(instrumentId);
+
+        return ResponseEntity.ok(instrument);
+    }
 }
