@@ -8,8 +8,10 @@ import com.settledesk.specification.InstrumentSpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class InstrumentService {
@@ -84,5 +86,17 @@ public class InstrumentService {
                 .isin(instrument.getIsin())
                 .active(instrument.isActive())
                 .build();
+    }
+
+    @Transactional(readOnly = true)
+    public InstrumentResponse getInstrumentById(Long instrumentId) {
+
+        Instrument instrument = instrumentRepository.findById(instrumentId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Instrument not found with ID: " + instrumentId
+                ));
+
+        return toResponse(instrument);
     }
 }
