@@ -16,7 +16,6 @@ import org.springframework.transaction.annotation.Transactional;
 import com.settledesk.dto.UpdateTradeStatusRequest;
 import java.util.List;
 import com.settledesk.model.TradeAuditAction;
-import com.settledesk.service.TradeAuditService;
 
 @Service
 public class TradeService {
