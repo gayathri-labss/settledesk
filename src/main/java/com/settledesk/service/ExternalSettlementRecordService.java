@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
 import java.time.LocalDateTime;
+import java.util.List;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +43,9 @@ public class ExternalSettlementRecordService {
                 .build();
 
         return repository.save(record);
+    }
+
+    public List<ExternalSettlementRecord> getAllExternalRecords() {
+        return repository.findAll();
     }
 }
