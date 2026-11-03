@@ -1,6 +1,7 @@
 package com.settledesk.controller;
 
 import com.settledesk.dto.BreakResponse;
+import com.settledesk.dto.ResolveBreakRequest;
 import com.settledesk.dto.UpdateBreakRequest;
 import com.settledesk.model.*;
 import com.settledesk.service.BreakService;
@@ -52,5 +53,16 @@ public class BreakController {
                 breakService.updateBreak(breakId, request);
 
         return ResponseEntity.ok(updatedBreak);
+    }
+
+    @PostMapping("/{breakId}/resolve")
+    public ResponseEntity<BreakResponse> resolveBreak(
+            @PathVariable Long breakId,
+            @Valid @RequestBody ResolveBreakRequest request) {
+
+        BreakResponse resolvedBreak =
+                breakService.resolveBreak(breakId, request);
+
+        return ResponseEntity.ok(resolvedBreak);
     }
 }
