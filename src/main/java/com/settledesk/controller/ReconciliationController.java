@@ -32,4 +32,13 @@ public class ReconciliationController {
                 reconciliationService.getAllReconciliationRuns()
         );
     }
+
+    @GetMapping("/runs/{runId}")
+    public ResponseEntity<ReconciliationRun> getReconciliationRun(
+            @PathVariable Long runId) {
+
+        return ResponseEntity.ok(
+                reconciliationService.getReconciliationRun(runId)
+        );
+    }
 }
