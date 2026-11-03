@@ -1,5 +1,6 @@
 package com.settledesk.service;
 
+import com.settledesk.dto.AssignBreakRequest;
 import com.settledesk.dto.BreakResponse;
 import com.settledesk.dto.ResolveBreakRequest;
 import com.settledesk.model.*;
@@ -145,6 +146,35 @@ public class BreakService {
         );
         reconciliationBreak.setResolvedAt(now);
         reconciliationBreak.setUpdatedAt(now);
+
+        ReconciliationBreak savedBreak =
+                breakRepository.save(reconciliationBreak);
+
+        return toResponse(savedBreak);
+    }
+
+    @Transactional
+    public BreakResponse assignBreak(
+            Long breakId,
+            AssignBreakRequest request) {
+
+        ReconciliationBreak reconciliationBreak =
+                breakRepository.findById(breakId)
+                        .orElseThrow(() -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Break not found with ID: " + breakId
+                        ));
+
+        if (reconciliationBreak.getStatus() == BreakStatus.RESOLVED) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Resolved breaks cannot be assigned"
+            );
+        }
+
+        reconciliationBreak.setAssignedTo(request.getAssignedTo());
+        reconciliationBreak.setStatus(BreakStatus.ASSIGNED);
+        reconciliationBreak.setUpdatedAt(LocalDateTime.now());
 
         ReconciliationBreak savedBreak =
                 breakRepository.save(reconciliationBreak);

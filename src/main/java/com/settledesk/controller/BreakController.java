@@ -1,5 +1,6 @@
 package com.settledesk.controller;
 
+import com.settledesk.dto.AssignBreakRequest;
 import com.settledesk.dto.BreakResponse;
 import com.settledesk.dto.ResolveBreakRequest;
 import com.settledesk.dto.UpdateBreakRequest;
@@ -64,5 +65,16 @@ public class BreakController {
                 breakService.resolveBreak(breakId, request);
 
         return ResponseEntity.ok(resolvedBreak);
+    }
+
+    @PostMapping("/{breakId}/assign")
+    public ResponseEntity<BreakResponse> assignBreak(
+            @PathVariable Long breakId,
+            @Valid @RequestBody AssignBreakRequest request) {
+
+        BreakResponse assignedBreak =
+                breakService.assignBreak(breakId, request);
+
+        return ResponseEntity.ok(assignedBreak);
     }
 }
