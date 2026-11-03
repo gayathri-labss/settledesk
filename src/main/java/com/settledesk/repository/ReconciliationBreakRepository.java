@@ -19,4 +19,8 @@ public interface ReconciliationBreakRepository extends JpaRepository<Reconciliat
             @Param("runId") Long runId,
             Pageable pageable
     );
+
+    long countByStatus(BreakStatus status);
+
+    long countByCategory(BreakCategory category);
 }
