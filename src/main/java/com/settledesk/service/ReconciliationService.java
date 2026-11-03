@@ -3,6 +3,7 @@ package com.settledesk.service;
 import com.settledesk.dto.ExternalSettlementInput;
 import com.settledesk.dto.StartReconciliationRequest;
 import com.settledesk.model.*;
+import com.settledesk.repository.BreakRepository;
 import com.settledesk.repository.ReconciliationResultRepository;
 import com.settledesk.repository.ReconciliationRunRepository;
 import com.settledesk.repository.SettlementRepository;
@@ -24,6 +25,7 @@ public class ReconciliationService {
     private final SettlementRepository settlementRepository;
     private final ReconciliationRunRepository runRepository;
     private final ReconciliationResultRepository resultRepository;
+    private final BreakRepository breakRepository;
 
     @Transactional
     public ReconciliationRun startReconciliation(
@@ -136,7 +138,28 @@ public class ReconciliationService {
             }
         }
 
-        resultRepository.saveAll(results);
+        results = resultRepository.saveAll(results);
+
+        List<ReconciliationBreak> breaks = results.stream()
+                .filter(r -> r.getStatus() != ReconciliationResultStatus.MATCHED)
+                .map(r -> ReconciliationBreak.builder()
+                        .result(r)
+                        .category(switch (r.getStatus()) {
+                            case MISMATCHED -> BreakCategory.MISMATCH;
+                            case MISSING_EXTERNAL -> BreakCategory.MISSING_EXTERNAL;
+                            case MISSING_INTERNAL -> BreakCategory.MISSING_INTERNAL;
+                            default -> throw new IllegalStateException(
+                                    "Unexpected reconciliation status");
+                        })
+                        .status(BreakStatus.OPEN)
+                        .priority(BreakPriority.MEDIUM)
+                        .description(r.getMismatchDetails())
+                        .createdAt(LocalDateTime.now())
+                        .updatedAt(LocalDateTime.now())
+                        .build())
+                .toList();
+
+        breakRepository.saveAll(breaks);
 
         run.setMatchedCount(count(results, ReconciliationResultStatus.MATCHED));
         run.setMismatchedCount(count(results, ReconciliationResultStatus.MISMATCHED));
