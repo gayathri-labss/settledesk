@@ -1,8 +1,10 @@
 package com.settledesk.controller;
 
 import com.settledesk.dto.BreakResponse;
+import com.settledesk.dto.UpdateBreakRequest;
 import com.settledesk.model.*;
 import com.settledesk.service.BreakService;
+import jakarta.validation.Valid;
 import jakarta.validation.constraints.*;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -39,5 +41,16 @@ public class BreakController {
         return ResponseEntity.ok(
                 breakService.getBreakById(breakId)
         );
+    }
+
+    @PatchMapping("/{breakId}")
+    public ResponseEntity<BreakResponse> updateBreak(
+            @PathVariable Long breakId,
+            @Valid @RequestBody UpdateBreakRequest request) {
+
+        BreakResponse updatedBreak =
+                breakService.updateBreak(breakId, request);
+
+        return ResponseEntity.ok(updatedBreak);
     }
 }
