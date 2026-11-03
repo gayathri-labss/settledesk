@@ -243,9 +243,18 @@ public class ReconciliationService {
 
         LocalDateTime now = LocalDateTime.now();
 
+        BreakCategory category = switch (result.getStatus()) {
+            case MISMATCHED -> BreakCategory.MISMATCH;
+            case MISSING_EXTERNAL -> BreakCategory.MISSING_EXTERNAL;
+            case MISSING_INTERNAL -> BreakCategory.MISSING_INTERNAL;
+            case MATCHED -> throw new IllegalArgumentException(
+                    "Cannot create a break for a matched result"
+            );
+        };
+
         return ReconciliationBreak.builder()
                 .result(result)
-                .category(BreakCategory.valueOf(result.getStatus().name()))
+                .category(category)
                 .status(BreakStatus.OPEN)
                 .priority(BreakPriority.MEDIUM)
                 .description(result.getMismatchDetails())
