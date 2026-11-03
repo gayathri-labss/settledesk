@@ -31,4 +31,13 @@ public class BreakController {
                         status, category, runId, page, size)
         );
     }
+
+    @GetMapping("/{breakId}")
+    public ResponseEntity<BreakResponse> getBreakById(
+            @PathVariable Long breakId) {
+
+        return ResponseEntity.ok(
+                breakService.getBreakById(breakId)
+        );
+    }
 }
