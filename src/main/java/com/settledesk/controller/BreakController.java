@@ -1,9 +1,6 @@
 package com.settledesk.controller;
 
-import com.settledesk.dto.AssignBreakRequest;
-import com.settledesk.dto.BreakResponse;
-import com.settledesk.dto.ResolveBreakRequest;
-import com.settledesk.dto.UpdateBreakRequest;
+import com.settledesk.dto.*;
 import com.settledesk.model.*;
 import com.settledesk.service.BreakService;
 import jakarta.validation.Valid;
@@ -76,5 +73,14 @@ public class BreakController {
                 breakService.assignBreak(breakId, request);
 
         return ResponseEntity.ok(assignedBreak);
+    }
+
+    @GetMapping("/summary")
+    public ResponseEntity<BreakSummaryResponse> getBreakSummary() {
+
+        BreakSummaryResponse summary =
+                breakService.getBreakSummary();
+
+        return ResponseEntity.ok(summary);
     }
 }
