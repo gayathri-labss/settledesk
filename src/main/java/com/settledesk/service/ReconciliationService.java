@@ -141,14 +141,6 @@ public class ReconciliationService {
         List<ReconciliationResult> savedResults =
                 resultRepository.saveAll(results);
 
-        List<ReconciliationBreak> breaks = savedResults.stream()
-                .filter(result -> result.getStatus()
-                        != ReconciliationResultStatus.MATCHED)
-                .map(this::createBreak)
-                .toList();
-
-        breakRepository.saveAll(breaks);
-
         List<ReconciliationBreak> breaks = results.stream()
                 .filter(r -> r.getStatus() != ReconciliationResultStatus.MATCHED)
                 .map(r -> ReconciliationBreak.builder()
