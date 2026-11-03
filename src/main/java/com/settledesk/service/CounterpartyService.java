@@ -8,8 +8,10 @@ import com.settledesk.specification.CounterpartySpecification;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
 import org.springframework.data.jpa.domain.Specification;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.server.ResponseStatusException;
 
 @Service
 public class CounterpartyService {
@@ -84,5 +86,16 @@ public class CounterpartyService {
                 .country(counterparty.getCountry())
                 .active(counterparty.isActive())
                 .build();
+    }
+
+    public CounterpartyResponse getCounterpartyById(Long counterpartyId) {
+
+        Counterparty counterparty = counterpartyRepository.findById(counterpartyId)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "Counterparty not found with ID: " + counterpartyId
+                ));
+
+        return toResponse(counterparty);
     }
 }
