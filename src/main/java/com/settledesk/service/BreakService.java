@@ -9,6 +9,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
+import com.settledesk.dto.UpdateBreakRequest;
 
 @Service
 @RequiredArgsConstructor
@@ -70,5 +71,46 @@ public class BreakService {
                         ));
 
         return toResponse(reconciliationBreak);
+    }
+
+    @Transactional
+    public BreakResponse updateBreak(
+            Long breakId,
+            UpdateBreakRequest request) {
+
+        ReconciliationBreak reconciliationBreak =
+                breakRepository.findById(breakId)
+                        .orElseThrow(() -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Break not found with ID: " + breakId
+                        ));
+
+        if (request.getPriority() == null
+                && request.getDescription() == null) {
+            throw new ResponseStatusException(
+                    HttpStatus.BAD_REQUEST,
+                    "At least one field must be provided for update"
+            );
+        }
+
+        if (reconciliationBreak.getStatus() == BreakStatus.RESOLVED) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Resolved breaks cannot be updated"
+            );
+        }
+
+        if (request.getPriority() != null) {
+            reconciliationBreak.setPriority(request.getPriority());
+        }
+
+        if (request.getDescription() != null) {
+            reconciliationBreak.setDescription(request.getDescription());
+        }
+
+        ReconciliationBreak updatedBreak =
+                breakRepository.save(reconciliationBreak);
+
+        return toResponse(updatedBreak);
     }
 }
