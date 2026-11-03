@@ -1,6 +1,7 @@
 package com.settledesk.service;
 
 import com.settledesk.dto.BreakResponse;
+import com.settledesk.dto.ResolveBreakRequest;
 import com.settledesk.model.*;
 import com.settledesk.repository.ReconciliationBreakRepository;
 import lombok.RequiredArgsConstructor;
@@ -10,6 +11,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
 import com.settledesk.dto.UpdateBreakRequest;
+
+import java.time.LocalDateTime;
 
 @Service
 @RequiredArgsConstructor
@@ -113,4 +116,40 @@ public class BreakService {
 
         return toResponse(updatedBreak);
     }
+
+
+    @Transactional
+    public BreakResponse resolveBreak(
+            Long breakId,
+            ResolveBreakRequest request) {
+
+        ReconciliationBreak reconciliationBreak =
+                breakRepository.findById(breakId)
+                        .orElseThrow(() -> new ResponseStatusException(
+                                HttpStatus.NOT_FOUND,
+                                "Break not found with ID: " + breakId
+                        ));
+
+        if (reconciliationBreak.getStatus() == BreakStatus.RESOLVED) {
+            throw new ResponseStatusException(
+                    HttpStatus.CONFLICT,
+                    "Break is already resolved"
+            );
+        }
+
+        LocalDateTime now = LocalDateTime.now();
+
+        reconciliationBreak.setStatus(BreakStatus.RESOLVED);
+        reconciliationBreak.setResolutionNotes(
+                request.getResolutionNotes()
+        );
+        reconciliationBreak.setResolvedAt(now);
+        reconciliationBreak.setUpdatedAt(now);
+
+        ReconciliationBreak savedBreak =
+                breakRepository.save(reconciliationBreak);
+
+        return toResponse(savedBreak);
+    }
+
 }
