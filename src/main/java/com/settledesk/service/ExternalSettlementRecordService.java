@@ -48,4 +48,12 @@ public class ExternalSettlementRecordService {
     public List<ExternalSettlementRecord> getAllExternalRecords() {
         return repository.findAll();
     }
+
+    public ExternalSettlementRecord getExternalRecordById(Long id) {
+        return repository.findById(id)
+                .orElseThrow(() -> new ResponseStatusException(
+                        HttpStatus.NOT_FOUND,
+                        "External settlement record not found"
+                ));
+    }
 }
