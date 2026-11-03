@@ -1,8 +1,6 @@
 package com.settledesk.service;
 
-import com.settledesk.dto.AssignBreakRequest;
-import com.settledesk.dto.BreakResponse;
-import com.settledesk.dto.ResolveBreakRequest;
+import com.settledesk.dto.*;
 import com.settledesk.model.*;
 import com.settledesk.repository.ReconciliationBreakRepository;
 import lombok.RequiredArgsConstructor;
@@ -11,7 +9,6 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.server.ResponseStatusException;
-import com.settledesk.dto.UpdateBreakRequest;
 
 import java.time.LocalDateTime;
 
@@ -180,6 +177,40 @@ public class BreakService {
                 breakRepository.save(reconciliationBreak);
 
         return toResponse(savedBreak);
+    }
+
+    @Transactional(readOnly = true)
+    public BreakSummaryResponse getBreakSummary() {
+
+        BreakSummaryResponse summary = new BreakSummaryResponse();
+
+        summary.setTotalBreaks(breakRepository.count());
+
+        summary.setOpenCount(
+                breakRepository.countByStatus(BreakStatus.OPEN)
+        );
+
+        summary.setAssignedCount(
+                breakRepository.countByStatus(BreakStatus.ASSIGNED)
+        );
+
+        summary.setResolvedCount(
+                breakRepository.countByStatus(BreakStatus.RESOLVED)
+        );
+
+        summary.setMismatchCount(
+                breakRepository.countByCategory(BreakCategory.MISMATCH)
+        );
+
+        summary.setMissingExternalCount(
+                breakRepository.countByCategory(BreakCategory.MISSING_EXTERNAL)
+        );
+
+        summary.setMissingInternalCount(
+                breakRepository.countByCategory(BreakCategory.MISSING_INTERNAL)
+        );
+
+        return summary;
     }
 
 }
