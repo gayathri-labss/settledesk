@@ -6,7 +6,7 @@ import com.settledesk.model.*;
 import com.settledesk.repository.ReconciliationResultRepository;
 import com.settledesk.repository.ReconciliationRunRepository;
 import com.settledesk.repository.SettlementRepository;
-import jakarta.transaction.Transactional;
+import org.springframework.transaction.annotation.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
@@ -147,6 +147,11 @@ public class ReconciliationService {
         run.setCompletedAt(LocalDateTime.now());
 
         return runRepository.save(run);
+    }
+
+    @Transactional(readOnly = true)
+    public List<ReconciliationRun> getAllReconciliationRuns() {
+        return runRepository.findAll();
     }
 
     private ReconciliationResult buildResult(
