@@ -677,21 +677,6 @@ Our local development setup uses:
 
 Kafka is running in KRaft mode, so a separate ZooKeeper installation is not required.
 
-### Planned Kafka Implementation Steps
-
-1. Add Spring Kafka dependency to `pom.xml`.
-2. Configure the Kafka broker connection.
-3. Create Kafka topics.
-4. Implement the Trade Event Producer.
-5. Implement the Trade Event Consumer.
-6. Publish `TradeCreated`.
-7. Consume the event in Matching Service.
-8. Implement settlement events.
-9. Add retry and error handling.
-10. Implement the Transactional Outbox Pattern.
-11. Add idempotent consumer processing.
-12. Write Kafka integration tests.
-
 ## 13. Quick Revision – Kafka Glossary
 
 | Term | Meaning |
@@ -730,4 +715,3 @@ Kafka is running in KRaft mode, so a separate ZooKeeper installation is not requ
 
 ---
 
-**Learning status:** Kafka fundamentals covered at a high level. Advanced concepts and practical implementation will be learned progressively while developing SettleDesk.
