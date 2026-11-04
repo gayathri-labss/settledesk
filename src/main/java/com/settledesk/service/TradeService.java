@@ -2,6 +2,7 @@ package com.settledesk.service;
 
 import com.settledesk.dto.CreateTradeRequest;
 import com.settledesk.dto.UpdateTradeRequest;
+import com.settledesk.event.TradeCreatedEvent;
 import com.settledesk.model.Trade;
 import com.settledesk.model.TradeStatus;
 import org.springframework.stereotype.Service;
@@ -14,7 +15,11 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 import com.settledesk.dto.UpdateTradeStatusRequest;
+
+import java.time.Instant;
 import java.util.List;
+import java.util.UUID;
+
 import com.settledesk.model.TradeAuditAction;
 
 @Service
@@ -23,15 +28,18 @@ public class TradeService {
     private final TradeRepository tradeRepository;
     private final TradeLifecycleService tradeLifecycleService;
     private final TradeAuditService tradeAuditService;
+    private final OutboxService outboxService;
 
     public TradeService(
             TradeRepository tradeRepository,
             TradeLifecycleService tradeLifecycleService,
-            TradeAuditService tradeAuditService) {
+            TradeAuditService tradeAuditService,
+            OutboxService outboxService) {
 
         this.tradeRepository = tradeRepository;
         this.tradeLifecycleService = tradeLifecycleService;
         this.tradeAuditService = tradeAuditService;
+        this.outboxService = outboxService;
     }
 
     @Transactional
@@ -47,6 +55,20 @@ public class TradeService {
                 .build();
 
         Trade savedTrade = tradeRepository.save(trade);
+
+        TradeCreatedEvent event = new TradeCreatedEvent(
+                UUID.randomUUID(),
+                savedTrade.getTradeId(),
+                savedTrade.getInstrument(),
+                savedTrade.getQuantity(),
+                savedTrade.getPrice(),
+                savedTrade.getBuyer(),
+                savedTrade.getSeller(),
+                savedTrade.getStatus().name(),
+                Instant.now()
+        );
+
+        outboxService.saveTradeCreatedEvent(event);
 
         tradeLifecycleService.recordStatusChange(
                 savedTrade,
