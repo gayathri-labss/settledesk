@@ -4,7 +4,10 @@ import com.settledesk.event.TradeCreatedEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+
+import java.util.concurrent.CompletableFuture;
 
 @Service
 public class TradeEventProducer {
@@ -21,11 +24,12 @@ public class TradeEventProducer {
         this.kafkaTemplate = kafkaTemplate;
     }
 
-    public void publishTradeCreated(TradeCreatedEvent event) {
+    public CompletableFuture<SendResult<String, TradeCreatedEvent>>
+    publishTradeCreated(TradeCreatedEvent event) {
 
         String key = event.tradeId().toString();
 
-        kafkaTemplate.send(TOPIC, key, event)
+        return kafkaTemplate.send(TOPIC, key, event)
                 .whenComplete((result, exception) -> {
 
                     if (exception != null) {
