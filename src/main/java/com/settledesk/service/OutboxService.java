@@ -1,5 +1,7 @@
 package com.settledesk.service;
 
+import com.settledesk.event.BusinessEvent;
+import com.settledesk.event.TradeConfirmedEvent;
 import com.settledesk.event.TradeCreatedEvent;
 import com.settledesk.model.OutboxEvent;
 import com.settledesk.model.OutboxStatus;
@@ -9,6 +11,7 @@ import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.json.JsonMapper;
 
 import java.time.Instant;
+import java.util.UUID;
 
 @Service
 public class OutboxService {
@@ -24,18 +27,50 @@ public class OutboxService {
     }
 
     @Transactional
-    public OutboxEvent saveTradeCreatedEvent(TradeCreatedEvent event) {
+    public OutboxEvent saveBusinessEvent(BusinessEvent event) {
 
         OutboxEvent outboxEvent = OutboxEvent.builder()
                 .eventId(event.eventId())
-                .aggregateType("TRADE")
-                .aggregateId(event.tradeId().toString())
-                .eventType("TradeCreated")
+                .aggregateType(event.aggregateType())
+                .aggregateId(event.aggregateId())
+                .eventType(event.eventType())
                 .payload(jsonMapper.writeValueAsString(event))
                 .status(OutboxStatus.PENDING)
                 .createdAt(Instant.now())
                 .build();
 
         return outboxEventRepository.save(outboxEvent);
+    }
+
+    @Transactional
+    public OutboxEvent saveTradeCreatedEvent(TradeCreatedEvent event) {
+
+        BusinessEvent businessEvent = new BusinessEvent(
+                UUID.randomUUID(),
+                "TradeCreated",
+                "TRADE",
+                event.tradeId().toString(),
+                Instant.now(),
+                1,
+                jsonMapper.valueToTree(event)
+        );
+
+        return saveBusinessEvent(businessEvent);
+    }
+
+    @Transactional
+    public OutboxEvent saveTradeConfirmedEvent(TradeConfirmedEvent event) {
+
+        BusinessEvent businessEvent = new BusinessEvent(
+                UUID.randomUUID(),
+                "TradeConfirmed",
+                "TRADE",
+                event.tradeId().toString(),
+                Instant.now(),
+                1,
+                jsonMapper.valueToTree(event)
+        );
+
+        return saveBusinessEvent(businessEvent);
     }
 }

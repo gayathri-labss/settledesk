@@ -1,6 +1,7 @@
+
 package com.settledesk.messaging;
 
-import com.settledesk.event.TradeCreatedEvent;
+import com.settledesk.event.BusinessEvent;
 import com.settledesk.model.OutboxEvent;
 import com.settledesk.model.OutboxStatus;
 import com.settledesk.repository.OutboxEventRepository;
@@ -33,7 +34,6 @@ public class OutboxPublisher {
             OutboxEventRepository outboxEventRepository,
             TradeEventProducer tradeEventProducer,
             JsonMapper jsonMapper) {
-
         this.outboxEventRepository = outboxEventRepository;
         this.tradeEventProducer = tradeEventProducer;
         this.jsonMapper = jsonMapper;
@@ -56,14 +56,13 @@ public class OutboxPublisher {
             }
 
             try {
-                TradeCreatedEvent event = jsonMapper.readValue(
+                BusinessEvent event = jsonMapper.readValue(
                         outboxEvent.getPayload(),
-                        TradeCreatedEvent.class
+                        BusinessEvent.class
                 );
 
-                tradeEventProducer.publishTradeCreated(event)
+                tradeEventProducer.publishBusinessEvent(event)
                         .whenComplete((result, exception) -> {
-
                             try {
                                 if (exception != null) {
                                     log.error(
@@ -74,12 +73,8 @@ public class OutboxPublisher {
                                     return;
                                 }
 
-                                outboxEvent.setStatus(
-                                        OutboxStatus.PUBLISHED
-                                );
-
+                                outboxEvent.setStatus(OutboxStatus.PUBLISHED);
                                 outboxEvent.setPublishedAt(Instant.now());
-
                                 outboxEventRepository.save(outboxEvent);
 
                                 log.info(
@@ -100,12 +95,7 @@ public class OutboxPublisher {
 
             } catch (Exception e) {
                 eventsInProgress.remove(eventId);
-
-                log.error(
-                        "Failed to read Outbox event: {}",
-                        eventId,
-                        e
-                );
+                log.error("Failed to read Outbox event: {}", eventId, e);
             }
         }
     }

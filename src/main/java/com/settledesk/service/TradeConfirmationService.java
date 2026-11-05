@@ -1,5 +1,6 @@
 package com.settledesk.service;
 
+import com.settledesk.event.TradeConfirmedEvent;
 import com.settledesk.repository.TradeConfirmationRepository;
 import com.settledesk.repository.TradeRepository;
 import org.springframework.stereotype.Service;
@@ -16,13 +17,15 @@ public class TradeConfirmationService {
 
     private final TradeConfirmationRepository tradeConfirmationRepository;
     private final TradeRepository tradeRepository;
+    private final OutboxService outboxService;
 
     public TradeConfirmationService(
             TradeConfirmationRepository tradeConfirmationRepository,
-            TradeRepository tradeRepository) {
+            TradeRepository tradeRepository, OutboxService outboxService) {
 
         this.tradeConfirmationRepository = tradeConfirmationRepository;
         this.tradeRepository = tradeRepository;
+        this.outboxService =  outboxService;
     }
 
     @Transactional
@@ -54,8 +57,24 @@ public class TradeConfirmationService {
                 .receivedAt(LocalDateTime.now())
                 .build();
 
-        return tradeConfirmationRepository.save(confirmation);
-    }
+        TradeConfirmation savedConfirmation =
+                tradeConfirmationRepository.save(confirmation);
+
+        TradeConfirmedEvent event = new TradeConfirmedEvent(
+                savedConfirmation.getConfirmationId(),
+                trade.getTradeId(),
+                savedConfirmation.getCounterpartyReference(),
+                savedConfirmation.getInstrument(),
+                savedConfirmation.getQuantity(),
+                savedConfirmation.getPrice(),
+                savedConfirmation.getBuyer(),
+                savedConfirmation.getSeller(),
+                savedConfirmation.getReceivedAt()
+        );
+
+        outboxService.saveTradeConfirmedEvent(event);
+
+        return savedConfirmation;    }
 
     @Transactional(readOnly = true)
     public TradeConfirmation getConfirmationByTradeId(Long tradeId) {
