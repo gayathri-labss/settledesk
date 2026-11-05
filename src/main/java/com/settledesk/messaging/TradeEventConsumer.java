@@ -1,6 +1,8 @@
+
 package com.settledesk.messaging;
 
 import com.settledesk.event.TradeCreatedEvent;
+import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
@@ -12,17 +14,42 @@ public class TradeEventConsumer {
     private static final Logger log =
             LoggerFactory.getLogger(TradeEventConsumer.class);
 
-    @KafkaListener(topics = "trade-events")
+    private final ProcessedEventService processedEventService;
+
+    public TradeEventConsumer(ProcessedEventService processedEventService) {
+        this.processedEventService = processedEventService;
+    }
+
+    @KafkaListener(topics = "trade-events", containerFactory = "kafkaListenerContainerFactory"
+    )
     public void consumeTradeCreated(TradeCreatedEvent event) {
 
+        if (event == null) {
+            throw new IllegalArgumentException(
+                    "Received null TradeCreatedEvent"
+            );
+        }
+
+        if (event.eventId() == null) {
+            throw new IllegalArgumentException(
+                    "TradeCreatedEvent eventId cannot be null"
+            );
+        }
+
+        boolean isNew = processedEventService.markProcessedIfNew(event.eventId());
+
+        if (!isNew) {
+            log.info(
+                    "Duplicate TradeCreatedEvent skipped: eventId={}",
+                    event.eventId()
+            );
+            return;
+        }
+
         log.info(
-                "Received TradeCreatedEvent: eventId={}, tradeId={}, instrument={}, quantity={}, price={}, status={}",
+                "TradeCreatedEvent receipt recorded: eventId={}, tradeId={}",
                 event.eventId(),
-                event.tradeId(),
-                event.instrument(),
-                event.quantity(),
-                event.price(),
-                event.status()
+                event.tradeId()
         );
     }
 }
