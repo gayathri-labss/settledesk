@@ -20,11 +20,21 @@ public class TradeEventConsumer {
         this.processedEventService = processedEventService;
     }
 
-    @KafkaListener(topics = "trade-events")
+    @KafkaListener(topics = "trade-events", containerFactory = "kafkaListenerContainerFactory"
+    )
     public void consumeTradeCreated(TradeCreatedEvent event) {
 
-        boolean isNew = processedEventService
-                .markProcessedIfNew(event.eventId());
+        if (event == null) {
+            log.error("Received null TradeCreatedEvent. Skipping event.");
+            return;
+        }
+
+        if (event.eventId() == null) {
+            log.error("Received TradeCreatedEvent with null eventId. Skipping event.");
+            return;
+        }
+
+        boolean isNew = processedEventService.markProcessedIfNew(event.eventId());
 
         if (!isNew) {
             log.info(
