@@ -6,6 +6,7 @@ import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -16,8 +17,6 @@ import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.core.ProducerFactory;
 import org.springframework.kafka.listener.DeadLetterPublishingRecoverer;
 import org.springframework.kafka.listener.DefaultErrorHandler;
-import org.springframework.kafka.support.serializer.DelegatingByTypeSerializer;
-import org.springframework.kafka.support.serializer.JacksonJsonSerializer;
 import org.springframework.util.backoff.FixedBackOff;
 
 import java.util.LinkedHashMap;
@@ -30,7 +29,7 @@ public class KafkaConfig {
     private String bootstrapServers;
 
     @Bean
-    public ProducerFactory<String, Object> dltProducerFactory() {
+    public ProducerFactory<String, byte[]> dltBytesProducerFactory() {
 
         Map<String, Object> properties = new LinkedHashMap<>();
 
@@ -45,30 +44,37 @@ public class KafkaConfig {
         return new DefaultKafkaProducerFactory<>(
                 properties,
                 new StringSerializer(),
-                new DelegatingByTypeSerializer(
-                        Map.of(
-                                byte[].class, new ByteArraySerializer(),
-                                TradeCreatedEvent.class,
-                                new JacksonJsonSerializer<Object>()
-                        )
-                )
+                new ByteArraySerializer()
         );
     }
 
     @Bean
-    public KafkaTemplate<String, Object> dltKafkaTemplate(
-            ProducerFactory<String, Object> dltProducerFactory) {
+    public KafkaTemplate<String, byte[]> dltBytesKafkaTemplate(
+            ProducerFactory<String, byte[]> dltBytesProducerFactory) {
 
-        return new KafkaTemplate<>(dltProducerFactory);
+        return new KafkaTemplate<>(dltBytesProducerFactory);
     }
 
     @Bean
     public DefaultErrorHandler kafkaErrorHandler(
-            KafkaTemplate<String, Object> dltKafkaTemplate) {
+            @Qualifier("kafkaTemplate")
+            KafkaTemplate<String, TradeCreatedEvent> eventKafkaTemplate,
+
+            @Qualifier("dltBytesKafkaTemplate")
+            KafkaTemplate<String, byte[]> bytesKafkaTemplate) {
 
         DeadLetterPublishingRecoverer recoverer =
                 new DeadLetterPublishingRecoverer(
-                        dltKafkaTemplate,
+                        producerRecord -> {
+                            Object value = producerRecord.value();
+
+                            if (value == null || value instanceof byte[]) {
+                                return bytesKafkaTemplate;
+                            }
+
+                            return eventKafkaTemplate;
+                        },
+                        false,
                         (record, exception) ->
                                 new TopicPartition(
                                         record.topic() + ".DLT",
@@ -76,10 +82,17 @@ public class KafkaConfig {
                                 )
                 );
 
-        return new DefaultErrorHandler(
-                recoverer,
-                new FixedBackOff(1000L, 2L)
+        DefaultErrorHandler errorHandler =
+                new DefaultErrorHandler(
+                        recoverer,
+                        new FixedBackOff(1000L, 2L)
+                );
+
+        errorHandler.addNotRetryableExceptions(
+                IllegalArgumentException.class
         );
+
+        return errorHandler;
     }
 
     @Bean
