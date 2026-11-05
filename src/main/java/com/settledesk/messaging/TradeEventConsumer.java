@@ -1,7 +1,7 @@
 
 package com.settledesk.messaging;
 
-import com.settledesk.event.TradeCreatedEvent;
+import com.settledesk.event.BusinessEvent;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -20,36 +20,48 @@ public class TradeEventConsumer {
         this.processedEventService = processedEventService;
     }
 
-    @KafkaListener(topics = "trade-events", containerFactory = "kafkaListenerContainerFactory"
+    @KafkaListener(
+            topics = "trade-events",
+            containerFactory = "kafkaListenerContainerFactory"
     )
-    public void consumeTradeCreated(TradeCreatedEvent event) {
+    public void consumeBusinessEvent(BusinessEvent event) {
 
         if (event == null) {
             throw new IllegalArgumentException(
-                    "Received null TradeCreatedEvent"
+                    "Received null BusinessEvent"
             );
         }
 
         if (event.eventId() == null) {
             throw new IllegalArgumentException(
-                    "TradeCreatedEvent eventId cannot be null"
+                    "BusinessEvent eventId cannot be null"
             );
         }
 
-        boolean isNew = processedEventService.markProcessedIfNew(event.eventId());
+        if (event.eventType() == null || event.aggregateId() == null) {
+            throw new IllegalArgumentException(
+                    "BusinessEvent eventType and aggregateId cannot be null"
+            );
+        }
+
+        boolean isNew =
+                processedEventService.markProcessedIfNew(event.eventId());
 
         if (!isNew) {
             log.info(
-                    "Duplicate TradeCreatedEvent skipped: eventId={}",
-                    event.eventId()
+                    "Duplicate business event skipped: eventId={}, eventType={}",
+                    event.eventId(),
+                    event.eventType()
             );
             return;
         }
 
         log.info(
-                "TradeCreatedEvent receipt recorded: eventId={}, tradeId={}",
+                "Business event received: eventId={}, eventType={}, aggregateType={}, aggregateId={}",
                 event.eventId(),
-                event.tradeId()
+                event.eventType(),
+                event.aggregateType(),
+                event.aggregateId()
         );
     }
 }
