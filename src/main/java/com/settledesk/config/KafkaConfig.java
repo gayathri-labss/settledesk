@@ -8,6 +8,7 @@ import org.apache.kafka.common.serialization.ByteArraySerializer;
 import org.apache.kafka.common.serialization.StringSerializer;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.boot.kafka.autoconfigure.KafkaProperties;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.kafka.config.ConcurrentKafkaListenerContainerFactory;
@@ -108,5 +109,23 @@ public class KafkaConfig {
         factory.setCommonErrorHandler(kafkaErrorHandler);
 
         return factory;
+    }
+
+    @Bean
+    public ProducerFactory<String, TradeCreatedEvent> eventProducerFactory(
+            KafkaProperties kafkaProperties) {
+
+        Map<String, Object> properties =
+                kafkaProperties.buildProducerProperties();
+
+        return new DefaultKafkaProducerFactory<>(properties);
+    }
+
+    @Bean(name = "kafkaTemplate")
+    public KafkaTemplate<String, TradeCreatedEvent> kafkaTemplate(
+            @Qualifier("eventProducerFactory")
+            ProducerFactory<String, TradeCreatedEvent> eventProducerFactory) {
+
+        return new KafkaTemplate<>(eventProducerFactory);
     }
 }
