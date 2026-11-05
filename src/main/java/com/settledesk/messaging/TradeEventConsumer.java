@@ -1,12 +1,14 @@
-
 package com.settledesk.messaging;
 
 import com.settledesk.event.BusinessEvent;
+import com.settledesk.event.TradeCreatedEvent;
+import com.settledesk.event.TradeConfirmedEvent;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import tools.jackson.databind.ObjectMapper;
 
 @Service
 public class TradeEventConsumer {
@@ -15,9 +17,14 @@ public class TradeEventConsumer {
             LoggerFactory.getLogger(TradeEventConsumer.class);
 
     private final ProcessedEventService processedEventService;
+    private final ObjectMapper jsonMapper;
 
-    public TradeEventConsumer(ProcessedEventService processedEventService) {
+    public TradeEventConsumer(
+            ProcessedEventService processedEventService,
+            ObjectMapper jsonMapper
+    ) {
         this.processedEventService = processedEventService;
+        this.jsonMapper = jsonMapper;
     }
 
     @KafkaListener(
@@ -44,24 +51,69 @@ public class TradeEventConsumer {
             );
         }
 
+        if (event.payload() == null) {
+            throw new IllegalArgumentException(
+                    "BusinessEvent payload cannot be null"
+            );
+        }
+
+        switch (event.eventType()) {
+
+            case "TradeCreated" -> {
+                TradeCreatedEvent tradeCreatedEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                TradeCreatedEvent.class
+                        );
+
+                processTradeCreated(tradeCreatedEvent);
+            }
+
+            case "TradeConfirmed" -> {
+                TradeConfirmedEvent tradeConfirmedEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                TradeConfirmedEvent.class
+                        );
+
+                processTradeConfirmed(tradeConfirmedEvent);
+            }
+
+            default -> throw new IllegalArgumentException(
+                    "Unsupported event type: " + event.eventType()
+            );
+        }
+
         boolean isNew =
                 processedEventService.markProcessedIfNew(event.eventId());
 
         if (!isNew) {
             log.info(
-                    "Duplicate business event skipped: eventId={}, eventType={}",
+                    "Duplicate business event detected: eventId={}, eventType={}",
                     event.eventId(),
                     event.eventType()
             );
-            return;
         }
+    }
+
+    private void processTradeCreated(TradeCreatedEvent event) {
 
         log.info(
-                "Business event received: eventId={}, eventType={}, aggregateType={}, aggregateId={}",
-                event.eventId(),
-                event.eventType(),
-                event.aggregateType(),
-                event.aggregateId()
+                "Processing TradeCreatedEvent: tradeId={}, instrument={}, quantity={}, price={}",
+                event.tradeId(),
+                event.instrument(),
+                event.quantity(),
+                event.price()
+        );
+    }
+
+    private void processTradeConfirmed(TradeConfirmedEvent event) {
+
+        log.info(
+                "Processing TradeConfirmedEvent: confirmationId={}, tradeId={}, counterpartyReference={}",
+                event.confirmationId(),
+                event.tradeId(),
+                event.counterpartyReference()
         );
     }
 }
