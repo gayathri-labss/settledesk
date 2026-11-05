@@ -66,9 +66,6 @@ public class TradeService {
 
         outboxService.saveTradeCreatedEvent(event);
 
-
-        outboxService.saveTradeCreatedEvent(event);
-
         tradeLifecycleService.recordStatusChange(
                 savedTrade,
                 null,
