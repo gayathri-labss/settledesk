@@ -30,8 +30,7 @@ The planned technology stack includes Java, Spring Boot, Microsoft SQL Server, A
 14. [Testing Strategy](#14-testing-strategy)
 15. [Docker and Deployment](#15-docker-and-deployment)
 16. [Development Workflow](#16-development-workflow)
-17. [Roadmap](#17-roadmap)
-18. [Disclaimer](#18-disclaimer)
+17. [Disclaimer](#18-disclaimer)
 
 ---
 
@@ -840,70 +839,7 @@ The README and architecture documentation will evolve as implementation decision
 
 ---
 
-## 17. Roadmap
-
-### Phase 1: Project Foundation
-
-- [ ] Complete project documentation.
-- [ ] Implement the health-check API.
-- [ ] Establish layered application architecture.
-- [ ] Configure Microsoft SQL Server.
-- [ ] Define the initial trade domain model.
-- [ ] Implement trade creation and retrieval APIs.
-- [ ] Add request validation and exception handling.
-- [ ] Establish automated test conventions.
-
-### Phase 2: Trade Lifecycle
-
-- [ ] Define and implement trade state transitions.
-- [ ] Implement trade confirmation APIs.
-- [ ] Implement idempotency.
-- [ ] Add trade lifecycle history.
-- [ ] Add audit history.
-- [ ] Add appropriate transaction and concurrency controls.
-
-### Phase 3: Matching and Reconciliation
-
-- [ ] Implement the matching engine.
-- [ ] Create reconciliation runs.
-- [ ] Detect missing, duplicate, and mismatched records.
-- [ ] Implement break management.
-- [ ] Add break resolution and assignment.
-- [ ] Implement settlement processing.
-- [ ] Add controlled retry handling.
-
-### Phase 4: Event-Driven Processing
-
-- [ ] Introduce Apache Kafka.
-- [ ] Publish trade lifecycle events.
-- [ ] Implement asynchronous consumers.
-- [ ] Implement the transactional outbox.
-- [ ] Add retry and consumer error handling.
-- [ ] Handle duplicate event delivery.
-- [ ] Add event-processing observability.
-
-### Phase 5: Security and Reliability
-
-- [ ] Implement authentication and authorization.
-- [ ] Strengthen concurrency controls.
-- [ ] Introduce resilience patterns.
-- [ ] Add health and readiness checks.
-- [ ] Improve logs, metrics, and tracing.
-- [ ] Expand automated test coverage.
-
-### Phase 6: Containerization and CI/CD
-
-- [ ] Create a Dockerfile.
-- [ ] Configure Docker Compose.
-- [ ] Run SQL Server in the local containerized environment.
-- [ ] Run Kafka and its required components.
-- [ ] Add infrastructure-backed integration tests.
-- [ ] Set up GitHub Actions.
-- [ ] Document local deployment and configuration.
-
----
-
-## 18. Disclaimer
+## 17. Disclaimer
 
 SettleDesk is an independent educational project intended to simulate financial trade processing concepts.
 
