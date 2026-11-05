@@ -1,6 +1,7 @@
 package com.settledesk.service;
 
 import com.settledesk.event.BusinessEvent;
+import com.settledesk.event.TradeConfirmedEvent;
 import com.settledesk.event.TradeCreatedEvent;
 import com.settledesk.model.OutboxEvent;
 import com.settledesk.model.OutboxStatus;
@@ -47,6 +48,22 @@ public class OutboxService {
         BusinessEvent businessEvent = new BusinessEvent(
                 UUID.randomUUID(),
                 "TradeCreated",
+                "TRADE",
+                event.tradeId().toString(),
+                Instant.now(),
+                1,
+                jsonMapper.valueToTree(event)
+        );
+
+        return saveBusinessEvent(businessEvent);
+    }
+
+    @Transactional
+    public OutboxEvent saveTradeConfirmedEvent(TradeConfirmedEvent event) {
+
+        BusinessEvent businessEvent = new BusinessEvent(
+                UUID.randomUUID(),
+                "TradeConfirmed",
                 "TRADE",
                 event.tradeId().toString(),
                 Instant.now(),
