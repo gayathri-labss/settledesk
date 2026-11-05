@@ -1,12 +1,17 @@
+
 package com.settledesk.messaging;
 
 import com.settledesk.event.TradeCreatedEvent;
+import jakarta.validation.ConstraintViolation;
+import jakarta.validation.ConstraintViolationException;
+import jakarta.validation.Validator;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
+import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -18,14 +23,30 @@ public class TradeEventProducer {
     private static final String TOPIC = "trade-events";
 
     private final KafkaTemplate<String, TradeCreatedEvent> kafkaTemplate;
+    private final Validator validator;
 
     public TradeEventProducer(
-            KafkaTemplate<String, TradeCreatedEvent> kafkaTemplate) {
+            KafkaTemplate<String, TradeCreatedEvent> kafkaTemplate,
+            Validator validator) {
+
         this.kafkaTemplate = kafkaTemplate;
+        this.validator = validator;
     }
 
     public CompletableFuture<SendResult<String, TradeCreatedEvent>>
     publishTradeCreated(TradeCreatedEvent event) {
+
+        if (event == null) {
+            throw new IllegalArgumentException(
+                    "TradeCreatedEvent cannot be null");
+        }
+
+        Set<ConstraintViolation<TradeCreatedEvent>> violations =
+                validator.validate(event);
+
+        if (!violations.isEmpty()) {
+            throw new ConstraintViolationException(violations);
+        }
 
         String key = event.tradeId().toString();
 
