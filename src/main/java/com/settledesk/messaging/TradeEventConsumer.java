@@ -25,13 +25,15 @@ public class TradeEventConsumer {
     public void consumeTradeCreated(TradeCreatedEvent event) {
 
         if (event == null) {
-            log.error("Received null TradeCreatedEvent. Skipping event.");
-            return;
+            throw new IllegalArgumentException(
+                    "Received null TradeCreatedEvent"
+            );
         }
 
         if (event.eventId() == null) {
-            log.error("Received TradeCreatedEvent with null eventId. Skipping event.");
-            return;
+            throw new IllegalArgumentException(
+                    "TradeCreatedEvent eventId cannot be null"
+            );
         }
 
         boolean isNew = processedEventService.markProcessedIfNew(event.eventId());
