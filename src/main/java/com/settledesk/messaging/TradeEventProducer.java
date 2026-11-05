@@ -1,17 +1,13 @@
 
 package com.settledesk.messaging;
 
-import com.settledesk.event.TradeCreatedEvent;
-import jakarta.validation.ConstraintViolation;
-import jakarta.validation.ConstraintViolationException;
-import jakarta.validation.Validator;
+import com.settledesk.event.BusinessEvent;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
 
-import java.util.Set;
 import java.util.concurrent.CompletableFuture;
 
 @Service
@@ -22,41 +18,34 @@ public class TradeEventProducer {
 
     private static final String TOPIC = "trade-events";
 
-    private final KafkaTemplate<String, TradeCreatedEvent> kafkaTemplate;
-    private final Validator validator;
+    private final KafkaTemplate<String, BusinessEvent> kafkaTemplate;
 
     public TradeEventProducer(
-            KafkaTemplate<String, TradeCreatedEvent> kafkaTemplate,
-            Validator validator) {
-
+            KafkaTemplate<String, BusinessEvent> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
-        this.validator = validator;
     }
 
-    public CompletableFuture<SendResult<String, TradeCreatedEvent>>
-    publishTradeCreated(TradeCreatedEvent event) {
+    public CompletableFuture<SendResult<String, BusinessEvent>>
+    publishBusinessEvent(BusinessEvent event) {
 
-        if (event == null) {
+        if (event == null || event.eventId() == null
+                || event.aggregateId() == null
+                || event.eventType() == null
+                || event.payload() == null) {
             throw new IllegalArgumentException(
-                    "TradeCreatedEvent cannot be null");
+                    "BusinessEvent and its required fields cannot be null");
         }
 
-        Set<ConstraintViolation<TradeCreatedEvent>> violations =
-                validator.validate(event);
-
-        if (!violations.isEmpty()) {
-            throw new ConstraintViolationException(violations);
-        }
-
-        String key = event.tradeId().toString();
+        String key = event.aggregateId();
 
         return kafkaTemplate.send(TOPIC, key, event)
                 .whenComplete((result, exception) -> {
 
                     if (exception != null) {
                         log.error(
-                                "Failed to publish TradeCreatedEvent for tradeId={}",
-                                event.tradeId(),
+                                "Failed to publish event: eventId={}, eventType={}",
+                                event.eventId(),
+                                event.eventType(),
                                 exception
                         );
                         return;
@@ -65,8 +54,9 @@ public class TradeEventProducer {
                     var metadata = result.getRecordMetadata();
 
                     log.info(
-                            "Trade event published: tradeId={}, topic={}, partition={}, offset={}",
-                            event.tradeId(),
+                            "Business event published: eventId={}, eventType={}, topic={}, partition={}, offset={}",
+                            event.eventId(),
+                            event.eventType(),
                             metadata.topic(),
                             metadata.partition(),
                             metadata.offset()
