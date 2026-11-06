@@ -153,4 +153,21 @@ public class OutboxService {
 
         return saveBusinessEvent(businessEvent);
     }
+
+    @Transactional
+    public OutboxEvent saveReconciliationCompletedEvent(
+            ReconciliationCompletedEvent event) {
+
+        BusinessEvent businessEvent = new BusinessEvent(
+                UUID.randomUUID(),
+                "ReconciliationCompleted",
+                "RECONCILIATION",
+                event.runId().toString(),
+                Instant.now(),
+                1,
+                jsonMapper.valueToTree(event)
+        );
+
+        return saveBusinessEvent(businessEvent);
+    }
 }
