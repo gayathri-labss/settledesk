@@ -3,6 +3,7 @@ package com.settledesk.messaging;
 import com.settledesk.event.BusinessEvent;
 import com.settledesk.event.TradeCreatedEvent;
 import com.settledesk.event.TradeConfirmedEvent;
+import com.settledesk.event.TradeMatchedEvent;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -79,6 +80,16 @@ public class TradeEventConsumer {
                 processTradeConfirmed(tradeConfirmedEvent);
             }
 
+            case "TradeMatched" -> {
+                TradeMatchedEvent tradeMatchedEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                TradeMatchedEvent.class
+                        );
+
+                processTradeMatched(tradeMatchedEvent);
+            }
+
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
             );
@@ -114,6 +125,16 @@ public class TradeEventConsumer {
                 event.confirmationId(),
                 event.tradeId(),
                 event.counterpartyReference()
+        );
+    }
+
+    private void processTradeMatched(TradeMatchedEvent event) {
+
+        log.info(
+                "Processing TradeMatchedEvent: tradeId={}, matchingRunId={}, matchedAt={}",
+                event.tradeId(),
+                event.matchingRunId(),
+                event.matchedAt()
         );
     }
 }
