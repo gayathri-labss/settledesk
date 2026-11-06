@@ -2,6 +2,7 @@ package com.settledesk.service;
 
 import com.settledesk.dto.CreateSettlementRequest;
 import com.settledesk.dto.UpdateTradeStatusRequest;
+import com.settledesk.event.SettlementCompletedEvent;
 import com.settledesk.event.SettlementInstructionCreatedEvent;
 import com.settledesk.model.*;
 import com.settledesk.repository.SettlementRepository;
@@ -227,6 +228,21 @@ public class SettlementService {
 
         SettlementInstruction savedInstruction =
                 settlementRepository.save(instruction);
+
+        if (outcome == SettlementOutcome.SETTLED) {
+
+            SettlementCompletedEvent event =
+                    new SettlementCompletedEvent(
+                            savedInstruction.getSettlementId(),
+                            savedInstruction.getTrade().getTradeId(),
+                            savedInstruction.getSettlementReference(),
+                            savedInstruction.getSettlementDate(),
+                            savedInstruction.getStatus(),
+                            savedInstruction.getConfirmedAt()
+                    );
+
+            outboxService.saveSettlementCompletedEvent(event);
+        }
 
         settlementLifecycleService.recordStatusChange(
                 savedInstruction,
