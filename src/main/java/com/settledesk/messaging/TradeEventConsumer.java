@@ -158,6 +158,30 @@ public class TradeEventConsumer {
                 processSettlementCompleted(settlementEvent);
             }
 
+            case "SettlementFailed" -> {
+                SettlementFailedEvent settlementEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                SettlementFailedEvent.class
+                        );
+
+                if (settlementEvent.settlementId() == null
+                        || settlementEvent.tradeId() == null
+                        || settlementEvent.settlementReference() == null
+                        || settlementEvent.settlementReference().isBlank()
+                        || settlementEvent.settlementDate() == null
+                        || settlementEvent.failureReason() == null
+                        || settlementEvent.failureReason().isBlank()
+                        || settlementEvent.status() != SettlementStatus.FAILED
+                        || settlementEvent.failedAt() == null) {
+                    throw new IllegalArgumentException(
+                            "Invalid SettlementFailed event payload"
+                    );
+                }
+
+                processSettlementFailed(settlementEvent);
+            }
+
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
             );
@@ -231,6 +255,19 @@ public class TradeEventConsumer {
                 event.settlementDate(),
                 event.status(),
                 event.completedAt()
+        );
+    }
+
+    private void processSettlementFailed(SettlementFailedEvent event) {
+        log.info(
+                "Processing SettlementFailedEvent: settlementId={}, tradeId={}, settlementReference={}, settlementDate={}, failureReason={}, status={}, failedAt={}",
+                event.settlementId(),
+                event.tradeId(),
+                event.settlementReference(),
+                event.settlementDate(),
+                event.failureReason(),
+                event.status(),
+                event.failedAt()
         );
     }
 }
