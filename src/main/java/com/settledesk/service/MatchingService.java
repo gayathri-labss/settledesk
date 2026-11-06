@@ -4,6 +4,7 @@ import com.settledesk.dto.MatchingRunRequest;
 import com.settledesk.dto.UpdateTradeStatusRequest;
 
 import com.settledesk.event.TradeMatchedEvent;
+import com.settledesk.event.TradeMatchingFailedEvent;
 import com.settledesk.model.MatchingOutcome;
 import com.settledesk.model.MatchingResult;
 import com.settledesk.model.MatchingRun;
@@ -145,11 +146,21 @@ public class MatchingService {
                     outboxService.saveTradeMatchedEvent(event);
                 }
 
-            } else {
+            }
+            else {
 
                 savedRun.setUnmatchedCount(
                         savedRun.getUnmatchedCount() + 1
                 );
+
+                TradeMatchingFailedEvent event = new TradeMatchingFailedEvent(
+                        trade.getTradeId(),
+                        savedRun.getRunId(),
+                        String.join("; ", mismatches),
+                        LocalDateTime.now()
+                );
+
+                outboxService.saveTradeMatchingFailedEvent(event);
             }
         }
 
