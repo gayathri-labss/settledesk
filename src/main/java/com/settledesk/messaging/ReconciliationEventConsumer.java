@@ -2,6 +2,7 @@
 package com.settledesk.messaging;
 
 import com.settledesk.event.BusinessEvent;
+import com.settledesk.event.ReconciliationBreakDetectedEvent;
 import com.settledesk.event.ReconciliationCompletedEvent;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
@@ -63,7 +64,8 @@ public class ReconciliationEventConsumer {
             );
         }
 
-        if (!"ReconciliationCompleted".equals(event.eventType())) {
+        if (!"ReconciliationCompleted".equals(event.eventType()) && !"ReconciliationBreakDetected".equals(event.eventType())) {
+
             log.debug(
                     "Ignoring non-reconciliation event: eventType={}",
                     event.eventType()
@@ -85,13 +87,33 @@ public class ReconciliationEventConsumer {
             return;
         }
 
-        ReconciliationCompletedEvent reconciliationEvent =
-                jsonMapper.treeToValue(
-                        event.payload(),
-                        ReconciliationCompletedEvent.class
-                );
+        switch (event.eventType()) {
 
-        processReconciliationCompleted(reconciliationEvent);
+            case "ReconciliationCompleted" -> {
+                ReconciliationCompletedEvent reconciliationEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                ReconciliationCompletedEvent.class
+                        );
+
+                processReconciliationCompleted(reconciliationEvent);
+            }
+
+            case "ReconciliationBreakDetected" -> {
+                ReconciliationBreakDetectedEvent breakEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                ReconciliationBreakDetectedEvent.class
+                        );
+
+                processReconciliationBreakDetected(breakEvent);
+            }
+
+            default -> throw new IllegalStateException(
+                    "Unexpected reconciliation event type: "
+                            + event.eventType()
+            );
+        }
     }
 
     private void processReconciliationCompleted(
@@ -109,6 +131,23 @@ public class ReconciliationEventConsumer {
                 event.missingExternalCount(),
                 event.missingInternalCount(),
                 event.completedAt()
+        );
+    }
+
+    private void processReconciliationBreakDetected(
+            ReconciliationBreakDetectedEvent event) {
+
+        log.info(
+                "Processing ReconciliationBreakDetectedEvent: breakId={}, runId={}, category={}, status={}, priority={}, internalSettlementReference={}, externalReference={}, externalSettlementReference={}, detectedAt={}",
+                event.breakId(),
+                event.runId(),
+                event.category(),
+                event.status(),
+                event.priority(),
+                event.internalSettlementReference(),
+                event.externalReference(),
+                event.externalSettlementReference(),
+                event.detectedAt()
         );
     }
 }
