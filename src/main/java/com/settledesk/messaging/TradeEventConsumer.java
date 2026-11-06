@@ -3,11 +3,13 @@ package com.settledesk.messaging;
 import com.settledesk.event.BusinessEvent;
 import com.settledesk.event.TradeCreatedEvent;
 import com.settledesk.event.TradeConfirmedEvent;
+import com.settledesk.event.TradeMatchedEvent;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -27,6 +29,7 @@ public class TradeEventConsumer {
         this.jsonMapper = jsonMapper;
     }
 
+    @Transactional
     @KafkaListener(
             topics = "trade-events",
             containerFactory = "kafkaListenerContainerFactory"
@@ -57,6 +60,18 @@ public class TradeEventConsumer {
             );
         }
 
+        boolean isNew =
+                processedEventService.markProcessedIfNew(event.eventId());
+
+        if (!isNew) {
+            log.info(
+                    "Duplicate business event detected: eventId={}, eventType={}",
+                    event.eventId(),
+                    event.eventType()
+            );
+            return;
+        }
+
         switch (event.eventType()) {
 
             case "TradeCreated" -> {
@@ -79,19 +94,18 @@ public class TradeEventConsumer {
                 processTradeConfirmed(tradeConfirmedEvent);
             }
 
+            case "TradeMatched" -> {
+                TradeMatchedEvent tradeMatchedEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                TradeMatchedEvent.class
+                        );
+
+                processTradeMatched(tradeMatchedEvent);
+            }
+
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
-            );
-        }
-
-        boolean isNew =
-                processedEventService.markProcessedIfNew(event.eventId());
-
-        if (!isNew) {
-            log.info(
-                    "Duplicate business event detected: eventId={}, eventType={}",
-                    event.eventId(),
-                    event.eventType()
             );
         }
     }
@@ -114,6 +128,16 @@ public class TradeEventConsumer {
                 event.confirmationId(),
                 event.tradeId(),
                 event.counterpartyReference()
+        );
+    }
+
+    private void processTradeMatched(TradeMatchedEvent event) {
+
+        log.info(
+                "Processing TradeMatchedEvent: tradeId={}, matchingRunId={}, matchedAt={}",
+                event.tradeId(),
+                event.matchingRunId(),
+                event.matchedAt()
         );
     }
 }
