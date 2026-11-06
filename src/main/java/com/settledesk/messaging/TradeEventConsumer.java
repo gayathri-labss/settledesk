@@ -30,6 +30,7 @@ public class TradeEventConsumer {
     @Transactional
     @KafkaListener(
             topics = "trade-events",
+            groupId = "trade-consumer-group",
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeBusinessEvent(BusinessEvent event) {
