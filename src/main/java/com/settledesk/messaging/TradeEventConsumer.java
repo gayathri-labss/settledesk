@@ -59,7 +59,10 @@ public class TradeEventConsumer {
         }
 
         boolean isNew =
-                processedEventService.markProcessedIfNew(event.eventId());
+                processedEventService.markProcessedIfNew(
+                        "trade-consumer-group",
+                        event.eventId()
+                );
 
         if (!isNew) {
             log.info(
