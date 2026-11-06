@@ -111,6 +111,29 @@ public class TradeEventConsumer {
                 processTradeMatchingFailed(tradeMatchingFailedEvent);
             }
 
+            case "SettlementInstructionCreated" -> {
+                SettlementInstructionCreatedEvent settlementEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                SettlementInstructionCreatedEvent.class
+                        );
+
+                if (settlementEvent.settlementId() == null
+                        || settlementEvent.tradeId() == null
+                        || settlementEvent.settlementReference() == null
+                        || settlementEvent.settlementReference().isBlank()
+                        || settlementEvent.settlementDate() == null
+                        || settlementEvent.status() == null
+                        || settlementEvent.createdAt() == null) {
+
+                    throw new IllegalArgumentException(
+                            "Invalid SettlementInstructionCreated event payload"
+                    );
+                }
+
+                processSettlementInstructionCreated(settlementEvent);
+            }
+
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
             );
@@ -156,6 +179,20 @@ public class TradeEventConsumer {
                 event.matchingRunId(),
                 event.failureReason(),
                 event.failedAt()
+        );
+    }
+
+    private void processSettlementInstructionCreated(
+            SettlementInstructionCreatedEvent event) {
+
+        log.info(
+                "Processing SettlementInstructionCreatedEvent: settlementId={}, tradeId={}, settlementReference={}, settlementDate={}, status={}, createdAt={}",
+                event.settlementId(),
+                event.tradeId(),
+                event.settlementReference(),
+                event.settlementDate(),
+                event.status(),
+                event.createdAt()
         );
     }
 }
