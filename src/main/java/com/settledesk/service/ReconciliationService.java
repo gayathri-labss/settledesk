@@ -1,7 +1,9 @@
+
 package com.settledesk.service;
 
 import com.settledesk.dto.ExternalSettlementInput;
 import com.settledesk.dto.StartReconciliationRequest;
+import com.settledesk.event.ReconciliationCompletedEvent;
 import com.settledesk.model.*;
 import com.settledesk.repository.ReconciliationBreakRepository;
 import com.settledesk.repository.ReconciliationResultRepository;
@@ -26,6 +28,7 @@ public class ReconciliationService {
     private final ReconciliationRunRepository runRepository;
     private final ReconciliationResultRepository resultRepository;
     private final ReconciliationBreakRepository breakRepository;
+    private final OutboxService outboxService;
 
     @Transactional
     public ReconciliationRun startReconciliation(
@@ -138,8 +141,7 @@ public class ReconciliationService {
             }
         }
 
-        List<ReconciliationResult> savedResults =
-                resultRepository.saveAll(results);
+        resultRepository.saveAll(results);
 
         List<ReconciliationBreak> breaks = results.stream()
                 .filter(r -> r.getStatus() != ReconciliationResultStatus.MATCHED)
@@ -170,7 +172,26 @@ public class ReconciliationService {
         run.setStatus(ReconciliationRunStatus.COMPLETED);
         run.setCompletedAt(LocalDateTime.now());
 
-        return runRepository.save(run);
+        ReconciliationRun completedRun = runRepository.save(run);
+
+        ReconciliationCompletedEvent event = new ReconciliationCompletedEvent(
+                completedRun.getRunId(),
+                completedRun.getSource(),
+                completedRun.getSettlementDate(),
+                completedRun.getStatus(),
+                completedRun.getTotalInternalRecords(),
+                completedRun.getTotalExternalRecords(),
+                completedRun.getMatchedCount(),
+                completedRun.getMismatchedCount(),
+                completedRun.getMissingExternalCount(),
+                completedRun.getMissingInternalCount(),
+                completedRun.getStartedAt(),
+                completedRun.getCompletedAt()
+        );
+
+        outboxService.saveReconciliationCompletedEvent(event);
+
+        return completedRun;
     }
 
     @Transactional(readOnly = true)
