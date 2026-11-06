@@ -102,4 +102,21 @@ public class OutboxService {
 
         return saveBusinessEvent(businessEvent);
     }
+
+    @Transactional
+    public OutboxEvent saveSettlementInstructionCreatedEvent(
+            SettlementInstructionCreatedEvent event) {
+
+        BusinessEvent businessEvent = new BusinessEvent(
+                UUID.randomUUID(),
+                "SettlementInstructionCreated",
+                "SETTLEMENT",
+                event.settlementId().toString(),
+                Instant.now(),
+                1,
+                jsonMapper.valueToTree(event)
+        );
+
+        return saveBusinessEvent(businessEvent);
+    }
 }
