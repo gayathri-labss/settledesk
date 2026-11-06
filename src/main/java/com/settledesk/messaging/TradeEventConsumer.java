@@ -111,6 +111,16 @@ public class TradeEventConsumer {
                 processTradeMatchingFailed(tradeMatchingFailedEvent);
             }
 
+            case "SettlementInstructionCreated" -> {
+                SettlementInstructionCreatedEvent settlementEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                SettlementInstructionCreatedEvent.class
+                        );
+
+                processSettlementInstructionCreated(settlementEvent);
+            }
+
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
             );
@@ -156,6 +166,20 @@ public class TradeEventConsumer {
                 event.matchingRunId(),
                 event.failureReason(),
                 event.failedAt()
+        );
+    }
+
+    private void processSettlementInstructionCreated(
+            SettlementInstructionCreatedEvent event) {
+
+        log.info(
+                "Processing SettlementInstructionCreatedEvent: settlementId={}, tradeId={}, settlementReference={}, settlementDate={}, status={}, createdAt={}",
+                event.settlementId(),
+                event.tradeId(),
+                event.settlementReference(),
+                event.settlementDate(),
+                event.status(),
+                event.createdAt()
         );
     }
 }
