@@ -1,6 +1,7 @@
 package com.settledesk.messaging;
 
 import com.settledesk.event.*;
+import com.settledesk.model.SettlementStatus;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -134,6 +135,29 @@ public class TradeEventConsumer {
                 processSettlementInstructionCreated(settlementEvent);
             }
 
+            case "SettlementCompleted" -> {
+                SettlementCompletedEvent settlementEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                SettlementCompletedEvent.class
+                        );
+
+                if (settlementEvent.settlementId() == null
+                        || settlementEvent.tradeId() == null
+                        || settlementEvent.settlementReference() == null
+                        || settlementEvent.settlementReference().isBlank()
+                        || settlementEvent.settlementDate() == null
+                        || settlementEvent.status() != SettlementStatus.SETTLED
+                        || settlementEvent.completedAt() == null) {
+
+                    throw new IllegalArgumentException(
+                            "Invalid SettlementCompleted event payload"
+                    );
+                }
+
+                processSettlementCompleted(settlementEvent);
+            }
+
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
             );
@@ -193,6 +217,20 @@ public class TradeEventConsumer {
                 event.settlementDate(),
                 event.status(),
                 event.createdAt()
+        );
+    }
+
+    private void processSettlementCompleted(
+            SettlementCompletedEvent event) {
+
+        log.info(
+                "Processing SettlementCompletedEvent: settlementId={}, tradeId={}, settlementReference={}, settlementDate={}, status={}, completedAt={}",
+                event.settlementId(),
+                event.tradeId(),
+                event.settlementReference(),
+                event.settlementDate(),
+                event.status(),
+                event.completedAt()
         );
     }
 }
