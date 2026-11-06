@@ -9,6 +9,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
 @Service
@@ -28,6 +29,7 @@ public class TradeEventConsumer {
         this.jsonMapper = jsonMapper;
     }
 
+    @Transactional
     @KafkaListener(
             topics = "trade-events",
             containerFactory = "kafkaListenerContainerFactory"
@@ -56,6 +58,18 @@ public class TradeEventConsumer {
             throw new IllegalArgumentException(
                     "BusinessEvent payload cannot be null"
             );
+        }
+
+        boolean isNew =
+                processedEventService.markProcessedIfNew(event.eventId());
+
+        if (!isNew) {
+            log.info(
+                    "Duplicate business event detected: eventId={}, eventType={}",
+                    event.eventId(),
+                    event.eventType()
+            );
+            return;
         }
 
         switch (event.eventType()) {
@@ -92,17 +106,6 @@ public class TradeEventConsumer {
 
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
-            );
-        }
-
-        boolean isNew =
-                processedEventService.markProcessedIfNew(event.eventId());
-
-        if (!isNew) {
-            log.info(
-                    "Duplicate business event detected: eventId={}, eventType={}",
-                    event.eventId(),
-                    event.eventType()
             );
         }
     }
