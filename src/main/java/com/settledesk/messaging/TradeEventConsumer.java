@@ -1,7 +1,7 @@
+
 package com.settledesk.messaging;
 
 import com.settledesk.event.*;
-import com.settledesk.model.SettlementStatus;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -10,11 +10,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.Set;
+
 @Service
 public class TradeEventConsumer {
 
     private static final Logger log =
             LoggerFactory.getLogger(TradeEventConsumer.class);
+
+    private static final String CONSUMER_NAME =
+            "trade-consumer-group";
+
+    private static final Set<String> TRADE_EVENT_TYPES = Set.of(
+            "TradeCreated",
+            "TradeConfirmed",
+            "TradeMatched",
+            "TradeMatchingFailed"
+    );
 
     private final ProcessedEventService processedEventService;
     private final ObjectMapper jsonMapper;
@@ -30,6 +42,7 @@ public class TradeEventConsumer {
     @Transactional
     @KafkaListener(
             topics = "trade-events",
+            groupId = CONSUMER_NAME,
             containerFactory = "kafkaListenerContainerFactory"
     )
     public void consumeBusinessEvent(BusinessEvent event) {
@@ -58,8 +71,19 @@ public class TradeEventConsumer {
             );
         }
 
+        if (!TRADE_EVENT_TYPES.contains(event.eventType())) {
+            log.debug(
+                    "Ignoring non-trade event: eventType={}",
+                    event.eventType()
+            );
+            return;
+        }
+
         boolean isNew =
-                processedEventService.markProcessedIfNew(event.eventId());
+                processedEventService.markProcessedIfNew(
+                        CONSUMER_NAME,
+                        event.eventId()
+                );
 
         if (!isNew) {
             log.info(
@@ -112,78 +136,8 @@ public class TradeEventConsumer {
                 processTradeMatchingFailed(tradeMatchingFailedEvent);
             }
 
-            case "SettlementInstructionCreated" -> {
-                SettlementInstructionCreatedEvent settlementEvent =
-                        jsonMapper.treeToValue(
-                                event.payload(),
-                                SettlementInstructionCreatedEvent.class
-                        );
-
-                if (settlementEvent.settlementId() == null
-                        || settlementEvent.tradeId() == null
-                        || settlementEvent.settlementReference() == null
-                        || settlementEvent.settlementReference().isBlank()
-                        || settlementEvent.settlementDate() == null
-                        || settlementEvent.status() == null
-                        || settlementEvent.createdAt() == null) {
-
-                    throw new IllegalArgumentException(
-                            "Invalid SettlementInstructionCreated event payload"
-                    );
-                }
-
-                processSettlementInstructionCreated(settlementEvent);
-            }
-
-            case "SettlementCompleted" -> {
-                SettlementCompletedEvent settlementEvent =
-                        jsonMapper.treeToValue(
-                                event.payload(),
-                                SettlementCompletedEvent.class
-                        );
-
-                if (settlementEvent.settlementId() == null
-                        || settlementEvent.tradeId() == null
-                        || settlementEvent.settlementReference() == null
-                        || settlementEvent.settlementReference().isBlank()
-                        || settlementEvent.settlementDate() == null
-                        || settlementEvent.status() != SettlementStatus.SETTLED
-                        || settlementEvent.completedAt() == null) {
-
-                    throw new IllegalArgumentException(
-                            "Invalid SettlementCompleted event payload"
-                    );
-                }
-
-                processSettlementCompleted(settlementEvent);
-            }
-
-            case "SettlementFailed" -> {
-                SettlementFailedEvent settlementEvent =
-                        jsonMapper.treeToValue(
-                                event.payload(),
-                                SettlementFailedEvent.class
-                        );
-
-                if (settlementEvent.settlementId() == null
-                        || settlementEvent.tradeId() == null
-                        || settlementEvent.settlementReference() == null
-                        || settlementEvent.settlementReference().isBlank()
-                        || settlementEvent.settlementDate() == null
-                        || settlementEvent.failureReason() == null
-                        || settlementEvent.failureReason().isBlank()
-                        || settlementEvent.status() != SettlementStatus.FAILED
-                        || settlementEvent.failedAt() == null) {
-                    throw new IllegalArgumentException(
-                            "Invalid SettlementFailed event payload"
-                    );
-                }
-
-                processSettlementFailed(settlementEvent);
-            }
-
             default -> throw new IllegalArgumentException(
-                    "Unsupported event type: " + event.eventType()
+                    "Unsupported trade event type: " + event.eventType()
             );
         }
     }
@@ -219,54 +173,14 @@ public class TradeEventConsumer {
         );
     }
 
-    private void processTradeMatchingFailed(TradeMatchingFailedEvent event) {
+    private void processTradeMatchingFailed(
+            TradeMatchingFailedEvent event) {
 
         log.info(
                 "Processing TradeMatchingFailedEvent: tradeId={}, matchingRunId={}, failureReason={}, failedAt={}",
                 event.tradeId(),
                 event.matchingRunId(),
                 event.failureReason(),
-                event.failedAt()
-        );
-    }
-
-    private void processSettlementInstructionCreated(
-            SettlementInstructionCreatedEvent event) {
-
-        log.info(
-                "Processing SettlementInstructionCreatedEvent: settlementId={}, tradeId={}, settlementReference={}, settlementDate={}, status={}, createdAt={}",
-                event.settlementId(),
-                event.tradeId(),
-                event.settlementReference(),
-                event.settlementDate(),
-                event.status(),
-                event.createdAt()
-        );
-    }
-
-    private void processSettlementCompleted(
-            SettlementCompletedEvent event) {
-
-        log.info(
-                "Processing SettlementCompletedEvent: settlementId={}, tradeId={}, settlementReference={}, settlementDate={}, status={}, completedAt={}",
-                event.settlementId(),
-                event.tradeId(),
-                event.settlementReference(),
-                event.settlementDate(),
-                event.status(),
-                event.completedAt()
-        );
-    }
-
-    private void processSettlementFailed(SettlementFailedEvent event) {
-        log.info(
-                "Processing SettlementFailedEvent: settlementId={}, tradeId={}, settlementReference={}, settlementDate={}, failureReason={}, status={}, failedAt={}",
-                event.settlementId(),
-                event.tradeId(),
-                event.settlementReference(),
-                event.settlementDate(),
-                event.failureReason(),
-                event.status(),
                 event.failedAt()
         );
     }

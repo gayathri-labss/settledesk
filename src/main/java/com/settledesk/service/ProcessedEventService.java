@@ -15,13 +15,20 @@ public class ProcessedEventService {
     private final ProcessedEventRepository processedEventRepository;
 
     @Transactional
-    public boolean markProcessedIfNew(UUID eventId) {
+    public boolean markProcessedIfNew(String consumerName, UUID eventId) {
+
+        if (consumerName == null || consumerName.isBlank()) {
+            throw new IllegalArgumentException("Consumer name cannot be blank");
+        }
 
         if (eventId == null) {
             throw new IllegalArgumentException("Event ID cannot be null");
         }
 
-        int inserted = processedEventRepository.insertIfNotExists(eventId);
+        int inserted = processedEventRepository.insertIfNotExists(
+                consumerName,
+                eventId
+        );
 
         return inserted == 1;
     }

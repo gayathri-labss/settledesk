@@ -24,7 +24,7 @@ public class OutboxPublisher {
             LoggerFactory.getLogger(OutboxPublisher.class);
 
     private final OutboxEventRepository outboxEventRepository;
-    private final TradeEventProducer tradeEventProducer;
+    private final BusinessEventProducer businessEventProducer;
     private final JsonMapper jsonMapper;
 
     private final Set<UUID> eventsInProgress =
@@ -32,10 +32,10 @@ public class OutboxPublisher {
 
     public OutboxPublisher(
             OutboxEventRepository outboxEventRepository,
-            TradeEventProducer tradeEventProducer,
+            BusinessEventProducer businessEventProducer,
             JsonMapper jsonMapper) {
         this.outboxEventRepository = outboxEventRepository;
-        this.tradeEventProducer = tradeEventProducer;
+        this.businessEventProducer = businessEventProducer;
         this.jsonMapper = jsonMapper;
     }
 
@@ -61,7 +61,7 @@ public class OutboxPublisher {
                         BusinessEvent.class
                 );
 
-                tradeEventProducer.publishBusinessEvent(event)
+                businessEventProducer.publishBusinessEvent(event)
                         .whenComplete((result, exception) -> {
                             try {
                                 if (exception != null) {

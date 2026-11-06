@@ -11,16 +11,16 @@ import org.springframework.stereotype.Service;
 import java.util.concurrent.CompletableFuture;
 
 @Service
-public class TradeEventProducer {
+public class BusinessEventProducer {
 
     private static final Logger log =
-            LoggerFactory.getLogger(TradeEventProducer.class);
+            LoggerFactory.getLogger(BusinessEventProducer.class);
 
     private static final String TOPIC = "trade-events";
 
     private final KafkaTemplate<String, BusinessEvent> kafkaTemplate;
 
-    public TradeEventProducer(
+    public BusinessEventProducer(
             KafkaTemplate<String, BusinessEvent> kafkaTemplate) {
         this.kafkaTemplate = kafkaTemplate;
     }
