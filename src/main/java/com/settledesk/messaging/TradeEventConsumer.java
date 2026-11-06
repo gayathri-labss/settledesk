@@ -118,6 +118,19 @@ public class TradeEventConsumer {
                                 SettlementInstructionCreatedEvent.class
                         );
 
+                if (settlementEvent.settlementId() == null
+                        || settlementEvent.tradeId() == null
+                        || settlementEvent.settlementReference() == null
+                        || settlementEvent.settlementReference().isBlank()
+                        || settlementEvent.settlementDate() == null
+                        || settlementEvent.status() == null
+                        || settlementEvent.createdAt() == null) {
+
+                    throw new IllegalArgumentException(
+                            "Invalid SettlementInstructionCreated event payload"
+                    );
+                }
+
                 processSettlementInstructionCreated(settlementEvent);
             }
 
