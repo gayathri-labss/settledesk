@@ -136,4 +136,21 @@ public class OutboxService {
 
         return saveBusinessEvent(businessEvent);
     }
+
+    @Transactional
+    public OutboxEvent saveSettlementFailedEvent(
+            SettlementFailedEvent event) {
+
+        BusinessEvent businessEvent = new BusinessEvent(
+                UUID.randomUUID(),
+                "SettlementFailed",
+                "SETTLEMENT",
+                event.settlementId().toString(),
+                Instant.now(),
+                1,
+                jsonMapper.valueToTree(event)
+        );
+
+        return saveBusinessEvent(businessEvent);
+    }
 }
