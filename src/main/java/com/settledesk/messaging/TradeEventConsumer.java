@@ -10,6 +10,8 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import tools.jackson.databind.ObjectMapper;
 
+import java.util.Set;
+
 @Service
 public class TradeEventConsumer {
 
@@ -57,6 +59,16 @@ public class TradeEventConsumer {
             throw new IllegalArgumentException(
                     "BusinessEvent payload cannot be null"
             );
+        }
+
+        if (!Set.of(
+                "TradeCreated",
+                "TradeConfirmed",
+                "TradeMatched",
+                "TradeMatchingFailed"
+        ).contains(event.eventType())) {
+            log.debug("Ignoring non-trade event: eventType={}", event.eventType());
+            return;
         }
 
         boolean isNew =
