@@ -1,9 +1,6 @@
 package com.settledesk.messaging;
 
-import com.settledesk.event.BusinessEvent;
-import com.settledesk.event.TradeCreatedEvent;
-import com.settledesk.event.TradeConfirmedEvent;
-import com.settledesk.event.TradeMatchedEvent;
+import com.settledesk.event.*;
 import com.settledesk.service.ProcessedEventService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -104,6 +101,16 @@ public class TradeEventConsumer {
                 processTradeMatched(tradeMatchedEvent);
             }
 
+            case "TradeMatchingFailed" -> {
+                TradeMatchingFailedEvent tradeMatchingFailedEvent =
+                        jsonMapper.treeToValue(
+                                event.payload(),
+                                TradeMatchingFailedEvent.class
+                        );
+
+                processTradeMatchingFailed(tradeMatchingFailedEvent);
+            }
+
             default -> throw new IllegalArgumentException(
                     "Unsupported event type: " + event.eventType()
             );
@@ -138,6 +145,17 @@ public class TradeEventConsumer {
                 event.tradeId(),
                 event.matchingRunId(),
                 event.matchedAt()
+        );
+    }
+
+    private void processTradeMatchingFailed(TradeMatchingFailedEvent event) {
+
+        log.info(
+                "Processing TradeMatchingFailedEvent: tradeId={}, matchingRunId={}, failureReason={}, failedAt={}",
+                event.tradeId(),
+                event.matchingRunId(),
+                event.failureReason(),
+                event.failedAt()
         );
     }
 }
