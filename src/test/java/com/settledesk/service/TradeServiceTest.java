@@ -14,10 +14,14 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
-
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
+import org.springframework.data.jpa.domain.Specification;
+import static org.mockito.ArgumentMatchers.eq;
 import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyList;
-
 import java.util.Optional;
 import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
@@ -436,7 +440,67 @@ class TradeServiceTest {
     }
 
 
+    @Test
+    void searchTrades_shouldSearchByInstrument() {
 
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Trade> expectedPage = new PageImpl<>(List.of());
 
+        when(tradeRepository.findAll(
+                org.mockito.ArgumentMatchers.<Specification<Trade>>any(),
+                eq(pageable)
+        )).thenReturn(expectedPage);
+
+        Page<Trade> result = tradeService.searchTrades("AAPL", null, pageable);
+
+        assertThat(result).isSameAs(expectedPage);
+
+        verify(tradeRepository).findAll(
+                org.mockito.ArgumentMatchers.<Specification<Trade>>any(),
+                eq(pageable)
+        );
+    }
+
+    @Test
+    void searchTrades_shouldSearchByBuyer() {
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Trade> expectedPage = new PageImpl<>(List.of());
+
+        when(tradeRepository.findAll(
+                org.mockito.ArgumentMatchers.<Specification<Trade>>any(),
+                eq(pageable)
+        )).thenReturn(expectedPage);
+
+        Page<Trade> result = tradeService.searchTrades(null, "Buyer A", pageable);
+
+        assertThat(result).isSameAs(expectedPage);
+
+        verify(tradeRepository).findAll(
+                org.mockito.ArgumentMatchers.<Specification<Trade>>any(),
+                eq(pageable)
+        );
+    }
+
+    @Test
+    void searchTrades_shouldReturnAllTradesWhenNoFiltersProvided() {
+
+        Pageable pageable = PageRequest.of(0, 10);
+        Page<Trade> expectedPage = new PageImpl<>(List.of());
+
+        when(tradeRepository.findAll(
+                org.mockito.ArgumentMatchers.<Specification<Trade>>any(),
+                eq(pageable)
+        )).thenReturn(expectedPage);
+
+        Page<Trade> result = tradeService.searchTrades(null, null, pageable);
+
+        assertThat(result).isSameAs(expectedPage);
+
+        verify(tradeRepository).findAll(
+                org.mockito.ArgumentMatchers.<Specification<Trade>>any(),
+                eq(pageable)
+        );
+    }
 
 }
