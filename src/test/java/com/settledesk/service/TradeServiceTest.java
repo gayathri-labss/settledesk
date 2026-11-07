@@ -16,7 +16,9 @@ import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
 import static org.mockito.ArgumentMatchers.anyList;
 import static org.mockito.Mockito.times;
-
+import java.util.Optional;
+import static org.mockito.Mockito.never;
+import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 
 import static org.assertj.core.api.Assertions.assertThat;
@@ -161,6 +163,46 @@ class TradeServiceTest {
                         any(String.class)
                 );
     }
+
+
+    @Test
+    void getTradeByTradeId_shouldReturnTradeWhenFound() {
+
+        Trade trade = Trade.builder()
+                .tradeId(301L)
+                .instrument("AAPL")
+                .quantity(new BigDecimal("100"))
+                .price(new BigDecimal("210.50"))
+                .buyer("Buyer A")
+                .seller("Seller A")
+                .status(TradeStatus.NEW)
+                .build();
+
+        when(tradeRepository.findById(301L))
+                .thenReturn(Optional.of(trade));
+
+        Trade result = tradeService.getTradeByTradeId(301L);
+
+        assertThat(result).isSameAs(trade);
+
+        verify(tradeRepository).findById(301L);
+    }
+
+    @Test
+    void getTradeByTradeId_shouldThrowNotFoundWhenTradeDoesNotExist() {
+
+        when(tradeRepository.findById(999L))
+                .thenReturn(Optional.empty());
+
+        org.assertj.core.api.Assertions
+                .assertThatThrownBy(() -> tradeService.getTradeByTradeId(999L))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("404 NOT_FOUND")
+                .hasMessageContaining("Trade not found with id: 999");
+
+        verify(tradeRepository).findById(999L);
+    }
+
 
 
 }
