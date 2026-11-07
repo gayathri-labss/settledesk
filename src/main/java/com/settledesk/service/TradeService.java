@@ -106,12 +106,26 @@ public class TradeService {
         List<Trade> savedTrades = tradeRepository.saveAll(trades);
 
         for (Trade trade : savedTrades) {
+
+            TradeCreatedEvent event = new TradeCreatedEvent(
+                    trade.getTradeId(),
+                    trade.getInstrument(),
+                    trade.getQuantity(),
+                    trade.getPrice(),
+                    trade.getBuyer(),
+                    trade.getSeller(),
+                    trade.getStatus().name()
+            );
+
+            outboxService.saveTradeCreatedEvent(event);
+
             tradeLifecycleService.recordStatusChange(
                     trade,
                     null,
                     TradeStatus.NEW
             );
 
+            // EXISTING CODE: Record audit
             tradeAuditService.recordAudit(
                     trade,
                     TradeAuditAction.CREATE,
