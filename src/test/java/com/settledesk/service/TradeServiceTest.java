@@ -14,17 +14,18 @@ import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
 import java.util.List;
+
+import static org.assertj.core.api.AssertionsForClassTypes.assertThatThrownBy;
 import static org.mockito.ArgumentMatchers.anyList;
-import static org.mockito.Mockito.times;
+
 import java.util.Optional;
-import static org.mockito.Mockito.never;
 import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
+import com.settledesk.dto.UpdateTradeStatusRequest;
 
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
-import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.when;
+import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
 class TradeServiceTest {
@@ -201,6 +202,114 @@ class TradeServiceTest {
                 .hasMessageContaining("Trade not found with id: 999");
 
         verify(tradeRepository).findById(999L);
+    }
+
+
+    @Test
+    void updateTradeStatus_shouldAllowValidTransition() {
+
+        Trade trade = Trade.builder()
+                .tradeId(401L)
+                .instrument("AAPL")
+                .quantity(new BigDecimal("100"))
+                .price(new BigDecimal("210.50"))
+                .buyer("Buyer A")
+                .seller("Seller A")
+                .status(TradeStatus.NEW)
+                .build();
+
+        UpdateTradeStatusRequest request = new UpdateTradeStatusRequest();
+        request.setStatus(TradeStatus.MATCHED);
+
+        when(tradeRepository.findById(401L))
+                .thenReturn(Optional.of(trade));
+        when(tradeRepository.save(any(Trade.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Trade result = tradeService.updateTradeStatus(401L, request);
+
+        assertThat(result.getStatus()).isEqualTo(TradeStatus.MATCHED);
+
+        verify(tradeRepository).save(trade);
+        verify(tradeLifecycleService)
+                .recordStatusChange(trade, TradeStatus.NEW, TradeStatus.MATCHED);
+        verify(tradeAuditService)
+                .recordAudit(
+                        trade,
+                        TradeAuditAction.STATUS_CHANGE,
+                        "Trade status changed from NEW to MATCHED"
+                );
+    }
+
+    @Test
+    void updateTradeStatus_shouldAllowMatchedToConfirmed() {
+
+        Trade trade = Trade.builder()
+                .tradeId(402L)
+                .instrument("MSFT")
+                .quantity(new BigDecimal("200"))
+                .price(new BigDecimal("420.75"))
+                .buyer("Buyer B")
+                .seller("Seller B")
+                .status(TradeStatus.MATCHED)
+                .build();
+
+        UpdateTradeStatusRequest request = new UpdateTradeStatusRequest();
+        request.setStatus(TradeStatus.CONFIRMED);
+
+        when(tradeRepository.findById(402L))
+                .thenReturn(Optional.of(trade));
+        when(tradeRepository.save(any(Trade.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Trade result = tradeService.updateTradeStatus(402L, request);
+
+        assertThat(result.getStatus()).isEqualTo(TradeStatus.CONFIRMED);
+
+        verify(tradeLifecycleService)
+                .recordStatusChange(
+                        trade,
+                        TradeStatus.MATCHED,
+                        TradeStatus.CONFIRMED
+                );
+        verify(tradeAuditService)
+                .recordAudit(
+                        trade,
+                        TradeAuditAction.STATUS_CHANGE,
+                        "Trade status changed from MATCHED to CONFIRMED"
+                );
+    }
+
+    @Test
+    void updateTradeStatus_shouldRejectInvalidTransition() {
+
+        Trade trade = Trade.builder()
+                .tradeId(403L)
+                .instrument("GOOGL")
+                .quantity(new BigDecimal("150"))
+                .price(new BigDecimal("180.25"))
+                .buyer("Buyer C")
+                .seller("Seller C")
+                .status(TradeStatus.NEW)
+                .build();
+
+        UpdateTradeStatusRequest request = new UpdateTradeStatusRequest();
+        request.setStatus(TradeStatus.SETTLED);
+
+        when(tradeRepository.findById(403L))
+                .thenReturn(Optional.of(trade));
+
+        assertThatThrownBy(
+                () -> tradeService.updateTradeStatus(403L, request)
+        )
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("409 CONFLICT")
+                .hasMessageContaining(
+                        "Invalid trade status transition from NEW to SETTLED"
+                );
+
+        verify(tradeRepository, never()).save(any(Trade.class));
+        verifyNoInteractions(tradeLifecycleService, tradeAuditService);
     }
 
 
