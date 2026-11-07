@@ -313,5 +313,71 @@ class TradeServiceTest {
     }
 
 
+    @Test
+    void cancelTrade_shouldCancelTradeWhenTransitionIsValid() {
+
+        Trade trade = Trade.builder()
+                .tradeId(501L)
+                .instrument("AAPL")
+                .quantity(new BigDecimal("100"))
+                .price(new BigDecimal("210.50"))
+                .buyer("Buyer A")
+                .seller("Seller A")
+                .status(TradeStatus.NEW)
+                .build();
+
+        when(tradeRepository.findById(501L))
+                .thenReturn(Optional.of(trade));
+        when(tradeRepository.save(any(Trade.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        Trade result = tradeService.cancelTrade(501L);
+
+        assertThat(result.getStatus()).isEqualTo(TradeStatus.CANCELLED);
+
+        verify(tradeLifecycleService)
+                .recordStatusChange(
+                        trade,
+                        TradeStatus.NEW,
+                        TradeStatus.CANCELLED
+                );
+
+        verify(tradeAuditService)
+                .recordAudit(
+                        trade,
+                        TradeAuditAction.CANCEL,
+                        "Trade cancelled from status: NEW"
+                );
+    }
+
+    @Test
+    void cancelTrade_shouldRejectCancellationOfSettledTrade() {
+
+        Trade trade = Trade.builder()
+                .tradeId(502L)
+                .instrument("MSFT")
+                .quantity(new BigDecimal("200"))
+                .price(new BigDecimal("420.75"))
+                .buyer("Buyer B")
+                .seller("Seller B")
+                .status(TradeStatus.SETTLED)
+                .build();
+
+        when(tradeRepository.findById(502L))
+                .thenReturn(Optional.of(trade));
+
+        assertThatThrownBy(() -> tradeService.cancelTrade(502L))
+                .isInstanceOf(ResponseStatusException.class)
+                .hasMessageContaining("409 CONFLICT")
+                .hasMessageContaining(
+                        "Trade cannot be cancelled from status: SETTLED"
+                );
+
+        verify(tradeRepository, never()).save(any(Trade.class));
+        verifyNoInteractions(tradeLifecycleService, tradeAuditService);
+    }
+
+
+
 
 }
