@@ -22,7 +22,7 @@ import java.util.Optional;
 import org.springframework.web.server.ResponseStatusException;
 import java.math.BigDecimal;
 import com.settledesk.dto.UpdateTradeStatusRequest;
-
+import com.settledesk.dto.UpdateTradeRequest;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.*;
@@ -376,6 +376,65 @@ class TradeServiceTest {
         verify(tradeRepository, never()).save(any(Trade.class));
         verifyNoInteractions(tradeLifecycleService, tradeAuditService);
     }
+
+
+    @Test
+    void updateTrade_shouldUpdateTradeDetailsAndRecordAudit() {
+
+        // Arrange
+        Trade trade = Trade.builder()
+                .tradeId(601L)
+                .instrument("AAPL")
+                .quantity(new BigDecimal("100"))
+                .price(new BigDecimal("210.50"))
+                .buyer("Buyer A")
+                .seller("Seller A")
+                .status(TradeStatus.NEW)
+                .build();
+
+        UpdateTradeRequest request = new UpdateTradeRequest();
+        request.setInstrument("MSFT");
+        request.setQuantity(new BigDecimal("200"));
+        request.setPrice(new BigDecimal("420.75"));
+        request.setBuyer("Buyer B");
+        request.setSeller("Seller B");
+
+        when(tradeRepository.findById(601L))
+                .thenReturn(Optional.of(trade));
+
+        when(tradeRepository.save(any(Trade.class)))
+                .thenAnswer(invocation -> invocation.getArgument(0));
+
+        // Act
+        Trade result = tradeService.updateTrade(601L, request);
+
+        // Assert: updated values
+        assertThat(result.getInstrument()).isEqualTo("MSFT");
+        assertThat(result.getQuantity()).isEqualByComparingTo("200");
+        assertThat(result.getPrice()).isEqualByComparingTo("420.75");
+        assertThat(result.getBuyer()).isEqualTo("Buyer B");
+        assertThat(result.getSeller()).isEqualTo("Seller B");
+
+        // Status should remain unchanged
+        assertThat(result.getStatus()).isEqualTo(TradeStatus.NEW);
+
+        verify(tradeRepository).save(trade);
+
+        // Verify audit recording
+        verify(tradeAuditService).recordAudit(
+                trade,
+                TradeAuditAction.UPDATE,
+                "Trade updated: instrument [AAPL -> MSFT], "
+                        + "quantity [100 -> 200], "
+                        + "price [210.50 -> 420.75], "
+                        + "buyer [Buyer A -> Buyer B], "
+                        + "seller [Seller A -> Seller B]"
+        );
+
+        // Updating trade details should not change lifecycle status
+        verifyNoInteractions(tradeLifecycleService);
+    }
+
 
 
 
