@@ -52,7 +52,6 @@ services:
 
 volumes:
   settledesk-sql-data:
-    external: true
     name: settledesk-sql-data
 
   settledesk-kafka-data:
