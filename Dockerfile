@@ -4,9 +4,7 @@ FROM maven:3.9-eclipse-temurin-25 AS build
 
 WORKDIR /app
 
-COPY pom.xml .
-COPY mvnw .
-COPY .mvn .mvn
+COPY pom.xml mvnw .mvn ./
 
 RUN chmod +x mvnw
 
