@@ -34,5 +34,9 @@ services:
       - database
       - kafka
     restart: unless-stopped
+volumes:
+    settledesk-sql-data:
+      external: true
+      name: settledesk-sql-data
 
 
