@@ -1,0 +1,13 @@
+services:
+  database:
+    image: mcr.microsoft.com/mssql/server:2022-latest
+    container_name: settledesk-sqlserver
+    environment:
+      ACCEPT_EULA: "Y"
+      MSSQL_PID: Developer
+      MSSQL_SA_PASSWORD: ${DB_SA_PASSWORD}
+    ports:
+      - "1433:1433"
+    volumes:
+      - settledesk-sql-data:/var/opt/mssql
+    restart: unless-stopped
