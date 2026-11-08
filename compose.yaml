@@ -1,3 +1,4 @@
+
 services:
   database:
     image: mcr.microsoft.com/mssql/server:2022-latest
@@ -11,14 +12,16 @@ services:
     volumes:
       - settledesk-sql-data:/var/opt/mssql
     restart: unless-stopped
+
   kafka:
-      image: apache/kafka:4.4.0
-      container_name: settledesk-kafka
-      ports:
-        - "9092:9092"
-      volumes:
-        - settledesk-kafka-data:/tmp/kraft-combined-logs
-      restart: unless-stopped
+    image: apache/kafka:4.4.0
+    container_name: settledesk-kafka
+    ports:
+      - "9092:9092"
+    volumes:
+      - settledesk-kafka-data:/tmp/kraft-combined-logs
+    restart: unless-stopped
+
   app:
     image: settledesk:dev
     container_name: settledesk-app
@@ -36,9 +39,11 @@ services:
       - database
       - kafka
     restart: unless-stopped
+
 volumes:
-    settledesk-sql-data:
-      external: true
-      name: settledesk-sql-data
+  settledesk-sql-data:
+    external: true
+    name: settledesk-sql-data
 
-
+  settledesk-kafka-data:
+    name: settledesk-kafka-data
