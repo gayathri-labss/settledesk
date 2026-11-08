@@ -16,6 +16,8 @@ services:
       container_name: settledesk-kafka
       ports:
         - "9092:9092"
+      volumes:
+        - settledesk-kafka-data:/tmp/kraft-combined-logs
       restart: unless-stopped
   app:
     image: settledesk:dev
