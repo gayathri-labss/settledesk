@@ -17,7 +17,11 @@ FROM eclipse-temurin:25-jre AS runner
 
 WORKDIR /app
 
-COPY --from=build /app/target/*.jar app.jar
+RUN useradd --system --create-home appuser
+
+COPY --from=build --chown=appuser:appuser /app/target/*.jar app.jar
+
+USER appuser
 
 EXPOSE 8080
 
