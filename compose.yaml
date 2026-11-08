@@ -11,7 +11,7 @@ services:
     volumes:
       - settledesk-sql-data:/var/opt/mssql
     restart: unless-stopped
-  Kafka:
+  kafka:
       image: apache/kafka:4.4.0
       container_name: settledesk-kafka
       ports:
