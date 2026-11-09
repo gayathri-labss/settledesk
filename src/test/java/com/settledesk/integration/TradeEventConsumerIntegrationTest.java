@@ -39,7 +39,11 @@ import org.testcontainers.kafka.KafkaContainer;
 import org.testcontainers.junit.jupiter.Container;
 import org.testcontainers.junit.jupiter.Testcontainers;
 import org.testcontainers.utility.DockerImageName;
-
+import com.settledesk.dto.ExternalSettlementInput;
+import com.settledesk.dto.StartReconciliationRequest;
+import com.settledesk.model.ReconciliationResultStatus;
+import com.settledesk.model.ReconciliationRunStatus;
+import com.settledesk.service.ReconciliationService;
 import java.math.BigDecimal;
 import java.time.Instant;
 import java.time.LocalDate;
@@ -100,6 +104,9 @@ class TradeEventConsumerIntegrationTest {
 
     @Autowired
     private SettlementService settlementService;
+
+    @Autowired
+    private ReconciliationService reconciliationService;
 
 
     // -------------------------------------------------------
@@ -344,5 +351,70 @@ class TradeEventConsumerIntegrationTest {
 
         assertThat(finalTrade.getStatus())
                 .isEqualTo(TradeStatus.SETTLED);
+
+
+        // STEP 9: Start reconciliation using the actual settled instruction
+
+        ExternalSettlementInput externalRecord = new ExternalSettlementInput();
+
+        externalRecord.setExternalReference("E2E-EXT-" + UUID.randomUUID());
+        externalRecord.setSettlementReference(
+                completedSettlement.getSettlementReference()
+        );
+        externalRecord.setInstrument(finalTrade.getInstrument());
+        externalRecord.setQuantity(finalTrade.getQuantity());
+        externalRecord.setPrice(finalTrade.getPrice());
+        externalRecord.setSettlementDate(
+                completedSettlement.getSettlementDate()
+        );
+        externalRecord.setStatus(completedSettlement.getStatus().name());
+
+        StartReconciliationRequest reconciliationRequest =
+                new StartReconciliationRequest();
+
+        reconciliationRequest.setSource("E2E_TEST");
+        reconciliationRequest.setSettlementDate(
+                completedSettlement.getSettlementDate()
+        );
+        reconciliationRequest.setExternalRecords(List.of(externalRecord));
+
+// STEP 10: Execute reconciliation
+
+        var reconciliationRun =
+                reconciliationService.startReconciliation(reconciliationRequest);
+
+        assertThat(reconciliationRun.getRunId()).isNotNull();
+        assertThat(reconciliationRun.getStatus())
+                .isEqualTo(ReconciliationRunStatus.COMPLETED);
+
+        assertThat(reconciliationRun.getTotalInternalRecords()).isEqualTo(1);
+        assertThat(reconciliationRun.getTotalExternalRecords()).isEqualTo(1);
+        assertThat(reconciliationRun.getMatchedCount()).isEqualTo(1);
+        assertThat(reconciliationRun.getMismatchedCount()).isZero();
+        assertThat(reconciliationRun.getMissingInternalCount()).isZero();
+        assertThat(reconciliationRun.getMissingExternalCount()).isZero();
+
+// STEP 11: Verify persisted reconciliation run
+
+        var persistedRun =
+                reconciliationService.getReconciliationRun(
+                        reconciliationRun.getRunId()
+                );
+
+        assertThat(persistedRun.getStatus())
+                .isEqualTo(ReconciliationRunStatus.COMPLETED);
+
+// STEP 12: Verify persisted reconciliation result
+
+        var results =
+                reconciliationService.getReconciliationResults(
+                        reconciliationRun.getRunId()
+                );
+
+        assertThat(results).hasSize(1);
+        assertThat(results.get(0).getStatus())
+                .isEqualTo(ReconciliationResultStatus.MATCHED);
     }
+
+
 }
