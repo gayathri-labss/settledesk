@@ -49,7 +49,14 @@ import java.time.Instant;
 import java.time.LocalDate;
 import java.util.List;
 import java.util.UUID;
+import org.apache.kafka.clients.consumer.Consumer;
+import org.apache.kafka.clients.consumer.ConsumerConfig;
+import org.apache.kafka.clients.consumer.ConsumerRecords;
+import org.apache.kafka.clients.consumer.KafkaConsumer;
+import org.apache.kafka.common.serialization.StringDeserializer;
 
+import java.time.Duration;
+import java.util.Properties;
 import static org.assertj.core.api.Assertions.assertThat;
 import static org.awaitility.Awaitility.await;
 import static java.util.concurrent.TimeUnit.SECONDS;
@@ -415,6 +422,86 @@ class TradeEventConsumerIntegrationTest {
         assertThat(results.get(0).getStatus())
                 .isEqualTo(ReconciliationResultStatus.MATCHED);
     }
+
+
+    @Test
+    void shouldRetryFailedTradeEventAndPublishToDeadLetterTopic() throws Exception {
+        String groupId = "dlt-test-" + UUID.randomUUID();
+
+        Properties properties = new Properties();
+        properties.put(ConsumerConfig.BOOTSTRAP_SERVERS_CONFIG,
+                kafka.getBootstrapServers());
+        properties.put(ConsumerConfig.GROUP_ID_CONFIG, groupId);
+        properties.put(ConsumerConfig.AUTO_OFFSET_RESET_CONFIG, "earliest");
+        properties.put(ConsumerConfig.KEY_DESERIALIZER_CLASS_CONFIG,
+                StringDeserializer.class.getName());
+        properties.put(ConsumerConfig.VALUE_DESERIALIZER_CLASS_CONFIG,
+                StringDeserializer.class.getName());
+
+        try (Consumer<String, String> dltConsumer =
+                     new KafkaConsumer<>(properties)) {
+
+            dltConsumer.subscribe(List.of("trade-events.DLT"));
+
+            long assignmentDeadline = System.currentTimeMillis() + 10000;
+
+            while (dltConsumer.assignment().isEmpty()
+                    && System.currentTimeMillis() < assignmentDeadline) {
+                dltConsumer.poll(Duration.ofMillis(200));
+            }
+
+            UUID eventId = UUID.randomUUID();
+
+            var invalidPayload = new tools.jackson.databind.ObjectMapper()
+                    .readTree("""
+                        {
+                          "tradeId": "INVALID_LONG_VALUE",
+                          "instrument": "NIFTY",
+                          "quantity": 10,
+                          "price": 25000,
+                          "buyer": "BUYER_A",
+                          "seller": "SELLER_B",
+                          "status": "CREATED"
+                        }
+                        """);
+
+            BusinessEvent event = new BusinessEvent(
+                    eventId,
+                    "TradeCreated",
+                    "Trade",
+                    "DLT-TEST-" + eventId,
+                    Instant.now(),
+                    1,
+                    invalidPayload
+            );
+
+            eventProducer.publishBusinessEvent(event).get(10, SECONDS);
+
+            boolean foundInDlt = false;
+            long deadline = System.currentTimeMillis() + 20000;
+
+            while (System.currentTimeMillis() < deadline && !foundInDlt) {
+                ConsumerRecords<String, String> records =
+                        dltConsumer.poll(Duration.ofMillis(500));
+
+                for (var record : records) {
+                    var received = new tools.jackson.databind.ObjectMapper()
+                            .readTree(record.value());
+
+                    if (eventId.toString().equals(
+                            received.path("eventId").asText())) {
+                        foundInDlt = true;
+                        break;
+                    }
+                }
+            }
+
+            assertThat(foundInDlt)
+                    .as("Failed TradeCreated event should reach trade-events.DLT after retries")
+                    .isTrue();
+        }
+    }
+
 
 
 }
