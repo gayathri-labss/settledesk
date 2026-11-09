@@ -23,6 +23,12 @@ import java.math.BigDecimal;
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.ArgumentMatchers.*;
 import static org.mockito.Mockito.doThrow;
+import com.settledesk.dto.StartReconciliationRequest;
+import com.settledesk.service.OutboxService;
+import com.settledesk.service.ReconciliationService;
+
+import java.time.LocalDate;
+import java.util.List;
 
 @SpringBootTest(properties = "spring.kafka.listener.auto-startup=false")
 @Testcontainers
@@ -48,6 +54,12 @@ class SqlServerIntegrationTest {
 
     @MockitoBean
     private TradeAuditService tradeAuditService;
+
+    @Autowired
+    private ReconciliationService reconciliationService;
+
+    @MockitoBean
+    private OutboxService outboxService;
 
     @Test
     void shouldConnectToSqlServerAndExecuteQuery() {
@@ -105,4 +117,36 @@ class SqlServerIntegrationTest {
                 Integer.class
         );
     }
+
+
+    @Test
+    void shouldRollbackReconciliationWhenOutboxPublishingFails() {
+        int runsBefore = countRows("reconciliation_run");
+        int resultsBefore = countRows("reconciliation_result");
+        int breaksBefore = countRows("reconciliation_break");
+
+        doThrow(new IllegalStateException("Simulated outbox failure"))
+                .when(outboxService)
+                .saveReconciliationCompletedEvent(any());
+
+        StartReconciliationRequest request = new StartReconciliationRequest();
+        request.setSource("ROLLBACK_TEST");
+        request.setSettlementDate(LocalDate.of(2026, 11, 10));
+        request.setExternalRecords(List.of());
+
+        assertThrows(
+                IllegalStateException.class,
+                () -> reconciliationService.startReconciliation(request)
+        );
+
+        assertEquals(runsBefore, countRows("reconciliation_run"),
+                "Reconciliation run should be rolled back");
+
+        assertEquals(resultsBefore, countRows("reconciliation_result"),
+                "Reconciliation results should be rolled back");
+
+        assertEquals(breaksBefore, countRows("reconciliation_break"),
+                "Reconciliation breaks should be rolled back");
+    }
+
 }
