@@ -102,7 +102,8 @@ public class KafkaConfig {
     public ConcurrentKafkaListenerContainerFactory<String, BusinessEvent>
     kafkaListenerContainerFactory(
             ConsumerFactory<String, BusinessEvent> consumerFactory,
-            DefaultErrorHandler kafkaErrorHandler) {
+            DefaultErrorHandler kafkaErrorHandler,
+            KafkaProperties kafkaProperties) {
 
         ConcurrentKafkaListenerContainerFactory<String, BusinessEvent>
                 factory = new ConcurrentKafkaListenerContainerFactory<>();
@@ -110,9 +111,12 @@ public class KafkaConfig {
         factory.setConsumerFactory(consumerFactory);
         factory.setCommonErrorHandler(kafkaErrorHandler);
 
+        factory.setAutoStartup(
+                kafkaProperties.getListener().isAutoStartup()
+        );
+
         return factory;
     }
-
     @Bean
     public ProducerFactory<String, BusinessEvent> eventProducerFactory(
             KafkaProperties kafkaProperties) {
