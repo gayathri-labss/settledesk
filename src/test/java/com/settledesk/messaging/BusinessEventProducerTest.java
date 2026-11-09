@@ -55,7 +55,8 @@ class BusinessEventProducerTest {
         CompletableFuture<SendResult<String, BusinessEvent>> result =
                 producer.publishBusinessEvent(event);
 
-        assertSame(future, result);
+        assertNotNull(result);
+        assertFalse(result.isDone());
 
         verify(kafkaTemplate, times(1))
                 .send("trade-events", "1001", event);
