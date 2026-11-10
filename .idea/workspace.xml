@@ -1,0 +1,642 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project version="4">
+  <component name="AutoImportSettings">
+    <option name="autoReloadType" value="SELECTIVE" />
+  </component>
+  <component name="ChangeListManager">
+    <list default="true" id="a8cd06aa-5358-4546-a82f-048e866cccff" name="Changes" comment=" test cases" />
+    <option name="SHOW_DIALOG" value="false" />
+    <option name="HIGHLIGHT_CONFLICTS" value="true" />
+    <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
+    <option name="LAST_RESOLUTION" value="IGNORE" />
+  </component>
+  <component name="FileTemplateManagerImpl">
+    <option name="RECENT_TEMPLATES">
+      <list>
+        <option value="Class" />
+      </list>
+    </option>
+  </component>
+  <component name="Git.Settings">
+    <option name="INCOMING_COMMITS_CHECK_STRATEGY" value="FETCH" />
+    <option name="RECENT_BRANCH_BY_REPOSITORY">
+      <map>
+        <entry key="$PROJECT_DIR$" value="set23implement-end-to-end-automated-testing-for-settledesk" />
+      </map>
+    </option>
+    <option name="RECENT_GIT_ROOT_PATH" value="$PROJECT_DIR$" />
+  </component>
+  <component name="GitHubPullRequestSearchHistory">{
+  &quot;lastFilter&quot;: {
+    &quot;state&quot;: &quot;OPEN&quot;,
+    &quot;assignee&quot;: &quot;gayathri-labss&quot;
+  }
+}</component>
+  <component name="GithubPullRequestsUISettings">{
+  &quot;selectedUrlAndAccountId&quot;: {
+    &quot;url&quot;: &quot;git@github.com:gayathri-labss/settledesk.git&quot;,
+    &quot;accountId&quot;: &quot;0ead766b-6f66-48f0-9961-0fddc0c6653b&quot;
+  },
+  &quot;recentNewPullRequestHead&quot;: {
+    &quot;server&quot;: {
+      &quot;useHttp&quot;: false,
+      &quot;host&quot;: &quot;github.com&quot;,
+      &quot;port&quot;: null,
+      &quot;suffix&quot;: null
+    },
+    &quot;owner&quot;: &quot;gayathri-labss&quot;,
+    &quot;repository&quot;: &quot;settledesk&quot;
+  }
+}</component>
+  <component name="MavenImportPreferences">
+    <option name="generalSettings">
+      <MavenGeneralSettings>
+        <option name="localRepository" value="$MAVEN_REPOSITORY$" />
+        <option name="userSettingsFile" value="$USER_HOME$/.m2/settings.xml" />
+      </MavenGeneralSettings>
+    </option>
+  </component>
+  <component name="NextEditCompletionFeaturesState">
+    <decayedCancelled>
+      <entry key="MS100" value="1.732796999296871E-8" />
+      <entry key="MS500" value="0.0378423747795506" />
+      <entry key="S2" value="0.7240002804552631" />
+      <entry key="S5" value="1.3293072996915136" />
+      <entry key="S10" value="1.6299683211354097" />
+      <entry key="S30" value="1.8727304319334659" />
+      <entry key="S60" value="2.001542084693596" />
+      <entry key="M2" value="2.228208631424081" />
+      <entry key="M5" value="2.582876055888343" />
+      <entry key="M10" value="3.305165980516382" />
+      <entry key="M15" value="4.943224586127314" />
+      <entry key="M30" value="11.603212750908211" />
+      <entry key="H1" value="23.402027202785966" />
+      <entry key="H2" value="43.51551341771872" />
+      <entry key="H4" value="78.53813185044261" />
+      <entry key="D1" value="451.7743387283148" />
+      <entry key="W1" value="1122.0586478183889" />
+    </decayedCancelled>
+    <decayedSelected>
+      <entry key="MS100" value="1.000000013501839" />
+      <entry key="MS500" value="1.0360131209442418" />
+      <entry key="S2" value="1.7151311047405116" />
+      <entry key="S5" value="2.322776600446697" />
+      <entry key="S10" value="2.6259608556454768" />
+      <entry key="S30" value="2.86648174336147" />
+      <entry key="S60" value="2.9320695330520428" />
+      <entry key="M2" value="2.9657366946413646" />
+      <entry key="M5" value="2.9866118557327797" />
+      <entry key="M10" value="3.016470075830434" />
+      <entry key="M15" value="3.092824790874446" />
+      <entry key="M30" value="3.425525636814897" />
+      <entry key="H1" value="3.9239111752673397" />
+      <entry key="H2" value="4.579775103731866" />
+      <entry key="H4" value="6.24651893230846" />
+      <entry key="D1" value="28.38114498686449" />
+      <entry key="W1" value="87.26280351846317" />
+    </decayedSelected>
+    <decayedShown>
+      <entry key="MS100" value="3.1318711677159915E-8" />
+      <entry key="MS500" value="0.07745180047224663" />
+      <entry key="S2" value="1.6810864422227443" />
+      <entry key="S5" value="3.2187316497385945" />
+      <entry key="S10" value="4.008645226931653" />
+      <entry key="S30" value="4.6487307550555625" />
+      <entry key="S60" value="4.8864387709211385" />
+      <entry key="M2" value="5.168777372337334" />
+      <entry key="M5" value="5.558476338489474" />
+      <entry key="M10" value="6.315833398876625" />
+      <entry key="M15" value="8.032030209402896" />
+      <entry key="M30" value="15.026518143680784" />
+      <entry key="H1" value="27.32468043120041" />
+      <entry key="H2" value="48.09454059891937" />
+      <entry key="H4" value="84.78412677210672" />
+      <entry key="D1" value="480.1550057663675" />
+      <entry key="W1" value="1209.3212269614862" />
+    </decayedShown>
+  </component>
+  <component name="ProjectColorInfo">{
+  &quot;associatedIndex&quot;: 2,
+  &quot;fromUser&quot;: false
+}</component>
+  <component name="ProjectId" id="3KaEZfyHywyI9AgRh3WM7id3S36" />
+  <component name="ProjectViewState">
+    <option name="autoscrollToSource" value="true" />
+    <option name="hideEmptyMiddlePackages" value="true" />
+    <option name="showLibraryContents" value="true" />
+  </component>
+  <component name="PropertiesComponent"><![CDATA[{
+  "keyToString": {
+    "Maven.settledesk [clean].executor": "Run",
+    "ModuleVcsDetector.initialDetectionPerformed": "true",
+    "RunOnceActivity.ShowReadmeOnStart": "true",
+    "RunOnceActivity.TerminalTabsStorage.copyFrom.TerminalArrangementManager.252": "true",
+    "RunOnceActivity.git.unshallow": "true",
+    "RunOnceActivity.typescript.service.memoryLimit.init": "true",
+    "Spring Boot.SettleDeskApplication.executor": "Run",
+    "Spring Boot.SettledeskApplication.executor": "Run",
+    "codeWithMe.voiceChat.enabledByDefault": "false",
+    "com.intellij.ml.llm.matterhorn.ej.ui.settings.DefaultModelSelectionForGA.v1": "true",
+    "git-widget-placeholder": "set23implement-end-to-end-automated-testing-for-settledesk",
+    "git.auto.fetch.suggestion.counter": "1",
+    "junie.onboarding.icon.badge.shown": "true",
+    "kotlin-language-version-configured": "true",
+    "node.js.detected.package.eslint": "true",
+    "node.js.detected.package.tslint": "true",
+    "node.js.selected.package.eslint": "(autodetect)",
+    "node.js.selected.package.tslint": "(autodetect)",
+    "nodejs_package_manager_path": "npm",
+    "project.structure.last.edited": "Modules",
+    "project.structure.proportion": "0.0",
+    "project.structure.side.proportion": "0.0",
+    "settings.editor.selected.configurable": "inlay.hints",
+    "to.speed.mode.migration.done": "true",
+    "vue.rearranger.settings.migration": "true"
+  },
+  "keyToStringList": {
+    "DatabaseDriversLRU": [
+      "sqlserver"
+    ]
+  }
+}]]></component>
+  <component name="RecentsManager">
+    <key name="MoveFile.RECENT_KEYS">
+      <recent name="$PROJECT_DIR$/src/test/java/com/settledesk" />
+    </key>
+  </component>
+  <component name="RunManager">
+    <configuration name="SettleDeskApplication" type="SpringBootApplicationConfigurationType" factoryName="Spring Boot" temporary="true" nameIsGenerated="true">
+      <option name="FRAME_DEACTIVATION_UPDATE_POLICY" value="UnknownPolicyInFreeMode" />
+      <module name="settledesk" />
+      <option name="SPRING_BOOT_MAIN_CLASS" value="com.settledesk.SettleDeskApplication" />
+      <extension name="coverage">
+        <pattern>
+          <option name="PATTERN" value="com.settledesk.*" />
+          <option name="ENABLED" value="true" />
+        </pattern>
+      </extension>
+      <method v="2">
+        <option name="Make" enabled="true" />
+      </method>
+    </configuration>
+    <recent_temporary>
+      <list>
+        <item itemvalue="Spring Boot.SettleDeskApplication" />
+      </list>
+    </recent_temporary>
+  </component>
+  <component name="SharedIndexes">
+    <attachedChunks>
+      <set>
+        <option value="bundled-jdk-30f59d01ecdd-37e91769500f-intellij.indexing.shared.core-IU-261.26222.65" />
+        <option value="bundled-js-predefined-d6986cc7102b-31caf2ab9e3c-JavaScript-IU-261.26222.65" />
+      </set>
+    </attachedChunks>
+  </component>
+  <component name="TaskManager">
+    <task active="true" id="Default" summary="Default task">
+      <changelist id="a8cd06aa-5358-4546-a82f-048e866cccff" name="Changes" comment="" />
+      <created>1791787336164</created>
+      <option name="number" value="Default" />
+      <option name="presentableId" value="Default" />
+      <updated>1791787336164</updated>
+      <workItem from="1791787337225" duration="6000" />
+    </task>
+    <task id="LOCAL-00251" summary="test cases">
+      <option name="closed" value="true" />
+      <created>1794033487839</created>
+      <option name="number" value="00251" />
+      <option name="presentableId" value="LOCAL-00251" />
+      <option name="project" value="LOCAL" />
+      <updated>1794033487839</updated>
+    </task>
+    <task id="LOCAL-00252" summary="test cases">
+      <option name="closed" value="true" />
+      <created>1794033525761</created>
+      <option name="number" value="00252" />
+      <option name="presentableId" value="LOCAL-00252" />
+      <option name="project" value="LOCAL" />
+      <updated>1794033525761</updated>
+    </task>
+    <task id="LOCAL-00253" summary="docker file creation">
+      <option name="closed" value="true" />
+      <created>1794130539961</created>
+      <option name="number" value="00253" />
+      <option name="presentableId" value="LOCAL-00253" />
+      <option name="project" value="LOCAL" />
+      <updated>1794130539961</updated>
+    </task>
+    <task id="LOCAL-00254" summary="docker file creation">
+      <option name="closed" value="true" />
+      <created>1794130570154</created>
+      <option name="number" value="00254" />
+      <option name="presentableId" value="LOCAL-00254" />
+      <option name="project" value="LOCAL" />
+      <updated>1794130570154</updated>
+    </task>
+    <task id="LOCAL-00255" summary="compose service for database">
+      <option name="closed" value="true" />
+      <created>1794131763371</created>
+      <option name="number" value="00255" />
+      <option name="presentableId" value="LOCAL-00255" />
+      <option name="project" value="LOCAL" />
+      <updated>1794131763371</updated>
+    </task>
+    <task id="LOCAL-00256" summary="compose service for kafka">
+      <option name="closed" value="true" />
+      <created>1794131881645</created>
+      <option name="number" value="00256" />
+      <option name="presentableId" value="LOCAL-00256" />
+      <option name="project" value="LOCAL" />
+      <updated>1794131881645</updated>
+    </task>
+    <task id="LOCAL-00257" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794131921481</created>
+      <option name="number" value="00257" />
+      <option name="presentableId" value="LOCAL-00257" />
+      <option name="project" value="LOCAL" />
+      <updated>1794131921481</updated>
+    </task>
+    <task id="LOCAL-00258" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794131973655</created>
+      <option name="number" value="00258" />
+      <option name="presentableId" value="LOCAL-00258" />
+      <option name="project" value="LOCAL" />
+      <updated>1794131973655</updated>
+    </task>
+    <task id="LOCAL-00259" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794132203563</created>
+      <option name="number" value="00259" />
+      <option name="presentableId" value="LOCAL-00259" />
+      <option name="project" value="LOCAL" />
+      <updated>1794132203563</updated>
+    </task>
+    <task id="LOCAL-00260" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794132399382</created>
+      <option name="number" value="00260" />
+      <option name="presentableId" value="LOCAL-00260" />
+      <option name="project" value="LOCAL" />
+      <updated>1794132399382</updated>
+    </task>
+    <task id="LOCAL-00261" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794132501114</created>
+      <option name="number" value="00261" />
+      <option name="presentableId" value="LOCAL-00261" />
+      <option name="project" value="LOCAL" />
+      <updated>1794132501114</updated>
+    </task>
+    <task id="LOCAL-00262" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794133710465</created>
+      <option name="number" value="00262" />
+      <option name="presentableId" value="LOCAL-00262" />
+      <option name="project" value="LOCAL" />
+      <updated>1794133710465</updated>
+    </task>
+    <task id="LOCAL-00263" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794133726042</created>
+      <option name="number" value="00263" />
+      <option name="presentableId" value="LOCAL-00263" />
+      <option name="project" value="LOCAL" />
+      <updated>1794133726042</updated>
+    </task>
+    <task id="LOCAL-00264" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794134588777</created>
+      <option name="number" value="00264" />
+      <option name="presentableId" value="LOCAL-00264" />
+      <option name="project" value="LOCAL" />
+      <updated>1794134588777</updated>
+    </task>
+    <task id="LOCAL-00265" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794134718920</created>
+      <option name="number" value="00265" />
+      <option name="presentableId" value="LOCAL-00265" />
+      <option name="project" value="LOCAL" />
+      <updated>1794134718920</updated>
+    </task>
+    <task id="LOCAL-00266" summary="compose service for application">
+      <option name="closed" value="true" />
+      <created>1794137391664</created>
+      <option name="number" value="00266" />
+      <option name="presentableId" value="LOCAL-00266" />
+      <option name="project" value="LOCAL" />
+      <updated>1794137391664</updated>
+    </task>
+    <task id="LOCAL-00267" summary="address review comment">
+      <option name="closed" value="true" />
+      <created>1794137801062</created>
+      <option name="number" value="00267" />
+      <option name="presentableId" value="LOCAL-00267" />
+      <option name="project" value="LOCAL" />
+      <updated>1794137801062</updated>
+    </task>
+    <task id="LOCAL-00268" summary="address review comment">
+      <option name="closed" value="true" />
+      <created>1794137870871</created>
+      <option name="number" value="00268" />
+      <option name="presentableId" value="LOCAL-00268" />
+      <option name="project" value="LOCAL" />
+      <updated>1794137870871</updated>
+    </task>
+    <task id="LOCAL-00269" summary="address review comment">
+      <option name="closed" value="true" />
+      <created>1794138176069</created>
+      <option name="number" value="00269" />
+      <option name="presentableId" value="LOCAL-00269" />
+      <option name="project" value="LOCAL" />
+      <updated>1794138176069</updated>
+    </task>
+    <task id="LOCAL-00270" summary="address review comment">
+      <option name="closed" value="true" />
+      <created>1794139474152</created>
+      <option name="number" value="00270" />
+      <option name="presentableId" value="LOCAL-00270" />
+      <option name="project" value="LOCAL" />
+      <updated>1794139474152</updated>
+    </task>
+    <task id="LOCAL-00271" summary="address review comment">
+      <option name="closed" value="true" />
+      <created>1794140248150</created>
+      <option name="number" value="00271" />
+      <option name="presentableId" value="LOCAL-00271" />
+      <option name="project" value="LOCAL" />
+      <updated>1794140248150</updated>
+    </task>
+    <task id="LOCAL-00272" summary="test dependencies">
+      <option name="closed" value="true" />
+      <created>1794216581291</created>
+      <option name="number" value="00272" />
+      <option name="presentableId" value="LOCAL-00272" />
+      <option name="project" value="LOCAL" />
+      <updated>1794216581292</updated>
+    </task>
+    <task id="LOCAL-00273" summary="sql test">
+      <option name="closed" value="true" />
+      <created>1794216994750</created>
+      <option name="number" value="00273" />
+      <option name="presentableId" value="LOCAL-00273" />
+      <option name="project" value="LOCAL" />
+      <updated>1794216994750</updated>
+    </task>
+    <task id="LOCAL-00274" summary="sql test">
+      <option name="closed" value="true" />
+      <created>1794217131997</created>
+      <option name="number" value="00274" />
+      <option name="presentableId" value="LOCAL-00274" />
+      <option name="project" value="LOCAL" />
+      <updated>1794217131997</updated>
+    </task>
+    <task id="LOCAL-00275" summary="sql test">
+      <option name="closed" value="true" />
+      <created>1794217596308</created>
+      <option name="number" value="00275" />
+      <option name="presentableId" value="LOCAL-00275" />
+      <option name="project" value="LOCAL" />
+      <updated>1794217596308</updated>
+    </task>
+    <task id="LOCAL-00276" summary="sql test">
+      <option name="closed" value="true" />
+      <created>1794217709881</created>
+      <option name="number" value="00276" />
+      <option name="presentableId" value="LOCAL-00276" />
+      <option name="project" value="LOCAL" />
+      <updated>1794217709881</updated>
+    </task>
+    <task id="LOCAL-00277" summary="sql test">
+      <option name="closed" value="true" />
+      <created>1794218030875</created>
+      <option name="number" value="00277" />
+      <option name="presentableId" value="LOCAL-00277" />
+      <option name="project" value="LOCAL" />
+      <updated>1794218030875</updated>
+    </task>
+    <task id="LOCAL-00278" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794221182807</created>
+      <option name="number" value="00278" />
+      <option name="presentableId" value="LOCAL-00278" />
+      <option name="project" value="LOCAL" />
+      <updated>1794221182808</updated>
+    </task>
+    <task id="LOCAL-00279" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794221571485</created>
+      <option name="number" value="00279" />
+      <option name="presentableId" value="LOCAL-00279" />
+      <option name="project" value="LOCAL" />
+      <updated>1794221571485</updated>
+    </task>
+    <task id="LOCAL-00280" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794221887759</created>
+      <option name="number" value="00280" />
+      <option name="presentableId" value="LOCAL-00280" />
+      <option name="project" value="LOCAL" />
+      <updated>1794221887759</updated>
+    </task>
+    <task id="LOCAL-00281" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222033209</created>
+      <option name="number" value="00281" />
+      <option name="presentableId" value="LOCAL-00281" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222033210</updated>
+    </task>
+    <task id="LOCAL-00282" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222189784</created>
+      <option name="number" value="00282" />
+      <option name="presentableId" value="LOCAL-00282" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222189784</updated>
+    </task>
+    <task id="LOCAL-00283" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222226471</created>
+      <option name="number" value="00283" />
+      <option name="presentableId" value="LOCAL-00283" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222226471</updated>
+    </task>
+    <task id="LOCAL-00284" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222278164</created>
+      <option name="number" value="00284" />
+      <option name="presentableId" value="LOCAL-00284" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222278164</updated>
+    </task>
+    <task id="LOCAL-00285" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222339619</created>
+      <option name="number" value="00285" />
+      <option name="presentableId" value="LOCAL-00285" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222339619</updated>
+    </task>
+    <task id="LOCAL-00286" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222368548</created>
+      <option name="number" value="00286" />
+      <option name="presentableId" value="LOCAL-00286" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222368548</updated>
+    </task>
+    <task id="LOCAL-00287" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222945007</created>
+      <option name="number" value="00287" />
+      <option name="presentableId" value="LOCAL-00287" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222945007</updated>
+    </task>
+    <task id="LOCAL-00288" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794222983054</created>
+      <option name="number" value="00288" />
+      <option name="presentableId" value="LOCAL-00288" />
+      <option name="project" value="LOCAL" />
+      <updated>1794222983054</updated>
+    </task>
+    <task id="LOCAL-00289" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794223032043</created>
+      <option name="number" value="00289" />
+      <option name="presentableId" value="LOCAL-00289" />
+      <option name="project" value="LOCAL" />
+      <updated>1794223032043</updated>
+    </task>
+    <task id="LOCAL-00290" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794223112944</created>
+      <option name="number" value="00290" />
+      <option name="presentableId" value="LOCAL-00290" />
+      <option name="project" value="LOCAL" />
+      <updated>1794223112945</updated>
+    </task>
+    <task id="LOCAL-00291" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794223268440</created>
+      <option name="number" value="00291" />
+      <option name="presentableId" value="LOCAL-00291" />
+      <option name="project" value="LOCAL" />
+      <updated>1794223268440</updated>
+    </task>
+    <task id="LOCAL-00292" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794223318313</created>
+      <option name="number" value="00292" />
+      <option name="presentableId" value="LOCAL-00292" />
+      <option name="project" value="LOCAL" />
+      <updated>1794223318313</updated>
+    </task>
+    <task id="LOCAL-00293" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794223359941</created>
+      <option name="number" value="00293" />
+      <option name="presentableId" value="LOCAL-00293" />
+      <option name="project" value="LOCAL" />
+      <updated>1794223359941</updated>
+    </task>
+    <task id="LOCAL-00294" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794223377535</created>
+      <option name="number" value="00294" />
+      <option name="presentableId" value="LOCAL-00294" />
+      <option name="project" value="LOCAL" />
+      <updated>1794223377535</updated>
+    </task>
+    <task id="LOCAL-00295" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794224067347</created>
+      <option name="number" value="00295" />
+      <option name="presentableId" value="LOCAL-00295" />
+      <option name="project" value="LOCAL" />
+      <updated>1794224067347</updated>
+    </task>
+    <task id="LOCAL-00296" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794224328176</created>
+      <option name="number" value="00296" />
+      <option name="presentableId" value="LOCAL-00296" />
+      <option name="project" value="LOCAL" />
+      <updated>1794224328176</updated>
+    </task>
+    <task id="LOCAL-00297" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794225249975</created>
+      <option name="number" value="00297" />
+      <option name="presentableId" value="LOCAL-00297" />
+      <option name="project" value="LOCAL" />
+      <updated>1794225249975</updated>
+    </task>
+    <task id="LOCAL-00298" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794225699539</created>
+      <option name="number" value="00298" />
+      <option name="presentableId" value="LOCAL-00298" />
+      <option name="project" value="LOCAL" />
+      <updated>1794225699539</updated>
+    </task>
+    <task id="LOCAL-00299" summary=" test cases">
+      <option name="closed" value="true" />
+      <created>1794225740719</created>
+      <option name="number" value="00299" />
+      <option name="presentableId" value="LOCAL-00299" />
+      <option name="project" value="LOCAL" />
+      <updated>1794225740720</updated>
+    </task>
+    <option name="localTasksCounter" value="300" />
+    <servers />
+  </component>
+  <component name="TypeScriptGeneratedFilesManager">
+    <option name="version" value="3" />
+  </component>
+  <component name="Vcs.Log.Tabs.Properties">
+    <option name="TAB_STATES">
+      <map>
+        <entry key="MAIN">
+          <value>
+            <State />
+          </value>
+        </entry>
+      </map>
+    </option>
+  </component>
+  <component name="VcsManagerConfiguration">
+    <MESSAGE value="changes made to ensure outbox saves all type of different events" />
+    <MESSAGE value="implementing trade confirmation" />
+    <MESSAGE value="trade matching event creation" />
+    <MESSAGE value="trade matching event mapping to outbox service class" />
+    <MESSAGE value="trade matching event mapping to matching service class" />
+    <MESSAGE value="trade matching event mapping to consumer class" />
+    <MESSAGE value="failed event class" />
+    <MESSAGE value="failed event class integrate with outbox service" />
+    <MESSAGE value="code changes made for settlement instruction event" />
+    <MESSAGE value="Merge pull request #66 from gayathri-labss/set18-implement-settlementinstructioncreated-event&#10;&#10;Set18 implement settlementinstructioncreated event" />
+    <MESSAGE value="code changes made for settlement instruction completed event" />
+    <MESSAGE value="code changes made for settlement failed event" />
+    <MESSAGE value="changes made to have independent consumer" />
+    <MESSAGE value="recon complete event" />
+    <MESSAGE value="recon break detect event" />
+    <MESSAGE value="publish bulk trade to trade event" />
+    <MESSAGE value="test cases" />
+    <MESSAGE value="docker file creation" />
+    <MESSAGE value="compose service for database" />
+    <MESSAGE value="compose service for kafka" />
+    <MESSAGE value="compose service for application" />
+    <MESSAGE value="address review comment" />
+    <MESSAGE value="test dependencies" />
+    <MESSAGE value="sql test" />
+    <MESSAGE value=" test cases" />
+    <option name="LAST_COMMIT_MESSAGE" value=" test cases" />
+  </component>
+</project>

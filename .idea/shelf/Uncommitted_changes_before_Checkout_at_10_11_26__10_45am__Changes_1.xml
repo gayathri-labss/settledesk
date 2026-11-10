@@ -1,0 +1,680 @@
+<changelist name="Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1" date="1794287714292" recycled="true" deleted="true">
+  <option name="PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/shelved.patch" />
+  <option name="DESCRIPTION" value="Uncommitted changes before Checkout at 10/11/26, 10:45 am [Changes]" />
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/OutboxEventRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxEventRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/MatchingRunRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingRunRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/specification/CounterpartySpecification.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CounterpartySpecification.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/CounterpartyResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CounterpartyResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/SettlementAuditRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementAuditRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/Instrument.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/Instrument.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeConfirmation$TradeConfirmationBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmation$TradeConfirmationBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/ProcessingJobRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessingJobRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationRunStatus.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationRunStatus.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/TradeLifecycleRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeLifecycleRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/MatchingRun.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingRun.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/messaging/SettlementEventConsumerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementEventConsumerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/TradeService$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeService$1.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/TradeCreatedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeCreatedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ProcessedEvent$ProcessedEventBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessedEvent$ProcessedEventBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/ExternalSettlementInput.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ExternalSettlementInput.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementAuditEvent$SettlementAuditEventBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementAuditEvent$SettlementAuditEventBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/InstrumentController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/InstrumentController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationBreak.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationBreak.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/SettledeskApplicationTests.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettledeskApplicationTests.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/TradeConfirmationServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmationServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/Instrument$InstrumentBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/Instrument$InstrumentBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/TradeMatchingFailedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeMatchingFailedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeLifecycleEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeLifecycleEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationBreak$ReconciliationBreakBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationBreak$ReconciliationBreakBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/ProcessedEventRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessedEventRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/TradeConfirmationRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmationRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/CounterpartyControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CounterpartyControllerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/CounterpartyResponse$CounterpartyResponseBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CounterpartyResponse$CounterpartyResponseBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/SettlementRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/ReconciliationService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/messaging/ReconciliationEventConsumerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationEventConsumerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/SettlementCalendarController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCalendarController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationRun$ReconciliationRunBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationRun$ReconciliationRunBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeAuditAction.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeAuditAction.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementCalendar.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCalendar.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementStatus.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementStatus.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/SettlementAuditService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementAuditService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/BreakResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/ReconciliationService$1.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationService$1.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/SettlementCalendarResponse$SettlementCalendarResponseBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCalendarResponse$SettlementCalendarResponseBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/ProcessedEventServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessedEventServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/messaging/SettlementEventConsumer.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementEventConsumer.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/SettlementCalendarResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCalendarResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/BreakSummaryResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakSummaryResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/InstrumentRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/InstrumentRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/ReconciliationControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationControllerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/MatchingOutcome.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingOutcome.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/CreateTradeRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CreateTradeRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/TradeController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/AssignBreakRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/AssignBreakRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/AuditEventResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/AuditEventResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/TradeResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/Counterparty$CounterpartyBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/Counterparty$CounterpartyBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeStatus.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeStatus.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ProcessedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/Trade$TradeBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/Trade$TradeBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/UpdateBreakRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/UpdateBreakRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/UpdateTradeRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/UpdateTradeRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationResultStatus.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationResultStatus.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/TradeServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/config/KafkaConfig.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/KafkaConfig.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/InstrumentResponse$InstrumentResponseBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/InstrumentResponse$InstrumentResponseBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/TradeAuditService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeAuditService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/ResolveBreakRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ResolveBreakRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/OutboxStatus.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxStatus.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/messaging/OutboxPublisherTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxPublisherTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ProcessingJob$ProcessingJobBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessingJob$ProcessingJobBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/InstrumentControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/InstrumentControllerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeAuditEvent$TradeAuditEventBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeAuditEvent$TradeAuditEventBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/AuditEventService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/AuditEventService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/CounterpartyService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CounterpartyService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/CounterpartyController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CounterpartyController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/SettlementCalendarRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCalendarRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/BreakResponse$BreakResponseBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakResponse$BreakResponseBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/TradeRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/ReconciliationResultRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationResultRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/InstrumentService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/InstrumentService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/MatchingResult.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingResult.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/SettlementLifecycleRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementLifecycleRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/StartReconciliationRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/StartReconciliationRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/messaging/BusinessEventProducer.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BusinessEventProducer.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/SettleDeskApplication.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettleDeskApplication.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/TradeService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/AuditEventResponse$AuditEventResponseBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/AuditEventResponse$AuditEventResponseBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/MatchingRunStatus.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingRunStatus.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/ConfirmSettlementRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ConfirmSettlementRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationResult$ReconciliationResultBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationResult$ReconciliationResultBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/SettlementService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/SettlementCalendarService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCalendarService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/BusinessEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BusinessEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/integration/TradeEventConsumerIntegrationTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeEventConsumerIntegrationTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/MatchingService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/TradeConfirmationService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmationService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/ReconciliationCompletedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationCompletedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/TradeControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeControllerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/ReconciliationController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/specification/InstrumentSpecification.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/InstrumentSpecification.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/BreakPriority.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakPriority.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementInstruction.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementInstruction.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/BreakControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakControllerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/OperationResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OperationResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/MatchingRun$MatchingRunBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingRun$MatchingRunBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/messaging/ReconciliationEventConsumer.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationEventConsumer.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/MatchingResultRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingResultRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/BreakStatus.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakStatus.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/messaging/TradeEventConsumer.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeEventConsumer.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/OperationService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OperationService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/CreateTradeConfirmationRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CreateTradeConfirmationRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/SettlementCompletedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCompletedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/TradeAuditRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeAuditRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/SettlementLifecycleService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementLifecycleService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/BreakController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementAuditAction.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementAuditAction.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/MatchingServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementOutcome.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementOutcome.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/TradeLifecycleService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeLifecycleService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/Counterparty.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/Counterparty.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/OutboxServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementInstruction$SettlementInstructionBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementInstruction$SettlementInstructionBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/BreakService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeConfirmation.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmation.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/SettlementServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/SettlementInstructionCreatedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementInstructionCreatedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationRun.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationRun.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ProcessingJob.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessingJob.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementCalendar$SettlementCalendarBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementCalendar$SettlementCalendarBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/ReconciliationRunRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationRunRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/ReconciliationBreakDetectedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationBreakDetectedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ProcessedEventId.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessedEventId.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementLifecycleEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementLifecycleEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/MatchingResult$MatchingResultBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingResult$MatchingResultBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/OutboxService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/OperationController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OperationController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/OperationResponse$OperationResponseBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OperationResponse$OperationResponseBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/BreakServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/SettlementFailedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementFailedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/CreateSettlementRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CreateSettlementRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/integration/SqlServerIntegrationTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SqlServerIntegrationTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/UpdateTradeStatusRequest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/UpdateTradeStatusRequest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/TradeMatchedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeMatchedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/ReconciliationResult.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationResult.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/OutboxEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeLifecycleEvent$TradeLifecycleEventBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeLifecycleEvent$TradeLifecycleEventBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/Trade.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/Trade.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/TradeConfirmationControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmationControllerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/TradeConfirmationController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmationController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/ReconciliationBreakRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationBreakRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/TradeLifecycleServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeLifecycleServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/event/TradeConfirmedEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeConfirmedEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/BreakCategory.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BreakCategory.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/MatchingRunRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingRunRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/MatchingController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/repository/CounterpartyRepository.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/CounterpartyRepository.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/integration/KafkaIntegrationTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/KafkaIntegrationTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/specification/TradeSpecification.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeSpecification.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/messaging/BusinessEventProducerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/BusinessEventProducerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/service/ProcessedEventService.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ProcessedEventService.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/TradeAuditEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/TradeAuditEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementAuditEvent.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementAuditEvent.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/OutboxEvent$OutboxEventBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxEvent$OutboxEventBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/dto/InstrumentResponse.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/InstrumentResponse.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/SettlementControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementControllerTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/service/ReconciliationServiceTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/ReconciliationServiceTest.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/model/SettlementLifecycleEvent$SettlementLifecycleEventBuilder.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementLifecycleEvent$SettlementLifecycleEventBuilder.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/AuditEventController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/AuditEventController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/controller/SettlementController.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/SettlementController.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/classes/com/settledesk/messaging/OutboxPublisher.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/OutboxPublisher.class" />
+  </binary>
+  <binary>
+    <option name="AFTER_PATH" value="target/test-classes/com/settledesk/controller/MatchingControllerTest.class" />
+    <option name="SHELVED_PATH" value="$PROJECT_DIR$/.idea/shelf/Uncommitted_changes_before_Checkout_at_10_11_26,_10_45 am_[Changes]1/MatchingControllerTest.class" />
+  </binary>
+</changelist>
