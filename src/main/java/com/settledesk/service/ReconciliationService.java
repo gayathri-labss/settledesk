@@ -1,7 +1,10 @@
+
 package com.settledesk.service;
 
 import com.settledesk.dto.ExternalSettlementInput;
 import com.settledesk.dto.StartReconciliationRequest;
+import com.settledesk.event.ReconciliationBreakDetectedEvent;
+import com.settledesk.event.ReconciliationCompletedEvent;
 import com.settledesk.model.*;
 import com.settledesk.repository.ReconciliationBreakRepository;
 import com.settledesk.repository.ReconciliationResultRepository;
@@ -26,6 +29,7 @@ public class ReconciliationService {
     private final ReconciliationRunRepository runRepository;
     private final ReconciliationResultRepository resultRepository;
     private final ReconciliationBreakRepository breakRepository;
+    private final OutboxService outboxService;
 
     @Transactional
     public ReconciliationRun startReconciliation(
@@ -138,8 +142,7 @@ public class ReconciliationService {
             }
         }
 
-        List<ReconciliationResult> savedResults =
-                resultRepository.saveAll(results);
+        resultRepository.saveAll(results);
 
         List<ReconciliationBreak> breaks = results.stream()
                 .filter(r -> r.getStatus() != ReconciliationResultStatus.MATCHED)
@@ -160,17 +163,70 @@ public class ReconciliationService {
                         .build())
                 .toList();
 
-        breakRepository.saveAll(breaks);
+        List<ReconciliationBreak> savedBreaks =
+                breakRepository.saveAll(breaks);
 
-        run.setMatchedCount(count(results, ReconciliationResultStatus.MATCHED));
-        run.setMismatchedCount(count(results, ReconciliationResultStatus.MISMATCHED));
-        run.setMissingExternalCount(count(results, ReconciliationResultStatus.MISSING_EXTERNAL));
-        run.setMissingInternalCount(count(results, ReconciliationResultStatus.MISSING_INTERNAL));
+        for (ReconciliationBreak reconciliationBreak : savedBreaks) {
+
+            ReconciliationResult result =
+                    reconciliationBreak.getResult();
+
+            ReconciliationBreakDetectedEvent breakEvent =
+                    new ReconciliationBreakDetectedEvent(
+                            reconciliationBreak.getBreakId(),
+                            result.getRun().getRunId(),
+                            reconciliationBreak.getCategory(),
+                            reconciliationBreak.getStatus(),
+                            reconciliationBreak.getPriority(),
+                            reconciliationBreak.getDescription(),
+                            result.getInternalSettlement() == null
+                                    ? null
+                                    : result.getInternalSettlement()
+                                    .getSettlementReference(),
+                            result.getExternalReference(),
+                            result.getExternalSettlementReference(),
+                            reconciliationBreak.getCreatedAt()
+                    );
+
+            outboxService.saveReconciliationBreakDetectedEvent(breakEvent);
+        }
+
+        run.setMatchedCount(
+                count(results, ReconciliationResultStatus.MATCHED));
+
+        run.setMismatchedCount(
+                count(results, ReconciliationResultStatus.MISMATCHED));
+
+        run.setMissingExternalCount(
+                count(results, ReconciliationResultStatus.MISSING_EXTERNAL));
+
+        run.setMissingInternalCount(
+                count(results, ReconciliationResultStatus.MISSING_INTERNAL));
 
         run.setStatus(ReconciliationRunStatus.COMPLETED);
         run.setCompletedAt(LocalDateTime.now());
 
-        return runRepository.save(run);
+        ReconciliationRun completedRun = runRepository.save(run);
+
+        ReconciliationCompletedEvent event =
+                new ReconciliationCompletedEvent(
+                        completedRun.getRunId(),
+                        completedRun.getSource(),
+                        completedRun.getSettlementDate(),
+                        completedRun.getStatus(),
+                        completedRun.getTotalInternalRecords(),
+                        completedRun.getTotalExternalRecords(),
+                        completedRun.getMatchedCount(),
+                        completedRun.getMismatchedCount(),
+                        completedRun.getMissingExternalCount(),
+                        completedRun.getMissingInternalCount(),
+                        completedRun.getStartedAt(),
+                        completedRun.getCompletedAt()
+                );
+
+        outboxService.saveReconciliationCompletedEvent(event);
+
+        return completedRun;
     }
 
     @Transactional(readOnly = true)
@@ -188,13 +244,20 @@ public class ReconciliationService {
         return ReconciliationResult.builder()
                 .run(run)
                 .internalSettlement(internal)
-                .externalReference(external == null ? null : external.getExternalReference())
-                .externalSettlementReference(external == null ? null : external.getSettlementReference())
-                .externalInstrument(external == null ? null : external.getInstrument())
-                .externalQuantity(external == null ? null : external.getQuantity())
-                .externalPrice(external == null ? null : external.getPrice())
-                .externalSettlementDate(external == null ? null : external.getSettlementDate())
-                .externalStatus(external == null ? null : external.getStatus())
+                .externalReference(
+                        external == null ? null : external.getExternalReference())
+                .externalSettlementReference(
+                        external == null ? null : external.getSettlementReference())
+                .externalInstrument(
+                        external == null ? null : external.getInstrument())
+                .externalQuantity(
+                        external == null ? null : external.getQuantity())
+                .externalPrice(
+                        external == null ? null : external.getPrice())
+                .externalSettlementDate(
+                        external == null ? null : external.getSettlementDate())
+                .externalStatus(
+                        external == null ? null : external.getStatus())
                 .status(status)
                 .mismatchDetails(details)
                 .reconciledAt(LocalDateTime.now())
@@ -229,29 +292,5 @@ public class ReconciliationService {
         }
 
         return resultRepository.findByRun_RunId(runId);
-    }
-
-    private ReconciliationBreak createBreak(ReconciliationResult result) {
-
-        LocalDateTime now = LocalDateTime.now();
-
-        BreakCategory category = switch (result.getStatus()) {
-            case MISMATCHED -> BreakCategory.MISMATCH;
-            case MISSING_EXTERNAL -> BreakCategory.MISSING_EXTERNAL;
-            case MISSING_INTERNAL -> BreakCategory.MISSING_INTERNAL;
-            case MATCHED -> throw new IllegalArgumentException(
-                    "Cannot create a break for a matched result"
-            );
-        };
-
-        return ReconciliationBreak.builder()
-                .result(result)
-                .category(category)
-                .status(BreakStatus.OPEN)
-                .priority(BreakPriority.MEDIUM)
-                .description(result.getMismatchDetails())
-                .createdAt(now)
-                .updatedAt(now)
-                .build();
     }
 }

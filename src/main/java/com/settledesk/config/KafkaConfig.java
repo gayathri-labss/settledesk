@@ -1,7 +1,7 @@
 
 package com.settledesk.config;
 
-import com.settledesk.event.TradeCreatedEvent;
+import com.settledesk.event.BusinessEvent;
 import org.apache.kafka.clients.producer.ProducerConfig;
 import org.apache.kafka.common.TopicPartition;
 import org.apache.kafka.common.serialization.ByteArraySerializer;
@@ -59,7 +59,7 @@ public class KafkaConfig {
     @Bean
     public DefaultErrorHandler kafkaErrorHandler(
             @Qualifier("kafkaTemplate")
-            KafkaTemplate<String, TradeCreatedEvent> eventKafkaTemplate,
+            KafkaTemplate<String, BusinessEvent> eventKafkaTemplate,
 
             @Qualifier("dltBytesKafkaTemplate")
             KafkaTemplate<String, byte[]> bytesKafkaTemplate) {
@@ -99,22 +99,26 @@ public class KafkaConfig {
     }
 
     @Bean
-    public ConcurrentKafkaListenerContainerFactory<String, TradeCreatedEvent>
+    public ConcurrentKafkaListenerContainerFactory<String, BusinessEvent>
     kafkaListenerContainerFactory(
-            ConsumerFactory<String, TradeCreatedEvent> consumerFactory,
-            DefaultErrorHandler kafkaErrorHandler) {
+            ConsumerFactory<String, BusinessEvent> consumerFactory,
+            DefaultErrorHandler kafkaErrorHandler,
+            KafkaProperties kafkaProperties) {
 
-        ConcurrentKafkaListenerContainerFactory<String, TradeCreatedEvent>
+        ConcurrentKafkaListenerContainerFactory<String, BusinessEvent>
                 factory = new ConcurrentKafkaListenerContainerFactory<>();
 
         factory.setConsumerFactory(consumerFactory);
         factory.setCommonErrorHandler(kafkaErrorHandler);
 
+        factory.setAutoStartup(
+                kafkaProperties.getListener().isAutoStartup()
+        );
+
         return factory;
     }
-
     @Bean
-    public ProducerFactory<String, TradeCreatedEvent> eventProducerFactory(
+    public ProducerFactory<String, BusinessEvent> eventProducerFactory(
             KafkaProperties kafkaProperties) {
 
         Map<String, Object> properties =
@@ -124,9 +128,9 @@ public class KafkaConfig {
     }
 
     @Bean(name = "kafkaTemplate")
-    public KafkaTemplate<String, TradeCreatedEvent> kafkaTemplate(
+    public KafkaTemplate<String, BusinessEvent> kafkaTemplate(
             @Qualifier("eventProducerFactory")
-            ProducerFactory<String, TradeCreatedEvent> eventProducerFactory) {
+            ProducerFactory<String, BusinessEvent> eventProducerFactory) {
 
         return new KafkaTemplate<>(eventProducerFactory);
     }

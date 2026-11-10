@@ -2,6 +2,9 @@ package com.settledesk.service;
 
 import com.settledesk.dto.CreateSettlementRequest;
 import com.settledesk.dto.UpdateTradeStatusRequest;
+import com.settledesk.event.SettlementCompletedEvent;
+import com.settledesk.event.SettlementFailedEvent;
+import com.settledesk.event.SettlementInstructionCreatedEvent;
 import com.settledesk.model.*;
 import com.settledesk.repository.SettlementRepository;
 
@@ -23,17 +26,20 @@ public class SettlementService {
     private final TradeService tradeService;
     private final SettlementLifecycleService settlementLifecycleService;
     private final SettlementAuditService settlementAuditService;
+    private final OutboxService outboxService;
 
     public SettlementService(
             SettlementRepository settlementRepository,
             TradeService tradeService,
             SettlementLifecycleService settlementLifecycleService,
-            SettlementAuditService settlementAuditService) {
+            SettlementAuditService settlementAuditService,
+            OutboxService outboxService) {
 
         this.settlementRepository = settlementRepository;
         this.tradeService = tradeService;
         this.settlementLifecycleService = settlementLifecycleService;
         this.settlementAuditService = settlementAuditService;
+        this.outboxService = outboxService;
     }
 
     @Transactional
@@ -74,6 +80,18 @@ public class SettlementService {
 
         SettlementInstruction savedInstruction =
                 settlementRepository.save(instruction);
+
+        SettlementInstructionCreatedEvent event =
+                new SettlementInstructionCreatedEvent(
+                        savedInstruction.getSettlementId(),
+                        savedInstruction.getTrade().getTradeId(),
+                        savedInstruction.getSettlementReference(),
+                        savedInstruction.getSettlementDate(),
+                        savedInstruction.getStatus(),
+                        savedInstruction.getCreatedAt()
+                );
+
+        outboxService.saveSettlementInstructionCreatedEvent(event);
 
         settlementLifecycleService.recordStatusChange(
                 savedInstruction,
@@ -211,6 +229,36 @@ public class SettlementService {
 
         SettlementInstruction savedInstruction =
                 settlementRepository.save(instruction);
+        if (outcome == SettlementOutcome.FAILED) {
+
+            SettlementFailedEvent event =
+                    new SettlementFailedEvent(
+                            savedInstruction.getSettlementId(),
+                            savedInstruction.getTrade().getTradeId(),
+                            savedInstruction.getSettlementReference(),
+                            savedInstruction.getSettlementDate(),
+                            savedInstruction.getFailureReason(),
+                            savedInstruction.getStatus(),
+                            savedInstruction.getConfirmedAt()
+                    );
+
+            outboxService.saveSettlementFailedEvent(event);
+        }
+
+        if (outcome == SettlementOutcome.SETTLED) {
+
+            SettlementCompletedEvent event =
+                    new SettlementCompletedEvent(
+                            savedInstruction.getSettlementId(),
+                            savedInstruction.getTrade().getTradeId(),
+                            savedInstruction.getSettlementReference(),
+                            savedInstruction.getSettlementDate(),
+                            savedInstruction.getStatus(),
+                            savedInstruction.getConfirmedAt()
+                    );
+
+            outboxService.saveSettlementCompletedEvent(event);
+        }
 
         settlementLifecycleService.recordStatusChange(
                 savedInstruction,

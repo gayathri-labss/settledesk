@@ -1,6 +1,7 @@
+
 package com.settledesk.messaging;
 
-import com.settledesk.event.TradeCreatedEvent;
+import com.settledesk.event.BusinessEvent;
 import com.settledesk.model.OutboxEvent;
 import com.settledesk.model.OutboxStatus;
 import com.settledesk.repository.OutboxEventRepository;
@@ -23,7 +24,7 @@ public class OutboxPublisher {
             LoggerFactory.getLogger(OutboxPublisher.class);
 
     private final OutboxEventRepository outboxEventRepository;
-    private final TradeEventProducer tradeEventProducer;
+    private final BusinessEventProducer businessEventProducer;
     private final JsonMapper jsonMapper;
 
     private final Set<UUID> eventsInProgress =
@@ -31,11 +32,10 @@ public class OutboxPublisher {
 
     public OutboxPublisher(
             OutboxEventRepository outboxEventRepository,
-            TradeEventProducer tradeEventProducer,
+            BusinessEventProducer businessEventProducer,
             JsonMapper jsonMapper) {
-
         this.outboxEventRepository = outboxEventRepository;
-        this.tradeEventProducer = tradeEventProducer;
+        this.businessEventProducer = businessEventProducer;
         this.jsonMapper = jsonMapper;
     }
 
@@ -56,14 +56,13 @@ public class OutboxPublisher {
             }
 
             try {
-                TradeCreatedEvent event = jsonMapper.readValue(
+                BusinessEvent event = jsonMapper.readValue(
                         outboxEvent.getPayload(),
-                        TradeCreatedEvent.class
+                        BusinessEvent.class
                 );
 
-                tradeEventProducer.publishTradeCreated(event)
+                businessEventProducer.publishBusinessEvent(event)
                         .whenComplete((result, exception) -> {
-
                             try {
                                 if (exception != null) {
                                     log.error(
@@ -74,12 +73,8 @@ public class OutboxPublisher {
                                     return;
                                 }
 
-                                outboxEvent.setStatus(
-                                        OutboxStatus.PUBLISHED
-                                );
-
+                                outboxEvent.setStatus(OutboxStatus.PUBLISHED);
                                 outboxEvent.setPublishedAt(Instant.now());
-
                                 outboxEventRepository.save(outboxEvent);
 
                                 log.info(
@@ -100,12 +95,7 @@ public class OutboxPublisher {
 
             } catch (Exception e) {
                 eventsInProgress.remove(eventId);
-
-                log.error(
-                        "Failed to read Outbox event: {}",
-                        eventId,
-                        e
-                );
+                log.error("Failed to read Outbox event: {}", eventId, e);
             }
         }
     }

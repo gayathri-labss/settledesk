@@ -16,9 +16,7 @@ import org.springframework.web.server.ResponseStatusException;
 import org.springframework.transaction.annotation.Transactional;
 import com.settledesk.dto.UpdateTradeStatusRequest;
 
-import java.time.Instant;
 import java.util.List;
-import java.util.UUID;
 
 import com.settledesk.model.TradeAuditAction;
 
@@ -57,15 +55,13 @@ public class TradeService {
         Trade savedTrade = tradeRepository.save(trade);
 
         TradeCreatedEvent event = new TradeCreatedEvent(
-                UUID.randomUUID(),
                 savedTrade.getTradeId(),
                 savedTrade.getInstrument(),
                 savedTrade.getQuantity(),
                 savedTrade.getPrice(),
                 savedTrade.getBuyer(),
                 savedTrade.getSeller(),
-                savedTrade.getStatus().name(),
-                Instant.now()
+                savedTrade.getStatus().name()
         );
 
         outboxService.saveTradeCreatedEvent(event);
@@ -110,12 +106,26 @@ public class TradeService {
         List<Trade> savedTrades = tradeRepository.saveAll(trades);
 
         for (Trade trade : savedTrades) {
+
+            TradeCreatedEvent event = new TradeCreatedEvent(
+                    trade.getTradeId(),
+                    trade.getInstrument(),
+                    trade.getQuantity(),
+                    trade.getPrice(),
+                    trade.getBuyer(),
+                    trade.getSeller(),
+                    trade.getStatus().name()
+            );
+
+            outboxService.saveTradeCreatedEvent(event);
+
             tradeLifecycleService.recordStatusChange(
                     trade,
                     null,
                     TradeStatus.NEW
             );
 
+            // EXISTING CODE: Record audit
             tradeAuditService.recordAudit(
                     trade,
                     TradeAuditAction.CREATE,

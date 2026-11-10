@@ -3,6 +3,8 @@ package com.settledesk.service;
 import com.settledesk.dto.MatchingRunRequest;
 import com.settledesk.dto.UpdateTradeStatusRequest;
 
+import com.settledesk.event.TradeMatchedEvent;
+import com.settledesk.event.TradeMatchingFailedEvent;
 import com.settledesk.model.MatchingOutcome;
 import com.settledesk.model.MatchingResult;
 import com.settledesk.model.MatchingRun;
@@ -36,19 +38,22 @@ public class MatchingService {
     private final TradeRepository tradeRepository;
     private final TradeConfirmationRepository tradeConfirmationRepository;
     private final TradeService tradeService;
+    private final OutboxService outboxService;
 
     public MatchingService(
             MatchingRunRepository matchingRunRepository,
             MatchingResultRepository matchingResultRepository,
             TradeRepository tradeRepository,
             TradeConfirmationRepository tradeConfirmationRepository,
-            TradeService tradeService) {
+            TradeService tradeService,
+            OutboxService outboxService) {
 
         this.matchingRunRepository = matchingRunRepository;
         this.matchingResultRepository = matchingResultRepository;
         this.tradeRepository = tradeRepository;
         this.tradeConfirmationRepository = tradeConfirmationRepository;
         this.tradeService = tradeService;
+        this.outboxService = outboxService;
     }
 
     @Transactional
@@ -131,13 +136,31 @@ public class MatchingService {
                             trade.getTradeId(),
                             statusRequest
                     );
+
+                    TradeMatchedEvent event = new TradeMatchedEvent(
+                            trade.getTradeId(),
+                            savedRun.getRunId(),
+                            LocalDateTime.now()
+                    );
+
+                    outboxService.saveTradeMatchedEvent(event);
                 }
 
-            } else {
+            }
+            else {
 
                 savedRun.setUnmatchedCount(
                         savedRun.getUnmatchedCount() + 1
                 );
+
+                TradeMatchingFailedEvent event = new TradeMatchingFailedEvent(
+                        trade.getTradeId(),
+                        savedRun.getRunId(),
+                        String.join("; ", mismatches),
+                        LocalDateTime.now()
+                );
+
+                outboxService.saveTradeMatchingFailedEvent(event);
             }
         }
 
