@@ -1,13 +1,11 @@
 name: SettleDesk CI
 
 on:
-  push:
-    branches:
-      - main
   pull_request:
     branches:
       - main
-  workflow_dispatch:
+    types:
+      - closed
 
 permissions:
   contents: read
@@ -19,6 +17,7 @@ concurrency:
 jobs:
   build-test-scan:
     name: Build, test, and scan
+    if: github.event.pull_request.merged == true
     runs-on: ubuntu-24.04
     timeout-minutes: 45
 
