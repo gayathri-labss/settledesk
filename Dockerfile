@@ -4,14 +4,11 @@ FROM maven:3.9-eclipse-temurin-25 AS build
 
 WORKDIR /app
 
-COPY pom.xml mvnw ./
-COPY .mvn/ ./.mvn/
-
-RUN chmod +x mvnw
+COPY pom.xml ./
 
 COPY src ./src
 
-RUN ./mvnw clean package -DskipTests
+RUN mvn --batch-mode clean package -DskipTests
 
 # Runtime stage
 FROM eclipse-temurin:25-jre AS runner
